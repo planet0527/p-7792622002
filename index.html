@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
-<meta name="description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん56枚・用語辞典112語・確認問題つき。登録不要・スマホ対応。">
+<meta name="description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん74枚・用語辞典169語・解き方ガイド・模擬試験つき。登録不要・スマホ対応。">
 <meta name="theme-color" content="#1a2438">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="科目B ゼロから">
 <meta property="og:title" content="科目B、ゼロから。｜基本情報技術者試験 科目B対策アプリ">
-<meta property="og:description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん56枚・用語辞典112語・確認問題つき。登録不要・スマホ対応。">
+<meta property="og:description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん74枚・用語辞典169語・解き方ガイド・模擬試験つき。登録不要・スマホ対応。">
 <meta property="og:url" content="https://planet0527.github.io/p-7792622002/">
 <meta property="og:image" content="https://planet0527.github.io/p-7792622002/og.png">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="科目B、ゼロから。｜基本情報技術者試験 科目B対策アプリ">
-<meta name="twitter:description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん56枚・用語辞典112語・確認問題つき。登録不要・スマホ対応。">
+<meta name="twitter:description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん74枚・用語辞典169語・解き方ガイド・模擬試験つき。登録不要・スマホ対応。">
 <meta name="twitter:image" content="https://planet0527.github.io/p-7792622002/og.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="科目B">
@@ -525,6 +525,23 @@ details.card{border-radius:14px}
 .ztocw{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;margin:2px 0 4px}
 .ztocw summary{font-weight:800;font-size:14px;cursor:pointer}
 .ztocw .ztoc{margin-top:8px}
+
+.guide .gsec{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+.guide h2{font-size:19px;font-weight:800;margin:0 0 6px}
+.guide p,.guide li{font-size:14.5px}
+.guide ul{padding-left:1.2em;margin:8px 0 0}
+.guide .diag{margin:8px auto}
+.gsteps{list-style:none;padding:0;margin:8px 0 0;counter-reset:g}
+.gsteps li{counter-increment:g;position:relative;padding:8px 0 8px 42px;border-bottom:1px dashed var(--line)}
+.gsteps li:last-child{border-bottom:0}
+.gsteps li::before{content:counter(g);position:absolute;left:0;top:8px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:800;font-family:var(--fd)}
+.gsteps b{display:block;font-size:15px}.gsteps span{display:block;font-size:13px;color:var(--mute);line-height:1.55}
+.traps{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+@media (max-width:420px){.traps{grid-template-columns:1fr}}
+.trapi{text-align:left;border:1.5px solid var(--line);border-left:5px solid var(--hl);background:var(--bg);border-radius:10px;padding:8px 10px}
+.trapi b{display:block;font-size:14px}.trapi span{display:block;font-size:12px;color:var(--mute);line-height:1.5}
+.glink{border:0;background:none;padding:0;color:var(--acc);font-weight:700;text-decoration:underline;font-size:inherit}
+.gi.abbr b{font-family:"JetBrains Mono",monospace;font-size:16px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -609,6 +626,7 @@ html:`
 <li>余裕があれば、紙とペンで同じトレースをしてみる</li>
 <li>慣れてきたら、レッスン画面の <b>🤔 ボタン</b>で「予想モード」に。値が変わる前に「次はいくつ？」と聞かれます</li>
 <li>最後の<b>確認問題</b>で、本番形式の問題を解く</li>
+<li>問題の読み方やワナは、ホームの「調べる」にある<b>解き方ガイド</b>にまとめています</li>
 <li>間違えた問題は自動で「復習」に入る</li>
 <li>仕上げは<b>⏱ 模擬試験</b>。1問5分のペースで解く練習をする</li>
 </ol>`,
@@ -1246,7 +1264,13 @@ endwhile`,c:['リストの要素の個数','最後の要素の値','要素の値
 {cat:'sec',q:'会員サイトでパスワードを保存する方法として、最も適切なものは？',c:['ソルトを付けてハッシュ値に変換して保存する','共通鍵で暗号化して、鍵と同じサーバに保存する','そのまま保存し、データベースへのアクセス権を厳しくする','Base64で符号化して保存する'],e:'ハッシュ値は元に戻せないので、漏えいしてもパスワードそのものはわからない。ソルトを付けると同じパスワードでも違う値になり、一覧表(レインボーテーブル)での逆引きを防げる。Base64は誰でも元に戻せる。'},
  {cat:'sec',q:'Webアプリケーションの SQLインジェクション対策として、最も効果的なものは？',c:['プレースホルダ(バインド機構)を使ってSQL文を組み立てる','入力欄の文字数を制限する','通信をHTTPSで暗号化する','エラーメッセージを詳しく表示する'],e:'プレースホルダを使うと、入力値は常に「ただの値」として扱われ、SQLの命令として解釈されない。HTTPSは通信路の暗号化で、SQLインジェクションは防げない。'},
  {cat:'sec',q:'日曜にフルバックアップ、月〜水曜に毎日「増分」バックアップを取っている。木曜の朝に障害が起きた。水曜夜の状態に戻すのに必要なものは？',c:['日曜のフル＋月・火・水の増分すべて','日曜のフル＋水曜の増分だけ','水曜の増分だけ','月・火・水の増分すべて(フルは不要)'],e:'増分は「前回のバックアップ以降の変更」だけなので、フルに月→火→水の順で全部重ねる必要がある。「フル＋最新の1つ」で済むのは差分バックアップ。'},
- {cat:'sec',q:'多要素認証になっている組合せはどれか？',c:['パスワード＋スマホに届くワンタイムコード','パスワード＋秘密の質問の答え','指紋＋顔','暗証番号＋パスワード'],e:'パスワード(知識)とスマホ(所持)は違う要素。秘密の質問・暗証番号はどちらも「知識」、指紋と顔はどちらも「生体」で、同じ要素どうしなので多要素認証ではない。'}
+ {cat:'sec',q:'多要素認証になっている組合せはどれか？',c:['パスワード＋スマホに届くワンタイムコード','パスワード＋秘密の質問の答え','指紋＋顔','暗証番号＋パスワード'],e:'パスワード(知識)とスマホ(所持)は違う要素。秘密の質問・暗証番号はどちらも「知識」、指紋と顔はどちらも「生体」で、同じ要素どうしなので多要素認証ではない。'},
+ {cat:'sec',q:'情報漏えいが起きたときの損害に備えて、サイバー保険に加入した。これはどのリスク対応にあたるか？',c:['リスク移転','リスク回避','リスク低減','リスク受容'],e:'保険で損失を保険会社と分け合うのはリスク移転(共有)。原因の活動をやめるのが回避、対策で小さくするのが低減、そのまま受け入れるのが受容。'},
+ {cat:'sec',q:'受信したメールの送信元ドメインが詐称されていないかを、送信元メールサーバのIPアドレスとDNSに登録された情報を照合して確かめる仕組みは？',c:['SPF','S/MIME','DKIM','VPN'],e:'IPアドレスで照合するのはSPF。DKIMは電子署名を公開鍵で検証する方式。S/MIMEはメールの暗号化と署名、VPNは通信路の暗号化。'},
+ {cat:'sec',q:'CSRF(クロスサイトリクエストフォージェリ)の対策として、最も適切なものは？',c:['重要な操作のフォームに推測困難なトークンを埋め込み、送信時に照合する','入力された文字列の特殊文字をエスケープして出力する','パスワードをハッシュ値で保存する','通信をHTTPSで暗号化する'],e:'CSRFは罠サイトから本人のリクエストを勝手に送らせる攻撃。正規の画面からの送信かを、外部からは推測できないトークンで確かめる。出力時のエスケープはXSSの対策。'},
+ {cat:'sec',q:'ネットワーク上の不正な通信を検知したときに、管理者へ通知するだけでなく、その通信を遮断するものは？',c:['IPS','IDS','SIEM','DMZ'],e:'IDSは検知して通知、IPSは検知して遮断まで行う。SIEMはログを集めて分析する仕組み、DMZは公開サーバを置く区画。'},
+ {q:'a ← {{1, 2}, {3, 4, 5}} のとき、a[2][3] の値は？(配列の配列。要素番号は1から)',c:['5','4','3','未定義'],e:'a[2] は2番目の配列 {3, 4, 5}。その3番目なので 5。a[1] は {1, 2} で要素数2なので、a[1][3] は存在しない。'},
+ {q:'本文 "ABABC" の中からパターン "ABC" を力まかせ法で探す。パターンが一致する開始位置(1から数える)は？',c:['3','1','2','4'],e:'1文字目から：A,B は一致、3文字目 A と C が不一致。2文字目から：B と A が不一致。3文字目から：A,B,C がすべて一致 → 開始位置 3。'}
 ];
 
 /* ---- question bank ---- */
@@ -1271,6 +1295,7 @@ const TT={
 'stack-0':[['操作','スタック(下→上)','出た値'],['push(1)','1',''],['push(2)','1 2',''],['pop()','1','2'],['push(3)','1 3',''],['push(4)','1 3 4',''],['pop()','1 3','4'],['pop()','1','3']],
 'd-0':[['i','交換','a'],['—','','{1, 2, 3, 4, 5}'],[1,'a[1]⇄a[5]','{5, 2, 3, 4, 1}'],[2,'a[2]⇄a[4]','{5, 4, 3, 2, 1}']],
 'd-2':[['i','t','a','b'],['—','—',0,1],[1,1,1,1],[2,2,1,2],[3,3,2,3],[4,5,3,5],[5,8,5,8]],
+'d-23':[['開始位置','比べた結果'],['1','A=A, B=B, A≠C'],['2','B≠A'],['3','A=A, B=B, C=C → 一致']],
 'd-7':[['呼出し','出力'],['f(3) → f(2) → f(1) → f(0)','(まだ何も出力しない)'],['f(0) 終了 → f(1) に戻る','1'],['f(1) 終了 → f(2) に戻る','2'],['f(2) 終了 → f(3) に戻る','3']]
 };
 function miniTable(t){return '<div style="overflow-x:auto"><table class="mini"><tr>'+t[0].map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr>'+t.slice(1).map(r=>'<tr>'+r.map(c=>'<td>'+esc(fmt2(c))+'</td>').join('')+'</tr>').join('')+'</table></div>'}
@@ -1797,6 +1822,139 @@ zc({id:'sec-backup',cat:'sec',t:'バックアップ(フル・差分・増分)',
  b:['差分：日がたつほど1回の量が増えるが、復元は2つで済む','増分：毎回の量は少ないが、復元に全部の増分が必要','ランサムウェア対策：ネットワークから切り離した場所に保管','定期的に「本当に復元できるか」をテストする'],
  tip:'「水曜に障害、復元に必要なものは？」→ 差分ならフル＋水曜の差分、増分ならフル＋月火水の増分。'});
 
+/* ---------- 追加：擬似言語 ---------- */
+zc({id:'syn-arrarr',cat:'syn',t:'配列の配列 a[i][j]',
+ svg:SV(150,tx(85,16,'二次元配列 m[2, 3]',{s:11,w:700,m:true})+[[1,2,3],[4,5,6]].map((r,i)=>cells(16,30+i*40,r,{w:40,h:34,g:4,s:14,st:i===1?['','','a']:[]})).join('')+tx(85,126,'m[2, 3] = 6',{s:12,w:700,m:true,c:CV.amb})+tx(85,144,'行も列も長さがそろった表',{s:9,c:CV.mute})+
+  '<line x1="170" y1="20" x2="170" y2="140" style="stroke:var(--line);stroke-width:1.5"/>'+
+  tx(258,16,'配列の配列 a[2][3]',{s:11,w:700,m:true})+cells(186,30,[1,2],{w:40,h:34,g:4,s:14})+rc(182,66,140,42,'none',CV.acc,8)+cells(186,70,[3,4,5],{w:40,h:34,g:4,s:14,st:['','','a']})+
+  tx(258,126,'a[2] は {3, 4, 5}、a[2][3] = 5',{s:11,w:700,m:true,c:CV.amb})+tx(258,144,'行ごとに長さが違ってよい',{s:9,c:CV.mute})),
+ p:'「配列の配列」は、要素1つ1つがさらに配列になっているもの。a[2] で2番目の配列まるごと、a[2][3] でその中の3番目。',an:'本棚(外の配列)に、ページ数の違うノート(内の配列)が並んでいるイメージ。',
+ b:['二次元配列は m[行, 列]、配列の配列は a[i][j] と書き分けられる','配列の配列は行ごとに要素数が違ってもよい','a[i]の要素数 で i 番目の配列の長さがわかる','{{1, 2}, {3, 4, 5}} のように { } を入れ子にして書く'],
+ tip:'問題文がどちらの書き方を使っているかを最初に確認。カンマ区切り [i, j] か、かっこ2つ [i][j] か。'});
+zc({id:'syn-method',cat:'syn',t:'メソッドとコンストラクタ',
+ svg:SV(146,rc(8,8,150,130,CV.bg,CV.mute,10)+tx(83,26,'クラス Counter',{s:11,w:700})+tx(18,48,'count',{s:11,m:true,a:'start',c:CV.mute})+tx(18,70,'○Counter(整数型: c)',{s:10,m:true,a:'start',c:CV.acc})+tx(26,84,'count ← c',{s:10,m:true,a:'start'})+tx(18,106,'○add(整数型: n)',{s:10,m:true,a:'start',c:CV.amb})+tx(26,120,'count ← count + n',{s:10,m:true,a:'start'})+
+  bx(178,10,150,24,'x ← Counter(0)',{m:true,s:11})+ar('M253,34 L253,46',CV.acc)+rc(198,48,110,26,CV.accS,CV.acc,6)+tx(253,66,'x.count = 0',{s:11,w:700,m:true})+
+  bx(178,84,150,24,'x.add(5)',{m:true,s:11})+ar('M253,108 L253,118',CV.amb)+rc(198,120,110,24,CV.ambS,CV.amb,6)+tx(253,137,'x.count = 5',{s:11,w:700,m:true})),
+ p:'コンストラクタはインスタンスを作るときに1回だけ動く初期設定。メソッドはインスタンスに対して「インスタンス.メソッド名(引数)」で呼ぶ処理。',an:'コンストラクタは「新しいノートに名前を書く」、メソッドは「そのノートに書き足す」操作。',
+ b:['クラス名と同じ名前の ○クラス名(…) がコンストラクタ','x.add(5) は「x というインスタンスの add を呼ぶ」','メソッドの中のメンバ変数は、呼び出したインスタンス自身のもの','インスタンスが2つあれば、count も2つ別々にある'],
+ tip:'表(クラスの説明表)に「コンストラクタ」「メソッド」「メンバ変数」が載っていることが多い。先にその表を読む。'});
+/* ---------- 追加：データ構造・アルゴリズム ---------- */
+zc({id:'ds-bintree',cat:'ds',t:'二分木をクラスで表す(left・right)',
+ svg:SV(150,[[120,14,'8'],[30,92,'3'],[210,92,'10']].map(n=>rc(n[0],n[1],100,32,CV.tile,CV.ink,6)+'<line x1="'+(n[0]+30)+'" y1="'+n[1]+'" x2="'+(n[0]+30)+'" y2="'+(n[1]+32)+'" style="stroke:var(--ink);stroke-width:1.2"/><line x1="'+(n[0]+70)+'" y1="'+n[1]+'" x2="'+(n[0]+70)+'" y2="'+(n[1]+32)+'" style="stroke:var(--ink);stroke-width:1.2"/>'+tx(n[0]+15,n[1]+20,'L',{s:9,c:CV.mute})+tx(n[0]+50,n[1]+21,n[2],{s:14,w:700,m:true})+tx(n[0]+85,n[1]+20,'R',{s:9,c:CV.mute})).join('')+
+  ar('M135,46 L80,90',CV.acc)+ar('M205,46 L258,90',CV.acc)+tx(92,66,'left',{s:10,w:700,m:true,c:CV.acc})+tx(246,66,'right',{s:10,w:700,m:true,c:CV.acc})+
+  tx(45,142,'未定義',{s:9,c:CV.mute})+tx(115,142,'未定義',{s:9,c:CV.mute})+ln('M45,124 L45,134 M115,124 L115,134',CV.mute,1.2,true)),
+ p:'木の各節を「値・左の子(left)・右の子(right)」を持つインスタンスで表す。子がいなければ未定義。',
+ b:['p.left.val は「p の左の子の値」','再帰で「left の部分木 → 自分 → right の部分木」とたどると中間順','新しい節を付けるときは、空いている left か right に代入する'],
+ tip:'連結リストの next が left・right の2本になっただけ。矢印の図を描けば同じ方法で追える。'});
+zc({id:'ds-pqueue',cat:'ds',t:'優先度付きキュー',
+ svg:SV(120,tx(60,16,'入れる順',{s:11,w:700,c:CV.mute})+[['印刷','3'],['緊急','1'],['通常','2']].map((t,i)=>rc(14+i*36,26,32,40,CV.tile,CV.line,6)+tx(30+i*36,44,t[1],{s:13,w:700,m:true})+tx(30+i*36,60,t[0],{s:8,c:CV.mute})).join('')+
+  ar('M126,46 L156,46',CV.acc)+rc(158,22,90,48,CV.accS,CV.acc,10)+tx(203,42,'優先度付き',{s:10,w:700})+tx(203,58,'キュー',{s:10,w:700})+ar('M250,46 L280,46',CV.amb)+
+  rc(284,26,46,40,CV.ambS,CV.amb,6)+tx(307,44,'1',{s:14,w:700,m:true})+tx(307,60,'緊急',{s:8,c:CV.amb})+
+  tx(170,98,'入れた順ではなく、優先度の高いものから出る',{s:11,w:700,c:CV.amb})+tx(170,114,'(中身はヒープで作ることが多い)',{s:9,c:CV.mute})),
+ p:'入れた順番に関係なく、優先度がいちばん高い(数値が小さい、など)ものから取り出すキュー。',an:'病院の救急外来。来た順ではなく、重症の人から診察する。',
+ b:['普通のキュー(FIFO)とは取り出し順が違う','ヒープを使うと追加・取り出しが速い','優先度が同じときの扱いは問題文の説明に従う'],
+ tip:'「数値が小さいほど優先度が高い」のか「大きいほど高い」のか、問題文の定義を必ず確認。'});
+zc({id:'al-strsearch',cat:'al',t:'文字列探索(力まかせ法)',
+ svg:SV(140,tx(50,30,'本文',{s:10,w:700,a:'end',c:CV.mute})+cells(56,14,['A','B','C','A','B','D'],{w:30,h:26,g:4,s:13})+[1,2,3,4,5,6].map(k=>tx(71+(k-1)*34,52-44,'',{})).join('')+
+  tx(50,64,'1から',{s:9,a:'end',c:CV.mute})+cells(56,48,['A','B','D'],{w:30,h:26,g:4,s:13,st:['ok','ok','ng']})+
+  tx(50,96,'2から',{s:9,a:'end',c:CV.mute})+cells(90,80,['A','B','D'],{w:30,h:26,g:4,s:13,st:['ng','d','d']})+
+  tx(50,128,'4から',{s:9,a:'end',c:CV.mute})+cells(158,112,['A','B','D'],{w:30,h:26,g:4,s:13,st:['ok','ok','ok']})+
+  tx(268,64,'3文字目で✕',{s:10,w:700,a:'start',c:CV.ng})+tx(268,96,'すぐ✕',{s:10,w:700,a:'start',c:CV.ng})+tx(268,128,'一致！',{s:10,w:700,a:'start',c:CV.ok})),
+ p:'パターンを本文の先頭に重ね、1文字ずつ比べる。合わなければ1文字ずらしてやり直す。',
+ b:['二重ループ：外側が「どこから比べるか」、内側が「何文字目を比べるか」','外側の終わりは「本文の長さ − パターンの長さ + 1」','1文字でも違ったら内側をすぐ抜ける'],
+ tip:'外側ループの終了値の「+ 1」の有無がよく問われる。本文6文字・パターン3文字なら開始位置は1〜4。'});
+zc({id:'al-sparse',cat:'al',t:'疎行列(0が多い表の省略)',
+ svg:SV(140,tx(70,14,'元の行列',{s:11,w:700})+[[0,0,7,0],[0,0,0,0],[5,0,0,0],[0,0,0,9]].map((r,i)=>cells(10,22+i*28,r,{w:28,h:24,g:3,s:12,st:r.map(v=>v?'a':'d')})).join('')+
+  ar('M140,70 L170,70',CV.acc)+tx(256,14,'0でない所だけ記録',{s:11,w:700,c:CV.acc})+
+  ['行','列','値'].map((h,i)=>tx(196,48+i*30,h,{s:11,w:700,a:'end'})+cells(204,32+i*30,[[1,3,4],[3,1,4],[7,5,9]][i],{w:36,h:24,g:3,s:12,st:i===2?['a','a','a']:[]})).join('')+
+  tx(256,130,'16マス → 9個のデータで済む',{s:10,c:CV.mute})),
+ p:'ほとんどが0の行列(疎行列)は、0でない要素の「行・列・値」だけを記録してメモリを節約する。',
+ b:['3つの配列(行・列・値)を同じ番号でそろえて使う','元の行列の [i, j] を探すには、行と列が両方一致する番号を探す','記録にない場所は0とみなす'],
+ tip:'「行番号の配列」「列番号の配列」「値の配列」の k 番目どうしがセット。番号 k をそろえて読む。'});
+zc({id:'al-dijkstra',cat:'al',t:'最短経路(ダイクストラ法)',
+ svg:SV(160,ln('M30,75 L130,30 M30,75 L130,120 M130,30 L130,120 M130,30 L240,75 M130,120 L240,75',CV.line,2.5)+ln('M30,75 L130,30 L130,120 L240,75',CV.amb,4)+
+  [['2',72,44],['5',72,112],['1',140,78],['6',192,44],['2',192,112]].map(w=>tx(w[1],w[2],w[0],{s:12,w:700,m:true,c:CV.mute})).join('')+
+  [['S',30,75,'0'],['A',130,30,'2'],['B',130,120,'3'],['G',240,75,'5']].map(n=>nd(n[1],n[2],n[0],{f:n[0]==='G'?CV.ambS:CV.tile})+tx(n[1],n[2]-20,n[3],{s:11,w:700,m:true,c:CV.acc})).join('')+
+  tx(268,40,'S→A→B→G',{s:11,w:700,m:true,a:'start',c:CV.amb})+tx(268,58,'距離 5',{s:11,w:700,a:'start',c:CV.amb})+tx(10,152,'青い数字＝スタートからの最短距離(確定した順に広げる)',{s:10,a:'start',c:CV.acc})),
+ p:'スタートから近い点を1つずつ確定させ、その点を経由したほうが近くなる隣の点の距離を更新していく。',an:'カーナビの経路探索。近い交差点から順に「ここまで最短何分」を確定させる。',
+ b:['距離の表(配列)を作り、最初はスタートだけ0、他は∞','未確定の中で距離が最小の点を確定する','確定した点の隣について「今の距離」と「経由した距離」を比べ、小さいほうに更新','辺の重みが負でないときに使える'],
+ tip:'「距離 ← 確定点の距離 + 辺の重み」と「今の距離」を比べる行が穴埋めになりやすい。'});
+/* ---------- 追加：セキュリティ ---------- */
+zc({id:'sec-risk',cat:'sec',t:'リスク対応(回避・低減・移転・受容)',
+ svg:SV(160,ln('M40,14 L40,130 L330,130',CV.ink,1.5)+tx(12,72,'影響',{s:10,w:700,c:CV.mute})+tx(185,150,'発生する可能性 →',{s:10,w:700,c:CV.mute})+
+  [['移転','保険・外部委託',44,16,CV.accS,CV.acc],['回避','その活動をやめる',188,16,CV.ngSoft,CV.ng],['受容','そのまま受け入れる',44,74,CV.bg,CV.line],['低減','対策で小さくする',188,74,CV.okSoft,CV.ok]].map(q=>rc(q[2],q[3],138,52,q[4],q[5],8)+tx(q[2]+69,q[3]+24,q[0],{s:15,w:900})+tx(q[2]+69,q[3]+42,q[1],{s:10,c:CV.mute})).join('')+
+  tx(36,30,'大',{s:9,a:'end',c:CV.mute})+tx(36,122,'小',{s:9,a:'end',c:CV.mute})+tx(60,142,'小',{s:9,c:CV.mute})+tx(318,142,'大',{s:9,c:CV.mute})),
+ p:'見つけたリスクへの対応は4種類。影響の大きさと起こりやすさで選ぶ。',an:'雨への対応：外出をやめる(回避)、傘を持つ(低減)、濡れたら弁償してもらう契約(移転)、小雨なら気にしない(受容)。',
+ b:['回避：リスクの原因そのものをなくす(サービス中止など)','低減：対策で発生確率や被害を小さくする','移転(共有)：保険や外部委託で損失を他者と分ける','受容(保有)：対策コストが見合わないので受け入れる'],
+ tip:'「サイバー保険に入る」は移転、「暗号化する」は低減、「そのサービスをやめる」は回避。具体例から種類を当てる問題が多い。'});
+zc({id:'sec-isms',cat:'sec',t:'ISMSとPDCA・セキュリティポリシー',
+ svg:SV(152,'<circle cx="170" cy="76" r="52" style="fill:none;stroke:var(--line);stroke-width:10"/>'+tx(170,73,'ISMS',{s:14,w:900,m:true})+tx(170,89,'継続的に改善',{s:9,c:CV.mute})+
+  [[-70,-20],[20,70],[110,160],[200,250]].map(r=>{const P=t=>[170+52*Math.cos(t*Math.PI/180),76+52*Math.sin(t*Math.PI/180)].map(v=>v.toFixed(1)).join(',');return '<path d="M'+P(r[0])+' A52 52 0 0 1 '+P(r[1])+'" style="fill:none;stroke:var(--acc);stroke-width:2.5" marker-end="url(#ahg)"/>'}).join('')+
+  tx(170,14,'Plan：方針・リスク評価・計画',{s:10,w:700,c:CV.acc})+tx(232,72,'Do',{s:13,w:900,a:'start',c:CV.acc,m:true})+tx(232,88,'対策の実施・教育',{s:9,a:'start',c:CV.mute})+
+  tx(170,146,'Check：監査・効果の測定',{s:10,w:700,c:CV.acc})+tx(108,72,'Act',{s:13,w:900,a:'end',c:CV.acc,m:true})+tx(108,88,'見直し・改善',{s:9,a:'end',c:CV.mute})),
+ p:'ISMS(情報セキュリティマネジメントシステム)は、組織全体でセキュリティをPDCAサイクルで回し続ける仕組み。',
+ b:['情報セキュリティポリシー：基本方針 → 対策基準 → 実施手順 の3階層','基本方針は経営者が承認して全社員に周知する','リスクアセスメント＝リスクの特定・分析・評価','内部監査で、ルールどおり運用されているかを確認する'],
+ tip:'「ポリシーは誰が決める？」→ 経営者(トップマネジメント)。「現場の担当者が個別に決める」は×。'});
+zc({id:'sec-web2',cat:'sec',t:'Webへの攻撃(CSRF など)',
+ svg:SV(166,[['CSRF','罠サイトを開くと、ログイン中の','サイトに勝手にリクエストが送られる','対策：推測できないトークンで照合'],['ディレクトリトラバーサル','../../etc/passwd のように','公開していないファイルを読まれる','対策：ファイル名を固定・パスを検証'],['OSコマンドインジェクション','入力に ; rm -rf のような','OSのコマンドを混ぜて実行させる','対策：シェルを使わない・入力を検証']].map((r,i)=>{const y=6+i*54;return rc(6,y,328,50,CV.tile,CV.line,8)+tx(16,y+18,r[0],{s:12,w:900,a:'start',c:CV.ng})+tx(16,y+33,r[1]+r[2],{s:9,a:'start'})+tx(16,y+46,r[3],{s:9.5,w:700,a:'start',c:CV.ok})}).join('')),
+ p:'Webアプリへの代表的な攻撃。どれも「利用者の入力やリクエストを、そのまま信用してしまう」ことが原因。',
+ b:['CSRF(クロスサイトリクエストフォージェリ)：本人になりすまして操作させる','セッションハイジャック：セッションIDを盗んで本人になりすます','ディレクトリトラバーサル：../ でフォルダをさかのぼる','OSコマンドインジェクション：OSの命令を実行させる'],
+ tip:'XSS は「閲覧者のブラウザでスクリプト実行」、CSRF は「ログイン中の本人の操作を勝手に送らせる」。違いが問われる。'});
+zc({id:'sec-mailauth',cat:'sec',t:'メールのなりすまし対策(SPF・DKIM・DMARC)',
+ svg:SV(160,rc(116,6,108,58,CV.bg,CV.mute,8)+tx(170,22,'DNS(送信側ドメイン)',{s:9,w:700})+tx(170,38,'SPF：送信元IP',{s:9,m:true,c:CV.acc})+tx(170,50,'DKIM：公開鍵',{s:9,m:true,c:CV.acc})+tx(170,62,'DMARC：方針',{s:9,m:true,c:CV.acc})+
+  bx(6,88,96,32,'送信サーバ',{})+ar('M104,104 L234,104',CV.ink)+tx(170,98,'メール＋DKIM署名',{s:9,c:CV.mute})+bx(236,88,98,32,'受信サーバ',{})+ar('M268,86 L210,62',CV.acc,true)+tx(270,74,'問い合わせて照合',{s:9,c:CV.acc,a:'start'})+
+  tx(170,140,'SPF・DKIM に失敗 → DMARC の方針で 隔離／拒否',{s:10,w:700,c:CV.amb})+tx(170,156,'送信元のなりすましを受信側で見抜く',{s:9,c:CV.mute})),
+ p:'送信元ドメインのなりすましを、受信側がDNSの情報と照合して見抜く仕組み。',
+ b:['SPF：送信元メールサーバのIPアドレスをDNSに登録し、受信側が照合する','DKIM：送信側がメールに電子署名し、受信側がDNSの公開鍵で検証する','DMARC：SPF・DKIMに失敗したメールをどう扱うか(隔離・拒否など)の方針を示す','S/MIME：メール本文の暗号化と署名(なりすまし対策とは別の仕組み)'],
+ tip:'「IPアドレスで照合」→ SPF、「電子署名で検証」→ DKIM、「失敗したときの扱い」→ DMARC。'});
+zc({id:'sec-tls',cat:'sec',t:'TLS(HTTPS)と電子証明書',
+ svg:SV(150,bx(6,60,90,34,'ブラウザ',{})+bx(244,60,90,34,'Webサーバ',{})+rc(244,10,90,40,CV.ambS,CV.amb,6)+tx(289,26,'サーバ証明書',{s:10,w:700})+tx(289,42,'認証局の署名つき',{s:8,c:CV.mute})+
+  ar('M242,30 L100,64',CV.amb)+tx(150,36,'① 証明書を送る',{s:9,w:700,c:CV.amb})+
+  tx(51,112,'② 認証局の公開鍵で',{s:9,w:700,c:CV.acc})+tx(51,124,'本物か確認',{s:9,w:700,c:CV.acc})+
+  ln('M98,86 L242,86',CV.ok,3)+tx(170,80,'🔒 ③ 共通鍵を決めて暗号化通信',{s:9.5,w:700,c:CV.ok})+tx(170,144,'盗聴・改ざん・なりすましサーバを防ぐ',{s:10,w:700})),
+ p:'TLSは通信を暗号化する仕組み。サーバは電子証明書で「本物であること」を示し、そのあと共通鍵で暗号化して通信する。',
+ b:['電子証明書は認証局(CA)がディジタル署名して発行する','ブラウザは認証局の公開鍵(最初から入っている)で証明書を検証する','鍵の受け渡しは公開鍵暗号、本体の通信は速い共通鍵暗号(ハイブリッド)','HTTPS＝HTTP を TLS で暗号化したもの'],
+ tip:'HTTPSは「通信路」を守るだけ。サーバに保存されたデータの暗号化や、SQLインジェクション対策にはならない。'});
+zc({id:'sec-detect',cat:'sec',t:'検知の仕組み(IDS・IPS・SIEM・EDR)',
+ svg:SV(150,bx(6,20,70,30,'外部',{})+ar('M78,35 L104,35')+rc(106,18,60,34,CV.ngSoft,CV.ng,6)+tx(136,39,'FW',{s:11,w:700,m:true})+ar('M168,35 L194,35')+rc(196,18,60,34,CV.ambS,CV.amb,6)+tx(226,39,'IPS',{s:11,w:700,m:true})+ar('M258,35 L280,35')+bx(282,20,52,30,'社内',{})+
+  tx(226,12,'見つけて遮断',{s:9,w:700,c:CV.amb})+rc(196,76,60,26,CV.bg,CV.mute,6)+tx(226,93,'IDS',{s:11,w:700,m:true})+ln('M226,52 L226,76',CV.mute,1.5,true)+tx(226,116,'見つけて通知',{s:9,w:700,c:CV.mute})+
+  rc(14,80,150,48,CV.accS,CV.acc,8)+tx(89,98,'SIEM',{s:12,w:900,m:true,c:CV.acc})+tx(89,116,'各機器のログを集めて分析',{s:9})+
+  rc(272,124,62,24,CV.okSoft,CV.ok,6)+tx(303,140,'EDR',{s:10,w:700,m:true})+tx(262,140,'PCには',{s:9,a:'end',c:CV.mute})),
+ p:'不正な通信や挙動を見つける仕組み。見つけて知らせるだけ(IDS)か、止めるところまでやる(IPS)かが大きな違い。',
+ b:['IDS：侵入を検知して管理者に通知','IPS：検知して通信を遮断までする','SIEM：いろいろな機器のログを集めて、関連づけて分析する','EDR：PCやサーバ(エンドポイント)の不審な動きを検知・対応する'],
+ tip:'「通知するだけ」→ IDS、「遮断する」→ IPS。ログを横断的に分析 → SIEM。'});
+zc({id:'sec-zero',cat:'sec',t:'ゼロトラストとテレワーク',
+ svg:SV(140,tx(80,16,'境界型(従来)',{s:12,w:700,c:CV.mute})+'<rect x="20" y="26" width="120" height="70" rx="10" style="fill:var(--accSoft);stroke:var(--acc);stroke-width:3"/>'+tx(80,56,'社内＝安全',{s:11,w:700})+tx(80,74,'一度入れば信用',{s:9,c:CV.mute})+tx(80,118,'中に入られると弱い',{s:10,w:700,c:CV.ng})+
+  tx(255,16,'ゼロトラスト',{s:12,w:700,c:CV.acc})+[['だれ？',196,40],['どの端末？',254,40],['どこから？',310,40]].map(c=>rc(c[1]-27,c[2],54,26,CV.tile,CV.line,13)+tx(c[1],c[2]+17,c[0],{s:9,w:700})).join('')+ar('M255,68 L255,86',CV.acc)+bx(205,88,100,24,'毎回 確認して許可',{s:10,f:CV.accS,e:CV.acc})+tx(255,130,'社内でも信用しない',{s:10,w:700,c:CV.ok})),
+ p:'「社内ネットワークだから安全」とは考えず、アクセスのたびに利用者・端末・状況を確認して許可する考え方。',
+ b:['テレワークやクラウドの普及で、社内と社外の境目があいまいになった','多要素認証、端末の状態チェック、最小権限、ログ監視を組み合わせる','MDM：会社のスマホ等を一元管理(紛失時に遠隔ロック・消去)','BYOD：私物端末の業務利用。情報漏えい対策のルールが必要'],
+ tip:'テレワークの問題では「VPN」「多要素認証」「端末の暗号化」「画面ののぞき見対策」が正解になりやすい。'});
+zc({id:'sec-insider',cat:'sec',t:'内部不正と不正のトライアングル',
+ svg:SV(162,'<polygon points="170,16 70,124 270,124" style="fill:var(--ngSoft);stroke:var(--ng);stroke-width:2"/>'+tx(170,80,'不正',{s:14,w:900,c:CV.ng})+
+  tx(170,12,'',{})+tx(204,22,'動機・プレッシャー',{s:11,w:700,a:'start'})+tx(204,36,'借金、ノルマ',{s:9,a:'start',c:CV.mute})+
+  tx(70,142,'機会',{s:11,w:700})+tx(70,156,'権限が強すぎる',{s:9,c:CV.mute})+tx(270,142,'正当化',{s:11,w:700})+tx(270,156,'「会社が悪い」',{s:9,c:CV.mute})+
+  rc(4,4,112,40,CV.okSoft,CV.ok,8)+tx(60,20,'対策しやすいのは',{s:9,w:700,c:CV.ok})+tx(60,36,'「機会」を減らす',{s:10,w:700,c:CV.ok})),
+ p:'不正は「動機」「機会」「正当化」の3つがそろうと起きやすい。組織が減らしやすいのは「機会」。',
+ b:['機会を減らす：最小権限、職務分掌、アクセスログの記録と監視','退職者・異動者のアカウントをすぐ無効化','委託先管理：委託先にも同じレベルの対策を契約で求め、確認する','「ログを取っていることを周知する」のも抑止になる'],
+ tip:'内部不正の対策を選ぶ問題では「1人に権限を集中させない」「ログを定期的に確認」が正解になりやすい。'});
+zc({id:'sec-physical',cat:'sec',t:'物理的セキュリティ',
+ svg:SV(140,rc(10,14,150,110,CV.tile,CV.line,10)+tx(85,32,'入退室管理',{s:12,w:700})+tx(85,56,'🚪 ICカード・生体認証',{s:10})+tx(85,78,'✕ 共連れ(後ろについて入る)',{s:10,w:700,c:CV.ng})+tx(85,100,'アンチパスバック',{s:10,w:700,c:CV.ok})+tx(85,114,'入室記録がないと出られない',{s:8,c:CV.mute})+
+  rc(180,14,150,110,CV.tile,CV.line,10)+tx(255,32,'席を離れるとき',{s:12,w:700})+tx(255,58,'🗂 クリアデスク',{s:11,w:700,c:CV.acc})+tx(255,72,'机に書類を出しっぱなしにしない',{s:8,c:CV.mute})+tx(255,96,'🖥 クリアスクリーン',{s:11,w:700,c:CV.acc})+tx(255,110,'画面をロックする',{s:8,c:CV.mute})),
+ p:'建物や部屋、机の上など「物理的な」情報漏えいを防ぐ対策。',
+ b:['共連れ：認証した人の後ろについて一緒に入ること','アンチパスバック：入室の記録がないと退室できない仕組み(共連れ防止)','クリアデスク・クリアスクリーン：離席時に情報を見えなくする','重要な紙はシュレッダー、記憶媒体は物理的に破壊して廃棄'],
+ tip:'「共連れを防ぐ仕組みはどれか」→ アンチパスバック(またはセキュリティゲート)。'});
+zc({id:'sec-social',cat:'sec',t:'ソーシャルエンジニアリング',
+ svg:SV(126,[['👀','ショルダーハッキング','肩越しにパスワードを盗み見'],['🗑','トラッシング','ゴミ箱から書類をあさる'],['📞','なりすまし電話','「管理者です。パスワードを…」']].map((r,i)=>{const x=6+i*111;return rc(x,10,106,104,CV.tile,CV.line,10)+tx(x+53,42,r[0],{s:24})+tx(x+53,72,r[1],{s:10,w:700,c:CV.ng})+tx(x+53,92,r[2].length>12?r[2].slice(0,12):r[2],{s:8,c:CV.mute})+(r[2].length>12?tx(x+53,104,r[2].slice(12),{s:8,c:CV.mute}):'')}).join('')),
+ p:'技術ではなく、人の油断や心理のすきを突いて情報を盗む手口。',
+ b:['電話やメールで「急いで」「上司の指示」と焦らせるのが典型','パスワードを電話やメールで聞かれても答えない(管理者は聞かない)','本人確認は、相手から聞いた連絡先ではなく既知の連絡先で行う','対策の基本は教育と、手順・ルールの徹底'],
+ tip:'「システム管理者を名乗る電話でパスワードを聞かれた」→ 答えずに、既知の窓口に確認・報告。'});
+zc({id:'sec-vuln',cat:'sec',t:'脆弱性管理とゼロデイ攻撃',
+ svg:SV(126,ln('M20,60 L320,60',CV.ink,2)+[['脆弱性が',40,'見つかる'],['修正プログラム',170,'(パッチ)公開'],['適用',290,'完了']].map(p=>'<circle cx="'+p[1]+'" cy="60" r="7" style="fill:var(--ink)"/>'+tx(p[1],86,p[0],{s:10,w:700})+tx(p[1],100,p[2],{s:10,w:700})).join('')+
+  rc(44,24,122,26,CV.ngSoft,CV.ng,6)+tx(105,41,'ゼロデイ攻撃の期間',{s:10,w:700,c:CV.ng})+rc(174,24,112,26,CV.ambS,CV.amb,6)+tx(230,41,'早く適用しないと危険',{s:9,w:700})+tx(170,120,'修正前を狙う＝ゼロデイ。公開後は急いで適用',{s:10,w:700})),
+ p:'脆弱性はソフトウェアの弱点。修正プログラム(パッチ)がまだ無い期間を狙う攻撃をゼロデイ攻撃という。',
+ b:['パッチが出たら、影響を確認して速やかに適用する','脆弱性診断：既知の弱点がないかツール等で調べる','ペネトレーションテスト：実際に攻撃を試みて侵入できるか確かめる','使っていないサービスやポートは止める(攻撃される入口を減らす)'],
+ tip:'「パッチ適用前に検証環境で動作確認する」は適切な手順として出やすい。'});
+
 /* ---------- 用語辞典 ---------- */
 const GLOSSB=[
  ['代入','←','右辺の値を左辺の変数に入れること','syn-var'],
@@ -1910,9 +2068,66 @@ const GLOSSB=[
  ['最小権限の原則','','必要最小限の権限だけを与える','sec-access'],
  ['職務分掌','','1人に権限を集中させず仕事を分ける','sec-access'],
  ['差分バックアップ','','前回のフル以降の変更を保存','sec-backup'],
- ['増分バックアップ','','前回のバックアップ以降の変更を保存','sec-backup']
+ ['増分バックアップ','','前回のバックアップ以降の変更を保存','sec-backup'],
+ ['配列の配列','a[i][j]','要素がさらに配列になっている配列','syn-arrarr'],
+ ['コンストラクタ','','インスタンスを作るときに動く初期設定の処理','syn-method'],
+ ['メソッド','','インスタンスに対して呼ぶ処理。x.add(5) の形','syn-method'],
+ ['left / right','','二分木の左の子・右の子を指すメンバ変数','ds-bintree'],
+ ['優先度付きキュー','','優先度の高いものから取り出すキュー','ds-pqueue'],
+ ['力まかせ法','','1文字ずつずらして比べる文字列探索','al-strsearch'],
+ ['文字列探索','パターン照合','本文の中からパターンを探すこと','al-strsearch'],
+ ['疎行列','','ほとんどの要素が0の行列','al-sparse'],
+ ['ダイクストラ法','','最短経路を求める代表的な方法','al-dijkstra'],
+ ['最短経路問題','','2点間の最も短い道のりを求める問題','al-dijkstra'],
+ ['安定ソート','','同じ値の要素の並び順が、整列後も変わらない整列法','al-merge'],
+ ['論理シフト','','ビットをずらし、空いた所に0を入れる','al-bit'],
+ ['算術シフト','','符号ビットを保ったままずらす(負の数の×2・÷2)','al-bit'],
+ ['2の補数','','負の数の表し方。全ビット反転して1を足す','al-bit'],
+ ['オーバーフロー','桁あふれ','計算結果が型で表せる範囲を超えること','syn-var'],
+ ['リスクアセスメント','','リスクの特定・分析・評価','sec-isms'],
+ ['リスク回避','','リスクの原因となる活動をやめる','sec-risk'],
+ ['リスク低減','','対策で発生確率や影響を小さくする','sec-risk'],
+ ['リスク移転','リスク共有','保険や委託で損失を他者と分ける','sec-risk'],
+ ['リスク受容','リスク保有','対策せず受け入れる','sec-risk'],
+ ['ISMS','Information Security Management System','情報セキュリティマネジメントシステム','sec-isms'],
+ ['PDCA','Plan・Do・Check・Act','計画・実行・評価・改善のサイクル','sec-isms'],
+ ['情報セキュリティポリシー','','基本方針・対策基準・実施手順からなる組織のルール','sec-isms'],
+ ['CSRF','Cross-Site Request Forgery','ログイン中の利用者に意図しない操作をさせる攻撃','sec-web2'],
+ ['セッションハイジャック','','セッションIDを盗んで本人になりすます','sec-web2'],
+ ['ディレクトリトラバーサル','','../ で公開外のファイルを読む攻撃','sec-web2'],
+ ['OSコマンドインジェクション','','入力にOSコマンドを混ぜて実行させる攻撃','sec-web2'],
+ ['SPF','Sender Policy Framework','送信元サーバのIPアドレスをDNSと照合','sec-mailauth'],
+ ['DKIM','DomainKeys Identified Mail','メールの電子署名をDNSの公開鍵で検証','sec-mailauth'],
+ ['DMARC','Domain-based Message Authentication, Reporting and Conformance','SPF・DKIM失敗時の扱いの方針','sec-mailauth'],
+ ['S/MIME','Secure/Multipurpose Internet Mail Extensions','メールの暗号化と電子署名','sec-mailauth'],
+ ['TLS','Transport Layer Security','通信を暗号化する仕組み','sec-tls'],
+ ['HTTPS','HTTP over TLS','TLSで暗号化したHTTP','sec-tls'],
+ ['電子証明書','デジタル証明書','公開鍵の持ち主を認証局が証明するもの','sec-tls'],
+ ['PKI','Public Key Infrastructure','公開鍵基盤。証明書で公開鍵の信頼を保つ仕組み','sec-tls'],
+ ['IDS','Intrusion Detection System','侵入検知システム(通知)','sec-detect'],
+ ['IPS','Intrusion Prevention System','侵入防止システム(遮断)','sec-detect'],
+ ['SIEM','Security Information and Event Management','ログを集めて関連分析する仕組み','sec-detect'],
+ ['EDR','Endpoint Detection and Response','PCなど端末の不審な動きを検知・対応','sec-detect'],
+ ['ゼロトラスト','','社内外を区別せず毎回確認する考え方','sec-zero'],
+ ['MDM','Mobile Device Management','会社の端末を一元管理する仕組み','sec-zero'],
+ ['BYOD','Bring Your Own Device','私物端末の業務利用','sec-zero'],
+ ['不正のトライアングル','','動機・機会・正当化がそろうと不正が起きる','sec-insider'],
+ ['委託先管理','','委託先のセキュリティ対策を契約と確認で管理する','sec-insider'],
+ ['共連れ','','認証した人の後ろについて入ること','sec-physical'],
+ ['アンチパスバック','','入室記録がないと退室できない仕組み','sec-physical'],
+ ['クリアデスク','','離席時に机の上に書類を残さない','sec-physical'],
+ ['クリアスクリーン','','離席時に画面をロックする','sec-physical'],
+ ['ソーシャルエンジニアリング','','人の心理のすきを突いて情報を盗む手口','sec-social'],
+ ['ショルダーハッキング','','肩越しに画面や入力をのぞき見る','sec-social'],
+ ['トラッシング','','ゴミ箱をあさって情報を得る','sec-social'],
+ ['脆弱性','ぜいじゃくせい','ソフトウェアやシステムの弱点','sec-vuln'],
+ ['ゼロデイ攻撃','','修正プログラム公開前の脆弱性を狙う攻撃','sec-vuln'],
+ ['パッチ','修正プログラム','脆弱性や不具合を直すプログラム','sec-vuln'],
+ ['ペネトレーションテスト','侵入テスト','実際に攻撃を試みて弱点を調べる','sec-vuln'],
+ ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
+ ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],list:['ds-list','ds-listop','syn-class'],sec:['sec-cia','sec-incident','sec-access']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
 
 
 /* ---- ずかん view ---- */
@@ -1940,13 +2155,19 @@ function viewZukan(focus){
 }
 function viewYougo(){
  stopTimer();keyHandler=null;ctrl.innerHTML='';
- let h=topbar('用語辞典','科目Bの用語 '+GLOSSB.length+'語')+'<div class="wrap"><input class="zsearch" id="gq" type="search" placeholder="🔍 用語・略語で探す"><div id="glist"></div></div>';
+ const isAbbr=t=>/^[A-Z][A-Za-z0-9\/\-]*$/.test(t[0])&&/[A-Z].*[A-Z]|^[A-Z]{2}/.test(t[0]);
+ let mode='all';
+ let h=topbar('用語辞典','科目Bの用語 '+GLOSSB.length+'語')+'<div class="wrap"><input class="zsearch" id="gq" type="search" placeholder="🔍 用語・略語で探す(例：SPF、ヒープ)"><div class="zchips">'+[['all','すべて'],['abbr','略語だけ']].concat(ZCATS).map(k=>'<button class="zchip'+(k[0]==='all'?' on':'')+'" data-m="'+k[0]+'">'+k[1]+'</button>').join('')+'</div><div id="glist"></div></div>';
  app.innerHTML=h;
- const draw=q=>{q=(q||'').trim().toLowerCase();let out='';
-  ZCATS.forEach(k=>{const g=GLOSSB.filter(t=>Z.find(z=>z.id===t[3]).cat===k[0]&&(!q||(t[0]+t[1]+t[2]).toLowerCase().includes(q)));
-   if(g.length)out+='<h2 class="zh">'+k[1]+'</h2><div class="glist">'+g.map(t=>'<button class="gi" onclick="go(\'z-'+t[3]+'\')"><b>'+esc(t[0])+'</b>'+(t[1]?'<small>'+esc(t[1])+'</small>':'')+'<span>'+esc(t[2])+'</span><i>図解 →</i></button>').join('')+'</div>'});
-  document.getElementById('glist').innerHTML=out||'<div class="empty-note">見つかりませんでした。</div>'};
- draw('');document.getElementById('gq').oninput=e=>draw(e.target.value);
+ const draw=()=>{const q=(document.getElementById('gq').value||'').trim().toLowerCase();let out='';
+  const pass=t=>(!q||(t[0]+t[1]+t[2]).toLowerCase().includes(q))&&(mode==='all'||(mode==='abbr'?isAbbr(t):Z.find(z=>z.id===t[3]).cat===mode));
+  if(mode==='abbr'){const g=GLOSSB.filter(pass).sort((a,b)=>a[0].localeCompare(b[0]));
+   out=g.length?'<div class="glist">'+g.map(t=>'<button class="gi abbr" onclick="go(\'z-'+t[3]+'\')"><b>'+esc(t[0])+'</b><small>'+esc(t[1]||'')+'</small><span>'+esc(t[2])+'</span><i>図へ</i></button>').join('')+'</div>':''}
+  else ZCATS.forEach(k=>{const g=GLOSSB.filter(t=>Z.find(z=>z.id===t[3]).cat===k[0]&&pass(t));
+   if(g.length)out+='<h2 class="zh">'+k[1]+'</h2><div class="glist">'+g.map(t=>'<button class="gi'+(isAbbr(t)?' abbr':'')+'" onclick="go(\'z-'+t[3]+'\')"><b>'+esc(t[0])+'</b>'+(t[1]?'<small>'+esc(t[1])+'</small>':'')+'<span>'+esc(t[2])+'</span><i>図へ</i></button>').join('')+'</div>'});
+  document.getElementById('glist').innerHTML=out||'<div class="empty-note">見つかりませんでした。別の言葉で探してみてください。</div>'};
+ draw();document.getElementById('gq').oninput=draw;
+ app.querySelectorAll('.zchip').forEach(b=>b.onclick=()=>{mode=b.dataset.m;app.querySelectorAll('.zchip').forEach(x=>x.classList.toggle('on',x===b));draw()});
 }
 
 /* ---- 解説に出てきた用語を図で ---- */
@@ -1959,7 +2180,7 @@ function termList(){if(TERM_LIST)return TERM_LIST;const L=[];
  TERM_EXTRA.forEach(t=>L.push([t[0],t[1],.8]));
  [['戻り値','syn-func'],['return','syn-func'],['引数','syn-func'],['手続き','syn-func']].forEach(t=>L.push([t[0],t[1],.45]));
  return TERM_LIST=L.sort((a,b)=>b[0].length-a[0].length)}
-const QFIG={'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
+const QFIG={'d-18':['sec-risk'],'d-19':['sec-mailauth'],'d-20':['sec-web2','sec-xss'],'d-21':['sec-detect','sec-network'],'d-22':['syn-arrarr','syn-2d'],'d-23':['al-strsearch'],'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
 function termCards(q,lessonId){
  if(QFIG[q.id])return QFIG[q.id].map(id=>({id}));
  const text=[q.q,q.e].concat(q.c).join('\n');const code=q.code||'';const score={};const isSec=q.cat==='sec';
@@ -2028,6 +2249,7 @@ function viewHome(){
   '<button class="tool" onclick="go(\'drill\')"><span class="ti">🎯</span><b>実戦ドリル</b><small>全問からランダムに10問</small></button>'+
   '<button class="tool'+(nw?' alert':'')+'" onclick="go(\'review\')"><span class="ti">🔁</span><b>復習</b><small>'+(nw?'間違えた問題が '+nw+'問':'間違えた問題はありません')+'</small></button></div></section>';
  h+='<section class="sec"><h2 class="sh">調べる</h2><div class="tools">'+
+  '<button class="tool main" onclick="go(\'guide\')"><span class="ti">🧭</span><b>解き方ガイド</b><small>読む順番・穴埋めのコツ・ワナ集</small></button>'+
   '<button class="tool" onclick="go(\'zukan\')"><span class="ti">📚</span><b>図解ずかん</b><small>'+Z.length+'枚の図で知識を整理</small></button>'+
   '<button class="tool" onclick="go(\'yougo\')"><span class="ti">🔤</span><b>用語辞典</b><small>'+GLOSSB.length+'語。タップで図へ</small></button>'+
   '<button class="tool" onclick="go(\'cheat\')"><span class="ti">📘</span><b>早見表</b><small>擬似言語の書き方</small></button></div></section>';
@@ -2379,12 +2601,53 @@ function finishMock(M,timeup){
  ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb" style="flex:1" onclick="go(\'review\')">間違えた問題を復習</button><button class="cb main" onclick="go(\'moshi\')">もう一度</button></div></div>';
 }
 
+/* ---- 解き方ガイド ---- */
+function viewGuide(){
+ stopTimer();keyHandler=null;ctrl.innerHTML='';
+ const zl=(id,t)=>'<button class="glink" onclick="go(\'z-'+id+'\')">'+t+'</button>';
+ let h=topbar('解き方ガイド','科目Bで点を取るための読み方・解き方')+'<div class="wrap guide">';
+ h+='<section class="gsec"><h2>時間の使い方</h2><p>100分で20問。セキュリティを短めに解いて、アルゴリズムに時間を回すのがおすすめです(目安)。</p>'+
+  SV(96,rc(10,20,252,34,CV.accS,CV.acc,4)+tx(136,42,'アルゴリズム 16問 約84分(1問5分強)',{s:11,w:700})+rc(262,20,52,34,CV.ambS,CV.amb,4)+tx(288,36,'セキュ',{s:9,w:700})+tx(288,48,'約12分',{s:9})+rc(314,20,18,34,CV.bg,CV.line,4)+
+   tx(10,72,'0分',{s:9,a:'start',c:CV.mute})+tx(332,72,'100分',{s:9,a:'end',c:CV.mute})+tx(323,88,'見直し',{s:9,c:CV.mute}))+
+  '<ul><li>1問に10分以上かけない。迷ったら印を付けて次へ進み、最後に戻る</li><li>セキュリティは知識と常識で解ける問題が多く、短時間で確実に取りやすい</li><li>アプリの '+'<button class="glink" onclick="go(\'moshi\')">模擬試験</button>'+' で、ペース感覚をつかんでおく</li></ul></section>';
+ h+='<section class="gsec"><h2>問題文を読む順番</h2><ol class="gsteps">'+
+  '<li><b>まず最後の「問い」を読む</b><span>何を答えればよいか(値・穴埋め・正しい説明)を先に知ると、読むべき所がしぼれる</span></li>'+
+  '<li><b>プログラムの説明文を読む</b><span>何をするプログラムか、引数と戻り値は何かを確認。説明文がいちばん大きなヒント</span></li>'+
+  '<li><b>表や図、実行例を見る</b><span>「例えば {3, 1, 2} を渡すと…」のような例は、そのままトレースに使える</span></li>'+
+  '<li><b>プログラムを読む</b><span>穴の位置を意識しながら、変数の役割(合計・位置・数え上げ…)に名前を付けて読む</span></li></ol></section>';
+ h+='<section class="gsec"><h2>穴埋め問題の解き方</h2><p>頭の中で考えるより、<b>小さな例で選択肢を試す</b>ほうが速くて確実です。</p>'+
+  SV(130,bx(6,14,96,40,'① 小さい例',{s:11,f:CV.accS,e:CV.acc})+tx(54,70,'要素数2〜3個',{s:9,c:CV.mute})+ar('M104,34 L120,34',CV.acc)+
+   bx(122,14,96,40,'② 選択肢を入れて',{s:10,f:CV.tile})+tx(170,70,'トレースする',{s:9,c:CV.mute})+ar('M220,34 L236,34',CV.acc)+
+   bx(238,14,96,40,'③ 期待どおり？',{s:11,f:CV.ambS,e:CV.amb})+tx(286,70,'説明文の結果と比べる',{s:9,c:CV.mute})+
+   tx(170,100,'合わない選択肢を消していく(消去法)',{s:12,w:700,c:CV.ok})+tx(170,120,'例：合計を求める関数なら a = {2, 5} で答えが 7 になるか',{s:10,c:CV.mute}))+
+  '<ul><li>例は「境目」がわかるものを選ぶ(要素数1、同じ値が並ぶ、0 を含む など)</li><li>選択肢どうしの「違い」(+1 の有無、< と ≤ など)に注目すると、試す箇所が少なくて済む</li><li>'+zl('syn-trace','トレース表の書き方')+' を使って値を書きながら進める</li></ul></section>';
+ h+='<section class="gsec"><h2>よくあるワナ チェックリスト</h2><div class="traps">'+[
+  ['要素番号は 1 から','a[1] が先頭。0 から数えると全部ずれる','syn-array'],
+  ['ループが終わった後の値','while (n ≤ 4) が終わると n は 5','syn-loop'],
+  ['< と ≤ の違い','1回多い・少ないの原因。境目の値で確かめる','ts-boundary'],
+  ['代入の向き','「max ← a[i]」と「a[i] ← max」は別物','syn-var'],
+  ['値を入れ替える順番','tmp に退避しないと値が消える','al-bubble'],
+  ['and と or','and は両方真、or はどちらか真。not は反転','syn-logic'],
+  ['÷ の商は切り捨て','7 ÷ 2 の商 = 3','syn-arith'],
+  ['elseif は最初の1つだけ','上から見て、最初に真になった所だけ実行','syn-if'],
+  ['return で即終了','return の後の行は実行されない','syn-func'],
+  ['大域変数は値が残る','関数を呼ぶたびに前の値を引き継ぐ','syn-scope'],
+  ['[i, j] と [i][j]','二次元配列と配列の配列は書き方が違う','syn-arrarr'],
+  ['リストのつなぎ替えの順番','新しい要素の next を先に設定する','ds-listop']
+ ].map(t=>'<button class="trapi" onclick="go(\'z-'+t[2]+'\')"><b>'+esc(t[0])+'</b><span>'+esc(t[1])+'</span></button>').join('')+'</div></section>';
+ h+='<section class="gsec"><h2>セキュリティ問題の解き方</h2>'+
+  SV(110,rc(6,8,160,94,CV.okSoft,CV.ok,10)+tx(86,28,'選ばれやすい',{s:12,w:900,c:CV.ok})+['決められた窓口に報告','被害の拡大を止める','必要最小限の権限','既知の連絡先で確認'].map((t,i)=>tx(86,48+i*15,'○ '+t,{s:10})).join('')+
+   rc(174,8,160,94,CV.ngSoft,CV.ng,10)+tx(254,28,'選ばれにくい',{s:12,w:900,c:CV.ng})+['自分だけで判断・処理','再起動・削除で証拠が消える','全員に強い権限','メールに返信して確認'].map((t,i)=>tx(254,48+i*15,'✕ '+t,{s:10})).join(''))+
+  '<ul><li>問題文にある「社内規程」「方針」などの条件を必ず拾う。一般論より問題文の条件が優先</li><li>「誰が」「いつ」「何を守るか」を整理してから選択肢を見る</li><li>知識が必要な用語は '+'<button class="glink" onclick="go(\'zukan\')">図解ずかん</button>'+' のセキュリティでまとめて確認</li></ul></section>';
+ h+='</div>';app.innerHTML=h;
+}
+
 /* ---- router ---- */
 function go(h){if(location.hash==='#'+h)route();else location.hash=h}
 function route(){
  stopTimer();stopMock();keyHandler=null;window.scrollTo(0,0);
  const h=(location.hash||'').slice(1)||'home';
- const TABMAP={home:'home',zukan:'zukan',yougo:'zukan',cheat:'zukan',moshi:'moshi',kiroku:'kiroku'};
+ const TABMAP={home:'home',zukan:'zukan',yougo:'zukan',cheat:'zukan',guide:'zukan',moshi:'moshi',kiroku:'kiroku'};
  setTabs(h.startsWith('z-')?'zukan':TABMAP[h]!==undefined?TABMAP[h]:(LESSONS[h]||h.startsWith('quiz-')||['drill','review','daily'].includes(h)?null:'home'));
  if(LESSONS[h])return viewLesson(h);
  if(h.startsWith('quiz-')&&LESSONS[h.slice(5)]){const id=h.slice(5);const l=LESSONS[id];return runQuiz(l.quiz,{title:l.title,small:'確認問題',lessonId:id,back:id})}
@@ -2392,6 +2655,7 @@ function route(){
  if(h==='review')return runQuiz(shuffle(P.wrong.filter(id=>BANK[id]).map(id=>BANK[id])),{title:'復習',small:'間違えた問題'});
  if(h==='cheat')return viewCheat();
  if(h==='kiroku')return viewKiroku();
+ if(h==='guide')return viewGuide();
  if(h==='moshi')return viewMoshiStart();
  if(h==='daily'){const q=dailyQ();return runQuiz([q],{title:'今日の1問',small:dkey().replace(/-/g,'/')})}
  if(h==='zukan')return viewZukan();
