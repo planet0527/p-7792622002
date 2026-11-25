@@ -28,7 +28,7 @@
 <title>科目B、ゼロから。｜基本情報技術者試験 科目B対策アプリ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=M+PLUS+Rounded+1c:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f7f4ee;--card:#fffdf8;--ink:#1f1d1a;--mute:#6f6a60;--line:#e4ddd0;
@@ -362,6 +362,169 @@ details.card{padding:10px 14px}
 .tbody .zfig{margin-bottom:8px}
 .tbody .zpoint{font-size:14.5px}
 .tmore summary{font-size:13px;font-weight:700;color:var(--acc);cursor:pointer;margin:4px 0}
+/* ===================== theme: トレースノート ===================== */
+:root{
+  --bg:#f1f4f7;--grid:#e2e8ee;--card:#ffffff;--ink:#1a2438;--mute:#5d6878;--line:#d5dce4;
+  --acc:#2348c4;--accSoft:#e4eafb;--amb:#8a6200;--ambSoft:#ffe866;--hl:#ffe55c;
+  --ok:#13814f;--okSoft:#ddf3e6;--ng:#cf2a3c;--ngSoft:#fde4e7;
+  --tile:#ffffff;--tileSh:#c4cdd8;--code:#17213a;--codeInk:#e7ecf5;--codeCur:rgba(255,229,92,.14);
+  --fd:"M PLUS Rounded 1c","Zen Kaku Gothic New",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#101726;--grid:#18223a;--card:#172036;--ink:#e8edf7;--mute:#9aa6bb;--line:#2a3652;
+  --acc:#8ea7ff;--accSoft:#1e2b52;--amb:#ffd84d;--ambSoft:#4a3f10;--hl:#ffd84d;
+  --ok:#5fd39a;--okSoft:#123526;--ng:#ff7b88;--ngSoft:#3d1820;
+  --tile:#1d2842;--tileSh:#0a0f1b;--code:#0c1222;--codeCur:rgba(255,216,77,.13);
+}}
+html,body{background-color:var(--bg)}
+body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;background-attachment:fixed;font-size:15.5px}
+h1,h2,h3,.top .tt b,.result .big,.ks b,.fact b,.nextup h2,.zc h3,.qtext{font-family:var(--fd)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.wrap{max-width:720px}
+@media (min-width:860px){.wrap{max-width:980px}}
+
+/* buttons */
+.btn{border-radius:12px;background:var(--acc);box-shadow:0 3px 0 color-mix(in srgb,var(--acc) 55%,#000)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--acc) 55%,#000)}
+.btn.ghost{background:var(--card);box-shadow:0 2px 0 var(--line)}
+.btn.amb{background:var(--hl);color:#2a2200;box-shadow:0 3px 0 #b89a17}
+.btn.big{width:100%;padding:15px 18px;font-size:16px}
+
+/* top bar */
+.top{background:color-mix(in srgb,var(--bg) 90%,transparent)}
+.top .tt small{letter-spacing:0;font-size:11.5px;color:var(--mute);font-weight:700}
+.top .tt b{font-size:17px;font-weight:800}
+.back{border-radius:12px;background:var(--card)}
+
+/* ---------- home ---------- */
+.home .hero{padding:18px 2px 0}
+.home .sub0{margin:0;font-size:13px;font-weight:700;color:var(--acc)}
+.home h1{font-size:34px;font-weight:800;margin:2px 0 6px;line-height:1.2;letter-spacing:.01em}
+.home .lead{margin:0;font-size:14.5px;color:var(--mute);line-height:1.7;max-width:34em}
+.hero-cubes{max-width:330px!important;margin:12px 0 4px!important}
+.nextup{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:16px 16px 16px;margin:14px 0 10px;box-shadow:4px 4px 0 var(--ink)}
+.nu-top{display:flex;justify-content:space-between;align-items:center}
+.nu-tag{font-size:13px;font-weight:800;background:var(--hl);color:#2a2200;padding:1px 10px;border-radius:4px;transform:rotate(-1.5deg);display:inline-block}
+.nu-prog{font-size:12.5px;color:var(--mute);font-weight:700}
+.nu-bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 12px}.nu-bar i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.nu-unit{margin:0;font-size:12.5px;color:var(--mute);font-weight:700}
+.nextup h2{font-size:23px;font-weight:800;margin:2px 0 4px;line-height:1.35}
+.nu-sub{margin:0 0 14px;color:var(--mute);font-size:14px}
+.nextup.welcome h2{font-size:20px}.nextup.welcome>p{color:var(--mute);font-size:14px;margin:2px 0 12px}
+.wopts button{background:var(--bg);border-radius:12px;box-shadow:none;border:1.5px solid var(--line)}
+.wopts button:active{border-color:var(--acc)}
+.savest{display:flex;justify-content:space-between;gap:8px;align-items:center;background:transparent;color:var(--ok);padding:4px 2px;font-size:12px}
+.savest b{color:var(--ng);font-size:12.5px;white-space:nowrap}
+.daily{border-radius:16px;border:1.5px solid var(--line);background:var(--card);margin:10px 0 0;position:relative;overflow:hidden;padding:12px 14px 12px 18px}
+.daily::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--hl)}
+.daily .dl{color:var(--amb);font-weight:800}.daily.done{background:var(--card);border-color:var(--line)}.daily.done::before{background:var(--ok)}
+.sec{margin:30px 0 0}
+.sh{font-size:18px;font-weight:800;margin:0 0 10px;color:var(--ink);letter-spacing:0}
+/* learning path */
+.path{list-style:none;margin:0;padding:0 0 0 2px;position:relative}
+.path::before{content:"";position:absolute;left:19px;top:8px;bottom:8px;width:3px;background:var(--line);border-radius:3px}
+.pu{position:relative;padding:14px 0 6px 46px}
+.pu-name{font-size:13px;font-weight:800;color:var(--mute);background:var(--bg);padding:0 4px}
+.pn{position:relative;margin:4px 0}
+.pn button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;padding:6px 6px 6px 0;border-radius:12px}
+.pn button:active{background:var(--card)}
+.pn .dot{position:relative;z-index:1;flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--card);border:2.5px solid var(--line);color:var(--mute);font-family:var(--fd)}
+.pn.done .dot{background:var(--acc);border-color:var(--acc);color:#fff}
+.pn.now .dot{background:var(--hl);border-color:var(--ink);color:#2a2200;box-shadow:0 0 0 5px color-mix(in srgb,var(--hl) 45%,transparent)}
+.pn .t{flex:1;min-width:0;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px}
+.pn.now .t{border:2px solid var(--ink)}
+.pn .t b{display:block;font-size:15px;font-weight:700}
+.pn .t small{display:block;font-size:12px;color:var(--mute);line-height:1.45}
+.pn .sc{font-size:12px;color:var(--mute);font-weight:700;white-space:nowrap}
+.pn .here{font-size:11.5px;font-weight:800;background:var(--hl);color:#2a2200;border-radius:4px;padding:1px 6px;white-space:nowrap}
+/* tools */
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0}
+.tool{text-align:left;padding:12px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);box-shadow:none}
+.tool .ti{display:block;font-size:22px;line-height:1.2;margin-bottom:4px}
+.tool b{font-size:14.5px;font-weight:800}
+.tool small{display:block;font-size:11.5px;line-height:1.45;color:var(--mute)}
+.tool.main{border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.tool.alert small{color:var(--ng);font-weight:700}
+@media (max-width:420px){.tools{grid-template-columns:1fr 1fr}.tools .tool.main{grid-column:1/-1}}
+.facts{margin:0}.fact{border-radius:12px;background:var(--card)}.fact b{font-weight:800}
+.about{border-radius:16px}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:7;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(10px);border-top:1.5px solid var(--line);padding:4px 8px calc(4px + env(safe-area-inset-bottom))}
+.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 0;font-size:11px;font-weight:700;color:var(--mute);border-radius:12px}
+.tabs svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.tabs button[aria-current="page"]{color:var(--ink)}
+.tabs button[aria-current="page"] svg{background:var(--hl);border-radius:8px;padding:1px 6px;width:35px;color:#2a2200}
+body.has-tabs .wrap{padding-bottom:110px}
+
+/* ---------- lesson ---------- */
+.phase{position:sticky;top:61px;z-index:4;display:flex;gap:4px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);margin:0 -16px;padding:8px 16px;border-bottom:1px solid var(--line)}
+.phase a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--ink);text-decoration:none;background:var(--card);border:1.5px solid var(--line);border-radius:99px;padding:5px 4px;cursor:pointer;white-space:nowrap}
+.phase a i{font-style:normal;width:18px;height:18px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:11px;font-family:var(--fd)}
+.phase a[data-q] {background:var(--hl);border-color:var(--ink);color:#2a2200}
+.phase a[data-q] i{background:#2a2200;color:var(--hl)}
+.diagcard{border-radius:18px;border:1.5px solid var(--line)}
+.diagcap{color:var(--ink);font-weight:700;font-size:13.5px}
+details.card{border-radius:14px}
+.trap{background:color-mix(in srgb,var(--hl) 30%,var(--card));border-left:4px solid var(--hl);border-radius:8px}
+.trap b{color:var(--ink)}
+.vlabel{letter-spacing:0;font-size:12.5px;color:var(--ink);font-weight:800}
+.codebox{border-radius:14px;box-shadow:0 0 0 1.5px var(--ink)}
+.ln.cur{background:var(--codeCur);border-left-color:var(--hl)}.ln.cur .no{color:var(--hl)}
+.ln.prev{background:rgba(255,255,255,.035)}
+.k{color:#8fc3ff}.ty{color:#d0a8ff}.nm{color:#ffd36b}.st{color:#a8e38f}.op{color:#ff9a8a}.pt{color:#8ee0d4}
+.vis{border-radius:14px;border:1.5px solid var(--line)}
+.msg{border-left:5px solid var(--hl);border-radius:10px;font-size:14.5px}
+.msg .sn{letter-spacing:0;font-size:11.5px;color:var(--mute)}
+.cond{border-radius:10px}
+.cell.hl,.var.chg .box3{--face:#fff4ad;--edge:var(--ink);--side:#c9ac1d;background:var(--hl)!important;color:#2a2200}
+@media (prefers-color-scheme:dark){.cell.hl,.var.chg .box3{--face:#fff1a0;--side:#9c8414}}
+.cell.done{--face:var(--accSoft);--edge:var(--acc);--side:color-mix(in srgb,var(--acc) 60%,#000)}
+.tt tr.now{background:color-mix(in srgb,var(--hl) 55%,var(--card))}
+.ttwrap{border-radius:12px}
+.ctrl{background:color-mix(in srgb,var(--card) 94%,transparent);border-top:1.5px solid var(--line)}
+.cb{border-radius:12px}
+.cb.main{background:var(--acc);border-color:var(--acc)}
+.cb.amb{background:var(--hl);border-color:var(--ink);color:#2a2200}
+.cb.on{background:var(--hl);border-color:var(--ink)}
+.rel button{border-radius:99px;background:var(--card)}
+
+/* ---------- quiz ---------- */
+.qtext{font-size:18px;font-weight:800;line-height:1.6}
+.qcode{border-radius:12px;box-shadow:0 0 0 1.5px var(--ink)}
+.ch{border-radius:12px;box-shadow:0 2px 0 var(--line);font-size:15px}
+.ch .lb{border-radius:6px;font-family:var(--fd)}
+.ch.sel{border-color:var(--acc);background:var(--accSoft)}
+.dots i.now{background:var(--ink)}
+.exp{border-radius:14px;border:1.5px solid var(--line);padding:14px}
+.exp .v{font-family:var(--fd);font-size:18px}
+.exp .v.ok::before{content:"";}
+.tfig{border-radius:14px;border:2px solid var(--acc)}
+.tfh{font-size:13.5px}
+.tchip.on{background:var(--acc)}
+.result .rlabel{font-size:14px;font-weight:800;color:var(--mute)}
+.result .big{font-weight:800}
+.mopt{border-radius:16px;box-shadow:none}.mopt.big{border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.mtop b{font-family:"JetBrains Mono",monospace}
+.pal button.now{outline-color:var(--ink)}
+
+/* ---------- zukan ---------- */
+.zc{border-radius:18px;border:1.5px solid var(--line)}
+.zc h3{font-weight:800}
+.zpoint{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--hl) 75%,transparent) 58%)}
+.zfig{background:var(--bg);border-radius:12px}
+.zchip.on{background:var(--ink)}
+.zh{letter-spacing:0;font-size:17px;color:var(--ink);font-weight:800;font-family:var(--fd)}
+.gi{border-radius:12px}
+.ks{border-radius:12px}.ks b{font-weight:800}
+.zsearch{border-radius:12px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.zpoint{background:none;border-left:5px solid var(--hl);padding:2px 0 2px 10px;border-radius:2px}
+@media (prefers-color-scheme:dark){.btn,.cb.main,.tchip.on,.zbanner button{color:#0c1222}.btn.ghost{color:var(--ink)}.pn.done .dot{color:#0c1222}}
+.ztocw{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;margin:2px 0 4px}
+.ztocw summary{font-weight:800;font-size:14px;cursor:pointer}
+.ztocw .ztoc{margin-top:8px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -1763,7 +1926,7 @@ function viewZukan(focus){
  let h=topbar('図解ずかん','科目Bの知識を全部、図で')+'<div class="wrap">';
  h+='<input class="zsearch" id="zq" type="search" placeholder="🔍 用語で探す(例：ヒープ、署名、mod)" value="'+esc(ZF.q)+'">';
  h+='<div class="zchips">'+[['all','すべて']].concat(ZCATS).map(k=>'<button class="zchip'+(ZF.cat===k[0]?' on':'')+'" data-c="'+k[0]+'">'+k[1]+' <small>'+(k[0]==='all'?Z.length:Z.filter(z=>z.cat===k[0]).length)+'</small></button>').join('')+'</div>';
- h+='<div class="ztoc" id="ztoc"></div><div id="zlist"></div></div>';
+ h+='<details class="ztocw"><summary>目次から選ぶ</summary><div class="ztoc" id="ztoc"></div></details><div id="zlist"></div></div>';
  app.innerHTML=h;
  const draw=()=>{const q=ZF.q.trim().toLowerCase();
   const list=Z.filter(c=>(ZF.cat==='all'||c.cat===ZF.cat)&&(!q||(c.t+c.p+(c.an||'')+c.b.join('')+(c.tip||'')).toLowerCase().includes(q)||GLOSSB.some(g=>g[3]===c.id&&(g[0]+g[1]).toLowerCase().includes(q))));
@@ -1829,68 +1992,87 @@ function viewHome(){
  ctrl.innerHTML='';
  const done=ORDER.filter(id=>P.done[id]).length;
  const next=ORDER.find(id=>!P.done[id]);
- let h='<div class="wrap"><div class="hero"><div class="kicker">基本情報技術者試験 科目B</div><h1>科目B、ゼロから。</h1><p>擬似言語の読み方から、1行ずつ動きを見て覚える。1レッスン5分。</p>';
- h+=SV(96,[3,1,4,1,5,9].map((v,i)=>tx(38+i*50,16,'['+(i+1)+']',{s:10,m:true,c:i===2?CV.amb:CV.mute})+cb(22+i*50,34,v,i===2?AMB:i<2?ACC:{})).join('')+tx(39+2*50+60,90,'',{})+ar('M139,90 L139,78',CV.amb)+tx(150,92,'i = 3',{s:12,w:700,m:true,a:'start',c:CV.amb})).replace('class="diag"','class="diag" style="margin:14px 0 0;max-width:340px"');
- h+='<div class="prog"><div class="bar"><i style="width:'+(done/ORDER.length*100)+'%"></i></div><b>'+done+' / '+ORDER.length+' 完了</b></div>';
- h+=STORE_OK?'<button class="savest" onclick="go(\'kiroku\')">💾 記録はこのスマホに自動保存'+(P.updated?'(最終 '+fmtTime(P.updated)+')':'')+(streak()?'　🔥 '+streak()+'日連続':'')+' ›</button>':'<div class="savest ng">⚠ この閲覧モード(プライベートブラウズ等)では記録が保存されません</div>';
- h+='<div class="cta">'+(next?'<button class="btn" onclick="go(\''+next+'\')">'+(done?'続きから：':'はじめる：')+esc(LESSONS[next].title)+' →</button>':'<button class="btn amb" onclick="go(\'drill\')">全部クリア！ ドリルで仕上げ →</button>')+'</div></div>';
+ const unitOf=id=>UNITS.find(u=>u.ids.includes(id));
+ let h='<div class="wrap home"><header class="hero"><p class="sub0">基本情報技術者試験 科目B</p><h1>科目B、ゼロから。</h1><p class="lead">擬似言語を1行ずつ動かしながら、トレースのやり方を身につけるアプリです。1レッスン5分。</p>';
+ h+=SV(96,[3,1,4,1,5,9].map((v,i)=>tx(38+i*50,16,'['+(i+1)+']',{s:10,m:true,c:i===2?CV.amb:CV.mute})+cb(22+i*50,34,v,i===2?AMB:i<2?ACC:{})).join('')+ar('M139,90 L139,78',CV.amb)+tx(150,92,'i = 3',{s:12,w:700,m:true,a:'start',c:CV.amb})).replace('class="diag"','class="diag hero-cubes"');
+ h+='</header>';
+ // next-up panel
  if(!P.seen&&!done){
-  h+='<div class="welcome"><b>ようこそ！ どこから始めますか？</b><p>レベルに合わせて選んでください。あとから自由に移動できます。</p><div class="wopts">'+
+  h+='<section class="nextup welcome"><h2>どこから始めますか？</h2><p>今の力に合わせて選んでください。あとから自由に移動できます。</p><div class="wopts">'+
    '<button data-go="intro"><span>🌱</span><b>まったく初めて</b><small>試験の形と擬似言語の読み方から</small></button>'+
    '<button data-go="max"><span>📖</span><b>擬似言語は少し読める</b><small>定番アルゴリズムから</small></button>'+
    '<button data-go="drill"><span>🎯</span><b>力試ししたい</b><small>実戦ドリル10問から</small></button>'+
-   '<button data-go="zukan"><span>📚</span><b>知識を整理したい</b><small>図解ずかんから</small></button></div></div>';
+   '<button data-go="zukan"><span>📚</span><b>知識を整理したい</b><small>図解ずかんから</small></button></div></section>';
+ }else if(next){const l=LESSONS[next],u=unitOf(next);
+  h+='<section class="nextup"><div class="nu-top"><span class="nu-tag">つぎにやること</span><span class="nu-prog">'+done+' / '+ORDER.length+' 完了</span></div>'+
+   '<div class="nu-bar"><i style="width:'+(done/ORDER.length*100)+'%"></i></div>'+
+   '<p class="nu-unit">'+esc(u.name)+'</p><h2>'+esc(l.title)+'</h2><p class="nu-sub">'+esc(l.sub)+'</p>'+
+   '<button class="btn big" onclick="go(\''+next+'\')">'+(done?'このレッスンを始める':'最初のレッスンを始める')+'</button></section>';
+ }else{
+  h+='<section class="nextup"><div class="nu-top"><span class="nu-tag">全レッスン完了</span><span class="nu-prog">'+done+' / '+ORDER.length+'</span></div><div class="nu-bar"><i style="width:100%"></i></div><h2>仕上げは模擬試験で</h2><p class="nu-sub">1問5分のペースで解けるか、時間を計って確かめましょう。</p><button class="btn big" onclick="go(\'moshi\')">模擬試験を始める</button></section>';
  }
+ h+=STORE_OK?'<button class="savest" onclick="go(\'kiroku\')"><span>💾 記録はこのスマホに自動保存'+(P.updated?'(最終 '+fmtTime(P.updated)+')':'')+'</span>'+(streak()?'<b>🔥 '+streak()+'日連続</b>':'')+'</button>':'<div class="savest ng">⚠ この閲覧モード(プライベートブラウズ等)では記録が保存されません</div>';
  {const q=dailyQ();const doneToday=P.hist.some(x=>x.k==='今日の1問'&&dkey(new Date(x.ts))===dkey());
-  h+='<button class="daily'+(doneToday?' done':'')+'" onclick="go(\'daily\')"><span class="dl">'+(doneToday?'✓ 今日の1問 解答済み':'☀️ 今日の1問')+'</span><b>'+esc(q.q.split('\n')[0]).slice(0,46)+(q.q.length>46?'…':'')+'</b><small>'+esc(q.from)+'から ・ 1日1問ずつ変わります ›</small></button>';}
- h+='<div class="zbanner"><button onclick="go(\'zukan\')"><b>📚 図解ずかん</b><span>'+Z.length+'枚の図で、記法・データ構造・アルゴリズム・セキュリティを全部まとめ</span></button><button onclick="go(\'yougo\')"><b>🔤 用語辞典</b><span>'+GLOSSB.length+'語。タップで図解へ</span></button></div>';
- h+='<div class="facts"><div class="fact"><b>20問</b><span>全問必須</span></div><div class="fact"><b>100分</b><span>1問 約5分</span></div><div class="fact"><b>16＋4</b><span>アルゴ＋セキュリティ</span></div><div class="fact"><b>600点</b><span>／1000で合格</span></div></div>';
+  h+='<button class="daily'+(doneToday?' done':'')+'" onclick="go(\'daily\')"><span class="dl">'+(doneToday?'✓ 今日の1問は解答済み':'☀️ 今日の1問')+'</span><b>'+esc(q.q.split('\n')[0]).slice(0,46)+(q.q.length>46?'…':'')+'</b><small>'+esc(q.from)+'から出題。毎日1問ずつ変わります</small></button>';}
+ // path
+ h+='<section class="sec"><h2 class="sh">学習の道のり</h2><ol class="path">';
  UNITS.forEach(u=>{
-  h+='<div class="unit"><h2>'+u.name+'</h2><div class="list">';
-  u.ids.forEach(id=>{const l=LESSONS[id];const n=ORDER.indexOf(id);const b=P.best[id];
-   h+='<button class="item'+(P.done[id]?' done':'')+'" onclick="go(\''+id+'\')"><span class="num">'+(P.done[id]?'✓':n)+'</span><span class="t"><b>'+esc(l.title)+'</b><small>'+esc(l.sub)+'</small></span>'+(b!=null?'<span class="sc">'+b+'/'+l.quiz.length+'</span>':'')+'</button>';});
-  h+='</div></div>';
+  h+='<li class="pu"><span class="pu-name">'+esc(u.name)+'</span></li>';
+  u.ids.forEach(id=>{const l=LESSONS[id];const n=ORDER.indexOf(id);const b=P.best[id];const isNext=id===next&&P.seen;
+   h+='<li class="pn'+(P.done[id]?' done':'')+(isNext?' now':'')+'"><button onclick="go(\''+id+'\')"><span class="dot">'+(P.done[id]?'✓':n)+'</span><span class="t"><b>'+esc(l.title)+'</b><small>'+esc(l.sub)+'</small></span>'+(isNext?'<span class="here">いまここ</span>':b!=null?'<span class="sc">'+b+'/'+l.quiz.length+'</span>':'')+'</button></li>';});
  });
+ h+='</ol></section>';
  const nw=P.wrong.filter(id=>BANK[id]).length;
- h+='<div class="unit"><h2>練習・まとめ</h2><div class="tools">';
- h+='<button class="tool hl" onclick="go(\'moshi\')"><b>⏱ 模擬試験</b><small>時間を計って本番練習</small></button>';
- h+='<button class="tool" onclick="go(\'drill\')"><b>🎯 実戦ドリル</b><small>全問からランダム10問</small></button>';
- h+='<button class="tool" onclick="go(\'review\')"><b>🔁 復習</b><small>間違えた問題 '+nw+'問</small></button>';
- h+='<button class="tool" onclick="go(\'cheat\')"><b>📘 早見表</b><small>擬似言語の記法</small></button>';
- h+='<button class="tool" onclick="go(\'kiroku\')"><b>📈 記録</b><small>成績・バックアップ</small></button>';
- h+='</div></div>';
- h+='<div class="unit"><h2>このアプリについて</h2><div class="card about">'+
+ h+='<section class="sec"><h2 class="sh">練習する</h2><div class="tools">'+
+  '<button class="tool main" onclick="go(\'moshi\')"><span class="ti">⏱</span><b>模擬試験</b><small>時間を計って本番の練習</small></button>'+
+  '<button class="tool" onclick="go(\'drill\')"><span class="ti">🎯</span><b>実戦ドリル</b><small>全問からランダムに10問</small></button>'+
+  '<button class="tool'+(nw?' alert':'')+'" onclick="go(\'review\')"><span class="ti">🔁</span><b>復習</b><small>'+(nw?'間違えた問題が '+nw+'問':'間違えた問題はありません')+'</small></button></div></section>';
+ h+='<section class="sec"><h2 class="sh">調べる</h2><div class="tools">'+
+  '<button class="tool" onclick="go(\'zukan\')"><span class="ti">📚</span><b>図解ずかん</b><small>'+Z.length+'枚の図で知識を整理</small></button>'+
+  '<button class="tool" onclick="go(\'yougo\')"><span class="ti">🔤</span><b>用語辞典</b><small>'+GLOSSB.length+'語。タップで図へ</small></button>'+
+  '<button class="tool" onclick="go(\'cheat\')"><span class="ti">📘</span><b>早見表</b><small>擬似言語の書き方</small></button></div></section>';
+ h+='<section class="sec"><h2 class="sh">科目Bの基本</h2><div class="facts"><div class="fact"><b>20問</b><span>全問必須</span></div><div class="fact"><b>100分</b><span>1問 約5分</span></div><div class="fact"><b>16＋4</b><span>アルゴリズム＋セキュリティ</span></div><div class="fact"><b>600点</b><span>1000点満点で合格</span></div></div></section>';
+ h+='<section class="sec"><h2 class="sh">このアプリについて</h2><div class="card about">'+
   '<p>基本情報技術者試験 科目Bの対策用に作った、<b>非公式</b>の学習アプリです。登録やログインは不要で、だれでも無料で使えます。</p>'+
-  '<p>記録(完了したレッスン・成績・間違えた問題)は、<b>この端末のブラウザの中だけ</b>に自動保存されます。ほかの人に見られたり、送信されたりすることはありません。機種変更などのときは「📈 記録」からバックアップできます。</p>'+
+  '<p>記録(完了したレッスン・成績・間違えた問題)は、<b>この端末のブラウザの中だけ</b>に自動保存されます。ほかの人に見られたり、送信されたりすることはありません。機種変更などのときは「記録」からバックアップできます。</p>'+
   '<p>試験の形式(20問・100分など)は2026年時点の情報です。受験前に必ず<a href="https://www.ipa.go.jp/shiken/kubun/fe.html" target="_blank" rel="noopener">IPAの公式ページ</a>で最新情報を確認してください。問題はすべてこのアプリのオリジナルです。</p>'+
-  '<div class="resetrow">'+(CAN_SHARE()?'<button class="btn" id="shr">📤 このアプリを友だちに共有</button> ':'')+'<button class="btn ghost" id="rst">進み具合をリセット</button></div><div id="rstc"></div></div></div>';
+  '<div class="resetrow">'+(CAN_SHARE()?'<button class="btn" id="shr">📤 このアプリを友だちに共有</button> ':'')+'<button class="btn ghost" id="rst">進み具合をリセット</button></div><div id="rstc"></div></div></section>';
  h+='</div>';
  app.innerHTML=h;
  if(document.getElementById('shr'))document.getElementById('shr').onclick=e=>shareApp(e.currentTarget);
  app.querySelectorAll('.wopts button').forEach(b=>b.onclick=()=>{P.seen=true;save();go(b.dataset.go)});
- document.getElementById('rst').onclick=()=>{document.getElementById('rstc').innerHTML='<div class="confirm"><p>完了マーク・最高点・復習リストをすべて消します。元に戻せません。</p><button class="btn" id="rsy" style="background:var(--ng)">消す</button> <button class="btn ghost" id="rsn">やめる</button></div>';
+ document.getElementById('rst').onclick=()=>{document.getElementById('rstc').innerHTML='<div class="confirm"><p>完了マーク・最高点・復習リスト・成績の記録をすべて消します。元に戻せません。</p><button class="btn" id="rsy" style="background:var(--ng)">記録を消す</button> <button class="btn ghost" id="rsn">やめる</button></div>';
   document.getElementById('rsy').onclick=()=>{P=blankP();save();viewHome();window.scrollTo(0,0)};
   document.getElementById('rsn').onclick=()=>{document.getElementById('rstc').innerHTML=''}};
 }
+/* ---- tab bar ---- */
+const TABS=[['home','ホーム','<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>'],['zukan','ずかん','<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 8h6"/>'],['moshi','模試','<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M10 2h4"/>'],['kiroku','記録','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>']];
+function setTabs(active){let el=document.getElementById('tabs');if(!el){el=document.createElement('nav');el.id='tabs';el.className='tabs';el.setAttribute('aria-label','メニュー');document.body.appendChild(el)}
+ if(active==null){el.hidden=true;document.body.classList.remove('has-tabs');return}
+ el.hidden=false;document.body.classList.add('has-tabs');
+ const nw=P.wrong.filter(id=>BANK[id]).length;
+ el.innerHTML='<div class="in">'+TABS.map(t=>'<button'+(t[0]===active?' aria-current="page"':'')+' onclick="go(\''+t[0]+'\')"><svg viewBox="0 0 24 24">'+t[2]+'</svg>'+t[1]+'</button>').join('')+'</div>';}
 
 const STEPCACHE={};
 function viewLesson(id){
  P.seen=true;markDay();save();
  const l=LESSONS[id];const n=ORDER.indexOf(id);
  if(!l.run){ // reading lesson
-  app.innerHTML=topbar('LESSON '+n,esc(l.title))+'<div class="wrap"><div class="card prose">'+l.html+'</div>'+(L2Z[id]?'<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>':'')+'</div>';
-  ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb amb" onclick="go(\'quiz-'+id+'\')">確認問題へ('+l.quiz.length+'問) →</button></div></div>';
+  app.innerHTML=topbar('レッスン '+n,esc(l.title))+'<div class="wrap"><div class="card prose">'+l.html+'</div>'+(L2Z[id]?'<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>':'')+'</div>';
+  ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb amb" onclick="go(\'quiz-'+id+'\')">確認問題へ進む('+l.quiz.length+'問)</button></div></div>';
   return;
  }
  const steps=STEPCACHE[id]||(STEPCACHE[id]=l.run());window._arc=steps.some(t=>t.x&&t.x.arc);
  let cur=0;
- let h=topbar('LESSON '+n,esc(l.title))+'<div class="wrap">';
- if(DIAG[id])h+='<div class="card diagcard">'+DIAG[id].svg+'<p class="diagcap">'+esc(DIAG[id].cap)+'</p></div>';
+ let h=topbar('レッスン '+n+'　'+esc(UNITS.find(u=>u.ids.includes(id)).name),esc(l.title))+'<div class="wrap">'+
+  '<nav class="phase"><a href="#ph1" data-t="ph1"><i>1</i>イメージ</a><a href="#ph2" data-t="ph2"><i>2</i>1行ずつ動かす</a><a data-q="1"><i>3</i>確認問題</a></nav>';
+ if(DIAG[id])h+='<div class="card diagcard" id="ph1">'+DIAG[id].svg+'<p class="diagcap">'+esc(DIAG[id].cap)+'</p></div>';
  h+='<details class="card"'+(innerWidth>860?' open':'')+'><summary>📌 ポイントとワナ</summary><ul class="points">'+l.pts.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul><div class="trap"><b>⚠ ワナ</b>　'+esc(l.trap)+'</div></details>';
- h+='<div class="grid2"><div><div class="vlabel">擬似言語</div><div class="codebox" id="code"></div></div><div><div class="vlabel">メモリの中身</div><div class="vis" id="vis"></div><div class="vlabel" style="margin-top:12px">トレース表(紙に書くとこうなる)</div><div class="ttwrap" id="tt"></div></div></div>';
+ h+='<div class="grid2" id="ph2"><div><div class="vlabel">擬似言語</div><div class="codebox" id="code"></div></div><div><div class="vlabel">メモリの中身</div><div class="vis" id="vis"></div><div class="vlabel" style="margin-top:12px">トレース表(紙に書くとこうなる)</div><div class="ttwrap" id="tt"></div></div></div>';
  if(L2Z[id])h+='<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>';
- h+='<div class="card" style="text-align:center"><p style="margin:0 0 10px;color:var(--mute);font-size:14px">紙に変数の表を書いて、同じように追えたら合格。</p><button class="btn amb" onclick="go(\'quiz-'+id+'\')">確認問題へ('+l.quiz.length+'問) →</button></div></div>';
+ h+='<div class="card" style="text-align:center"><p style="margin:0 0 10px;color:var(--mute);font-size:14px">紙に変数の表を書いて、同じように追えたら合格。</p><button class="btn amb" onclick="go(\'quiz-'+id+'\')">確認問題へ進む('+l.quiz.length+'問)</button></div></div>';
  app.innerHTML=h;
+ app.querySelectorAll('.phase a').forEach(a=>a.onclick=e=>{e.preventDefault();if(a.dataset.q){go('quiz-'+id);return}const t=document.getElementById(a.dataset.t);if(t)window.scrollTo({top:t.getBoundingClientRect().top+scrollY-110,behavior:'smooth'})});
  ctrl.innerHTML='<div class="ctrl"><div class="in" style="flex-direction:column;gap:6px;align-items:stretch"><div class="sliderrow"><div class="stepinfo"><span id="si"></span><span>←→キーでも操作可</span></div><input type="range" class="slider" id="sl" min="0" max="'+(steps.length-1)+'" value="0"></div><div class="msg" id="msg"></div><div style="display:flex;gap:8px"><button class="cb" id="b0" aria-label="最初へ">⟲</button><button class="cb" id="bp" aria-label="前へ">◀</button><button class="cb" id="bplay" aria-label="自動再生">▶︎▶︎</button><button class="cb'+(P.predict?' on':'')+'" id="bpred" aria-label="予想モード" title="予想モード">🤔</button><button class="cb main" id="bn">次の行へ ▶</button></div></div></div>';
  const ttEl=document.getElementById('tt'),codeEl=document.getElementById('code'),visEl=document.getElementById('vis'),msgEl=document.getElementById('msg'),sl=document.getElementById('sl'),si=document.getElementById('si'),bn=document.getElementById('bn'),bplay=document.getElementById('bplay');
  function draw(){
@@ -1902,7 +2084,7 @@ function viewLesson(id){
   visEl.innerHTML=renderVis(st.s,prev,st.x);ttEl.innerHTML=traceTable(steps,cur);const tw=ttEl;tw.scrollTop=tw.scrollHeight;
   msgEl.innerHTML='<span class="sn">STEP '+(cur+1)+(st.line>=0?' ・ '+(st.line+1)+'行目':'')+'</span>'+esc(st.msg);
   sl.value=cur;si.textContent=(cur+1)+' / '+steps.length;
-  if(cur===steps.length-1){bn.textContent='確認問題へ →';bn.className='cb amb'}else{bn.textContent='次の行へ ▶';bn.className='cb main'}
+  if(cur===steps.length-1){bn.textContent='確認問題へ進む';bn.className='cb amb'}else{bn.textContent='次の行へ ▶';bn.className='cb main'}
  }
  const setCur=v=>{const was=cur;cur=Math.max(0,Math.min(steps.length-1,v));draw();
   if(was===0&&cur===1){const r=codeEl.getBoundingClientRect();if(r.top>90||r.top<40)window.scrollBy({top:r.top-64-22,behavior:'smooth'})}};
@@ -2040,10 +2222,10 @@ function runQuiz(qs,{title,small,lessonId,back}){
   markDay();save();
   const nextId=lessonId?ORDER[ORDER.indexOf(lessonId)+1]:null;
   const msg=sc===qs.length?'全問正解！ この調子。':sc>=qs.length*0.6?'合格ライン。間違えた問題は「復習」に入っています。':'もう一度ステップ実行を見直すと、つかめるはず。';
-  app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="result"><div class="kicker">RESULT</div><div class="big">'+sc+' / '+qs.length+'</div><p>'+msg+'</p></div></div>';
+  app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="result"><div class="rlabel">結果</div><div class="big">'+sc+' / '+qs.length+'</div><p>'+msg+'</p></div></div>';
   let b='';
   if(lessonId&&LESSONS[lessonId].run)b+='<button class="cb" style="flex:1" onclick="go(\''+lessonId+'\')">レッスンを見直す</button>';
-  if(nextId)b+='<button class="cb main" onclick="go(\''+nextId+'\')">次へ：'+esc(LESSONS[nextId].title)+' →</button>';
+  if(nextId)b+='<button class="cb main" onclick="go(\''+nextId+'\')">次のレッスン：'+esc(LESSONS[nextId].title)+'</button>';
   else b+='<button class="cb main" onclick="go(\'home\')">ホームへ</button>';
   ctrl.innerHTML='<div class="ctrl"><div class="in">'+b+'</div></div>';
  }
@@ -2175,7 +2357,7 @@ function runMock(n,mins){
  const confirmSubmit=()=>{const un=M.ans.filter(a=>a===null).length;
   ctrl.innerHTML='<div class="ctrl"><div class="in" style="flex-direction:column;align-items:stretch;gap:6px"><div class="msg" style="min-height:0">'+(un?'<b style="color:var(--ng)">未回答が '+un+'問</b> あります。':'全問回答済みです。')+'提出して採点しますか？</div><div style="display:flex;gap:8px"><button class="cb" id="mback" style="flex:1">戻る</button><button class="cb amb" id="mgo">提出する</button></div></div></div>';
   document.getElementById('mback').onclick=render;document.getElementById('mgo').onclick=()=>{stopMock();finishMock(M,false)}};
- stopTimer();keyHandler=null;render();mockTimer=setInterval(tick,1000);
+ stopTimer();keyHandler=null;setTabs(null);render();mockTimer=setInterval(tick,1000);
 }
 function finishMock(M,timeup){
  const res=M.qs.map((q,k)=>M.ans[k]!==null&&M.opts[k][M.ans[k]].ok);
@@ -2184,9 +2366,9 @@ function finishMock(M,timeup){
  const [aO,aN]=byCat('algo'),[sO,sN]=byCat('sec');
  M.qs.forEach((q,k)=>{if(res[k])P.wrong=P.wrong.filter(x=>x!==q.id);else if(!P.wrong.includes(q.id))P.wrong.push(q.id)});
  P.mock=P.mock||{};P.mock[M.n]=Math.max(P.mock[M.n]||0,sc);
- P.hist.unshift({ts:Date.now(),t:(M.n===20?'本番模試':'ミニ模試'),k:'mock',s:sc,n:M.n});if(P.hist.length>300)P.hist.length=300;markDay();save();
+ setTabs(null);P.hist.unshift({ts:Date.now(),t:(M.n===20?'本番模試':'ミニ模試'),k:'mock',s:sc,n:M.n});if(P.hist.length>300)P.hist.length=300;markDay();save();
  const pct=sc/M.n;
- let h=topbar('模擬試験','結果')+'<div class="wrap"><div class="result">'+(timeup?'<div class="kicker" style="color:var(--ng)">TIME UP</div>':'<div class="kicker">RESULT</div>')+'<div class="big">'+sc+' / '+M.n+'</div><p>'+(pct>=.8?'すばらしい！ 本番でも十分戦えるペースです。':pct>=.6?'合格ラインの目安(6割強)に届いています。':'まずは間違えた問題のレッスンと図解を見直そう。')+'</p></div>';
+ let h=topbar('模擬試験','結果')+'<div class="wrap"><div class="result">'+(timeup?'<div class="rlabel" style="color:var(--ng)">時間切れ</div>':'<div class="rlabel">結果</div>')+'<div class="big">'+sc+' / '+M.n+'</div><p>'+(pct>=.8?'すばらしい！ 本番でも十分戦えるペースです。':pct>=.6?'合格ラインの目安(6割強)に届いています。':'まずは間違えた問題のレッスンと図解を見直そう。')+'</p></div>';
  h+='<div class="kstats"><div class="ks"><b>'+aO+'<small>/'+aN+'</small></b><span>アルゴリズム</span></div><div class="ks"><b>'+sO+'<small>/'+sN+'</small></b><span>セキュリティ</span></div><div class="ks"><b>'+used+'<small>分</small></b><span>使った時間 / '+M.mins+'分</span></div></div>';
  h+='<div class="vlabel">1問ずつの見直し(かかった時間つき。5分を超えた問題は⏱)</div>';
  M.qs.forEach((q,k)=>{const sec=Math.round(M.spent[k]/1000),o=M.opts[k],a=M.ans[k];
@@ -2202,6 +2384,8 @@ function go(h){if(location.hash==='#'+h)route();else location.hash=h}
 function route(){
  stopTimer();stopMock();keyHandler=null;window.scrollTo(0,0);
  const h=(location.hash||'').slice(1)||'home';
+ const TABMAP={home:'home',zukan:'zukan',yougo:'zukan',cheat:'zukan',moshi:'moshi',kiroku:'kiroku'};
+ setTabs(h.startsWith('z-')?'zukan':TABMAP[h]!==undefined?TABMAP[h]:(LESSONS[h]||h.startsWith('quiz-')||['drill','review','daily'].includes(h)?null:'home'));
  if(LESSONS[h])return viewLesson(h);
  if(h.startsWith('quiz-')&&LESSONS[h.slice(5)]){const id=h.slice(5);const l=LESSONS[id];return runQuiz(l.quiz,{title:l.title,small:'確認問題',lessonId:id,back:id})}
  if(h==='drill')return runQuiz(shuffle(Object.values(BANK).filter(q=>q.cat!=='intro')).slice(0,10),{title:'実戦ドリル',small:'ランダム10問'});
