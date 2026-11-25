@@ -542,18 +542,18 @@ details.card{border-radius:14px}
 .trapi b{display:block;font-size:14px}.trapi span{display:block;font-size:12px;color:var(--mute);line-height:1.5}
 .glink{border:0;background:none;padding:0;color:var(--acc);font-weight:700;text-decoration:underline;font-size:inherit}
 .gi.abbr b{font-family:"JetBrains Mono",monospace;font-size:16px}
-.top .in{padding-top:calc(10px + env(safe-area-inset-top))}
-.wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
-
 .tree-wrap{max-width:360px;margin:4px auto 12px;text-align:center;overflow-x:auto}
 .tree-svg{display:block;width:min(100%,340px);height:auto;margin:0 auto}
 .tree-edge{stroke:var(--line);stroke-width:2}
 .tree-node{fill:var(--tile);stroke:var(--line);stroke-width:2;transition:fill .2s,stroke .2s}
-.tree-node.seen{fill:var(--accS);stroke:var(--acc)}
-.tree-node.current{fill:var(--ambS);stroke:var(--amb);stroke-width:3}
+.tree-node.seen{fill:var(--accSoft);stroke:var(--acc)}
+.tree-node.current{fill:var(--hl);stroke:var(--ink);stroke-width:3}
 .tree-value{font:700 12px "JetBrains Mono",monospace;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}
+.tree-node.current+.tree-value{fill:#2a2200}
 .tree-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--acc);text-anchor:middle}
 .tree-order{margin:4px 0 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.top .in{padding-top:calc(10px + env(safe-area-inset-top))}
+.wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
 </head>
 <body>
@@ -1151,7 +1151,7 @@ def({id:'queue',title:'キューと環状バッファ',sub:'先に入れたも�
 pts:['enqueue は末尾に追加、dequeue は先頭から取り出す(FIFO)','head は次に取り出す位置、tail は次に入れる位置','tail が配列の最後に来たら先頭へ戻す(環状バッファ)','count = 0 は空、count = N は満杯。満杯では追加できない','count を使うと head と tail が同じでも「空」と「満杯」を区別できる'],
 trap:'配列の左から右へ読む順と、キューから出る順が一致するとは限らない。必ず head から配列の端を越えて折り返す。',
 code:L(`
-大域: 整数型の配列: q ← {未定義, 未定義, 未定義, 未定義}
+大域: 整数型の配列: q  // 要素数4。最初は空
 定数: N ← 4
 大域: 整数型: head ← 1, tail ← 1, count ← 0
 ○enqueue(整数型: x)
@@ -1177,7 +1177,7 @@ run(){const {st,S,steps}=rec();const N=4,q=[null,null,null,null];let head=1,tail
  };
  const dequeue=()=>{
   st.calls=['メイン: dequeue()'];st.v={head,tail,count};S(7,'dequeue() を呼ぶ。先頭から取り出す。');
-  st.calls.push('dequeue()');const at=head,x=q[at-1];st.v={head,tail,count,x};st.hl.q=[at];S(8,'head が指す q['+at+'] の '+x+' を取り出す。最後に入れた 7 ではなく、先に入れた値が出る。');
+  st.calls.push('dequeue()');const at=head,x=q[at-1];st.v={head,tail,count,x};st.hl.q=[at];S(8,'head が指す q['+at+'] の '+x+' を取り出す。最後に入れた値ではなく、いちばん先に入れた値が出る(FIFO)。');
   stale.push(at);head=head%N+1;st.v={head,tail,count,x};sync();S(9,'head ← ('+at+' mod 4) + 1 = '+head+'。読み終えた箱は薄く表示する(値は配列に残る)。');
   count--;st.v={head,tail,count,x};S(10,'count を1減らして '+count+'。');
   st.out=(st.out?st.out+' → ':'')+x;S(11,x+' を取り出した。');st.calls.pop();
@@ -1187,7 +1187,7 @@ run(){const {st,S,steps}=rec();const N=4,q=[null,null,null,null];let head=1,tail
  return steps;},
 quiz:[
  {q:'空のキューに enqueue(4), enqueue(6), dequeue(), enqueue(8), dequeue() と操作した。2回目に取り出される値は？',c:['6','4','8','未定義'],e:'キューは FIFO。1回目の dequeue で先に入れた 4 が出る。次に出るのは 6。'},
- {q:'容量4の環状キューで tail = 4 のとき、1つ追加した後の tail は？(tail ← (tail mod 4) + 1)',c:['1','4','0','5'],e:'(4 mod 4) + 1 = 1。配列の最後の次は先頭へ戻る。'}}
+ {q:'容量4の環状キューで tail = 4 のとき、1つ追加した後の tail は？(tail ← (tail mod 4) + 1)',c:['1','4','0','5'],e:'(4 mod 4) + 1 = 1。配列の最後の次は先頭へ戻る。'}
 ]});
 
 /* ---------- tree: 再帰で二分木をたどる ---------- */
@@ -1210,24 +1210,24 @@ run(){const {st,S,steps}=rec();
  sync();st.calls=['メイン: walk(root)'];S(-1,'root は値 8。左に 3、右に 10 がある二分木を、中間順でたどる。');
  function walk(id,parent=null){
   const node=id===null?null:nodes[id],label=node?'walk('+node.value+')':'walk(未定義)';
-  st.calls.push(label);st.v={node:node?node.value:'未定義'};current=id;sync();
+  st.calls.push(label);st.v={node:node?node.value:null};current=id;sync();
   S(0,node?label+' の中へ。今いる節は '+node.value+'。':'子がない場所で walk(未定義) を呼んだ。');
-  if(!node){S(1,'node ≠ 未定義 は偽。ここでは何も出力せず、呼出し元へ戻る。',{cond:['node ≠ 未定義',false]});st.calls.pop();current=parent;st.v={node:parent?nodes[parent].value:'呼出し元'};sync();return}
+  if(!node){S(1,'node ≠ 未定義 は偽。ここでは何も出力せず、呼出し元へ戻る。',{cond:['node ≠ 未定義',false]});st.calls.pop();current=parent;st.v={node:parent?nodes[parent].value:null};sync();return}
   S(1,'node ≠ 未定義 は真。まず左の部分木へ進む。',{cond:['node ≠ 未定義',true]});
   S(2,node.value+' の左の子 '+(node.left?nodes[node.left].value:'未定義')+' に walk を呼び出す。');walk(node.left,id);
   st.calls[st.calls.length-1]='walk('+node.value+')';st.v={node:node.value};current=id;
-  seen.push(id);order.push(node.value);st.out=order.join(' → ');sync();
+  seen.push(id);order.push(id);st.out=order.map(k=>nodes[k].value).join(' → ');sync();
   S(3,'左の処理から戻った。自分の値 '+node.value+' を出力。出力順: '+st.out);
   S(4,node.value+' の右の子 '+(node.right?nodes[node.right].value:'未定義')+' に walk を呼び出す。');walk(node.right,id);
-  st.calls.pop();current=parent;st.v={node:parent?nodes[parent].value:'呼出し元'};sync();
+  st.calls.pop();current=parent;st.v={node:parent?nodes[parent].value:null};sync();
  }
  walk(1,null);
- st.calls=['メイン'];st.v={出力:order.join(' → ')};current=null;sync();
- S(-1,'完了。中間順は左の部分木を全部見てから自分、最後に右の部分木。出力は '+order.join(' → ')+ '。');
+ st.calls=['メイン'];st.v={出力:order.map(k=>nodes[k].value).join(' → ')};current=null;sync();
+ S(-1,'完了。中間順は左の部分木を全部見てから自分、最後に右の部分木。出力は '+order.map(k=>nodes[k].value).join(' → ')+ '。');
  return steps;},
 quiz:[
  {q:'この木を中間順(左→自分→右)でたどったとき、最初に出力される値は？',c:['1','3','8','10'],e:'8から左へ、3からさらに左へ進むと1。左端の節から出力が始まる。'},
- {q:'値 8 が出力されるタイミングは？',c:['左の部分木を全部たどったあと','最初に出力する','右の部分木をたどったあと','葉だけを出力したあと'],e:'中間順は「左の部分木 → 自分 → 右の部分木」。8は左側(1,3,6)をたどり終わったあとに出力する。'}}
+ {q:'値 8 が出力されるタイミングは？',c:['左の部分木を全部たどったあと','最初に出力する','右の部分木をたどったあと','葉だけを出力したあと'],e:'中間順は「左の部分木 → 自分 → 右の部分木」。8は左側(1,3,6)をたどり終わったあとに出力する。'}
 ]});
 
 /* ---------- 16 list ---------- */
@@ -2477,7 +2477,7 @@ function renderVis(s,prev,x){
   const pos={1:[160,24],2:[90,76],3:[230,76],4:[48,132],5:[132,132],6:[188,132],7:[272,132]};
   const edges=[[1,2],[1,3],[2,4],[2,5],[3,6],[3,7]];
   const nodeMap=new Map(s.tree.nodes);
-  h+='<div class="vlabel">二分木の中間順（黄色＝今いる節、緑＝出力済み）</div><div class="tree-wrap"><svg class="tree-svg" viewBox="0 0 320 160" role="img" aria-label="二分木を左、自分、右の順にたどる図">';
+  h+='<div class="vlabel">二分木の中間順(黄色＝今いる節、青＝出力済み・数字は出力した順)</div><div class="tree-wrap"><svg class="tree-svg" viewBox="0 0 320 160" role="img" aria-label="二分木を左、自分、右の順にたどる図">';
   edges.forEach(([a,b])=>{const p=pos[a],q=pos[b];h+='<line class="tree-edge" x1="'+p[0]+'" y1="'+(p[1]+15)+'" x2="'+q[0]+'" y2="'+(q[1]-16)+'"/>'});
   s.tree.nodes.forEach(([id,value])=>{const p=pos[id],cls=id===s.tree.current?'current':s.tree.seen.includes(id)?'seen':'';const rank=s.tree.order.indexOf(id);h+='<circle class="tree-node '+cls+'" cx="'+p[0]+'" cy="'+p[1]+'" r="16"/><text class="tree-value" x="'+p[0]+'" y="'+p[1]+'">'+esc(value)+'</text>'+(rank>=0?'<text class="tree-rank" x="'+(p[0]+16)+'" y="'+(p[1]+17)+'">'+(rank+1)+'</text>':'')});
   h+='</svg><p class="tree-order">訪問順: '+(s.tree.order.length?s.tree.order.map(id=>esc(nodeMap.get(id))).join(' → '):'まだ出力していません')+'</p></div>';
