@@ -552,6 +552,17 @@ details.card{border-radius:14px}
 .tree-node.current+.tree-value{fill:#2a2200}
 .tree-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--acc);text-anchor:middle}
 .tree-order{margin:4px 0 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.graph-wrap{max-width:380px;margin:4px auto 12px;text-align:center;overflow-x:auto}
+.graph-svg{display:block;width:min(100%,350px);height:auto;margin:0 auto}
+.graph-edge{stroke:var(--line);stroke-width:3;transition:stroke .18s,stroke-width .18s}
+.graph-edge.active{stroke:var(--amb);stroke-width:5}
+.graph-node{fill:var(--tile);stroke:var(--line);stroke-width:2;transition:fill .18s,stroke .18s}
+.graph-node.discovered{fill:var(--accS);stroke:var(--acc)}
+.graph-node.visited{fill:var(--okSoft);stroke:var(--ok)}
+.graph-node.current{fill:var(--ambS);stroke:var(--amb);stroke-width:3}
+.graph-value{font:700 12px "JetBrains Mono",monospace;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}
+.graph-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--ok);text-anchor:middle}
+.graph-frontier,.graph-order{margin:4px 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -600,7 +611,7 @@ function rec(){
 const UNITS=[
  {name:'0. はじめに',ids:['intro']},
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','func']},
- {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','recur','intcalc']},
+ {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','recur','intcalc','bfsdfs']},
  {name:'3. データ構造',ids:['stack','queue','tree','list']},
  {name:'4. 情報セキュリティ(問17〜20)',ids:['sec']}
 ];
@@ -1230,6 +1241,86 @@ quiz:[
  {q:'値 8 が出力されるタイミングは？',c:['左の部分木を全部たどったあと','最初に出力する','右の部分木をたどったあと','葉だけを出力したあと'],e:'中間順は「左の部分木 → 自分 → 右の部分木」。8は左側(1,3,6)をたどり終わったあとに出力する。'}
 ]});
 
+/* ---------- bfsdfs: グラフを動きでたどる ---------- */
+def({id:'bfsdfs',title:'グラフ探索：幅優先と深さ優先',sub:'訪問順と、次に見る場所がどう変わるか',
+pts:['幅優先探索(BFS)は近い頂点から順に見る。待ち行列(キュー)を使う','深さ優先探索(DFS)は行ける所まで進み、戻って別の道を見る。再帰やスタックを使う','訪問済みを記録しないと、つながりを往復して同じ場所を回り続ける','同じグラフでも、探索方法で訪問順が変わる'],
+trap:'隣接する頂点を調べる順序が変わると訪問順も変わる。このレッスンでは A→B→C…の順に確認する。',
+code:L(`
+○bfs(開始点: start)
+  queue ← {start}
+  visited[start] ← true
+  while (queue ≠ 空)
+    v ← queueの先頭を取り出す
+    v を出力
+    for each 隣接頂点 u
+      if (visited[u] = false)
+        visited[u] ← true
+        queueの末尾に u を追加
+      endif
+    endfor
+  endwhile
+
+○dfs(頂点: v)
+  if (visited[v] = false)
+    visited[v] ← true
+    v を出力
+    for each 隣接頂点 u
+      dfs(u)
+    endfor
+  endif
+`),
+run(){const {st,S,steps}=rec();
+ const nodes=[['A',160,24],['B',82,84],['C',238,84],['D',48,146],['E',132,146],['F',208,146],['G',292,146]];
+ const edges=[['A','B'],['A','C'],['B','D'],['B','E'],['C','F'],['C','G']];
+ const adj={A:['B','C'],B:['A','D','E'],C:['A','F','G'],D:['B'],E:['B'],F:['C'],G:['C']};
+ let mode='',current=null,edge=null,discovered=[],order=[],frontier=[],frontierLabel='';
+ const sync=()=>{st.graph={nodes,edges,current,edge:edge?edge.slice():null,discovered:discovered.slice(),order:order.slice(),frontier:frontier.slice(),frontierLabel,mode}};
+ S(-1,'同じ頂点 A〜G を、まず幅優先探索、次に深さ優先探索でたどる。');
+ mode='幅優先探索 (BFS)';frontierLabel='待ち行列 (FIFO)';frontier=['A'];discovered=['A'];order=[];current=null;edge=null;sync();
+ S(0,'BFSを開始。最初に見る A をキューへ入れ、訪問済みにする。');
+ S(1,'queue = [A]。先に入れた頂点から順に取り出す。');
+ S(2,'A は訪問済みとして記録。あとで同じ A を見つけても追加しない。');
+ while(frontier.length){
+  current=frontier.shift();edge=null;order.push(current);st.out=order.join(' → ');st.v={方法:'BFS',現在:current};sync();
+  S(3,'queue が空ではないので続ける。現在の queue: ['+frontier.join(', ')+']。',{cond:['queue ≠ 空',true]});
+  S(4,'先頭から '+current+' を取り出す。');S(5,current+' を訪問順に追加。順番: '+st.out);
+  for(const u of adj[current]){
+   edge=[current,u];sync();S(6,current+' とつながる '+u+' を確認する。');
+   const already=discovered.includes(u);S(7,'visited['+u+'] = false ?', {cond:['visited['+u+'] = false',!already]});
+   if(already){S(10,u+' はすでに発見済み。二重にキューへ入れない。');continue}
+   discovered.push(u);sync();S(8,u+' を訪問済みに記録。');
+   frontier.push(u);sync();S(9,u+' をキューの末尾へ追加。次に見る候補: ['+frontier.join(', ')+']。');
+  }
+ }
+ const bfsOrder=order.join(' → ');
+ S(10,'BFSの訪問順は '+bfsOrder+'。近い段の頂点を先に処理した。');
+ mode='深さ優先探索 (DFS)';frontierLabel='再帰中の呼び出し';current=null;edge=null;discovered=[];order=[];frontier=[];st.out='';st.v={方法:'DFS'};sync();
+ st.calls=[];S(11,'同じグラフを DFS で開始。隣接頂点を A→B→C の順に確認する。');
+ function dfs(v,parent=null){
+  st.calls.push('dfs('+v+')');current=v;frontier=st.calls.map(call=>call.slice(4,-1));st.v={方法:'DFS',現在:v};sync();
+  S(11,'dfs('+v+') を呼び出す。');
+  const isNew=!discovered.includes(v);S(12,'visited['+v+'] = false ?', {cond:['visited['+v+'] = false',isNew]});
+  if(!isNew){st.calls.pop();current=parent;frontier=st.calls.map(call=>call.slice(4,-1));edge=parent?[parent,v]:null;sync();S(17,v+' は訪問済み。ここで戻る。');return}
+  discovered.push(v);order.push(v);st.out=order.join(' → ');sync();S(13,v+' を訪問済みにする。');
+  S(14,v+' を訪問順に追加。順番: '+st.out);
+  for(const u of adj[v]){
+   edge=[v,u];current=v;sync();S(15,v+' から隣の '+u+' へ進めるか確認。');
+   if(discovered.includes(u)){S(16,u+' は訪問済み。ここでは先へ進まず戻る。',{cond:['visited['+u+'] = false',false]});continue}
+   S(16,u+' は未訪問。ここからさらに奥へ進む。',{cond:['visited['+u+'] = false',true]});dfs(u,v);
+   current=v;edge=[v,u];frontier=st.calls.map(call=>call.slice(4,-1));sync();S(17,u+' の探索から '+v+' に戻った。');
+  }
+  st.calls.pop();current=parent;frontier=st.calls.map(call=>call.slice(4,-1));edge=parent?[parent,v]:null;sync();
+ }
+ dfs('A',null);
+ const dfsOrder=order.join(' → ');st.calls=['メイン'];current=null;edge=null;frontier=[];sync();
+ st.out='BFS: '+bfsOrder+'　/　DFS: '+dfsOrder;st.v={BFS:bfsOrder,DFS:dfsOrder};
+ S(-1,'比較：BFS は '+bfsOrder+'。DFS は '+dfsOrder+'。BFS はキュー、DFS は再帰(呼び出しの積み重なり)で順番が変わる。');
+ return steps;},
+quiz:[
+ {q:'幅優先探索(BFS)が、次に調べる頂点を管理するのに使うものは？',c:['キュー','スタック','二分探索木','ハッシュ表'],e:'BFSは先に見つけた近い頂点から調べるので、先入れ先出し(FIFO)のキューを使う。'},
+ {q:'深さ優先探索(DFS)が、AからまずB、その次にDへ進んだあと、Dの先がなかったらどうする？',c:['直前の分岐点Bへ戻って、次の道を試す','最初のAへ戻る','BFSに切り替える','訪問済みのDをもう一度調べる'],e:'DFSは深く進み、先がなくなったら直前の分岐点へ戻る。呼び出し履歴(スタック)を使って戻る場所を保つ。'}
+]});
+
 /* ---------- 16 list ---------- */
 
 
@@ -1477,6 +1568,11 @@ const DIAG={
   ar('M128,46 L170,30',CV.amb)+ar('M128,62 L170,80',CV.acc)+
   tx(176,28,'mod 10 → ',{s:12,m:true,a:'start'})+tx(254,29,'8',{s:20,w:900,m:true,a:'start',c:CV.amb})+tx(272,28,'(一の位)',{s:10,a:'start',c:CV.mute})+
   tx(176,86,'÷ 10 の商 → ',{s:12,m:true,a:'start'})+tx(266,87,'472',{s:18,w:900,m:true,a:'start',c:CV.acc}))},
+ bfsdfs:{cap:'幅優先は待ち行列で近い順、深さ優先は再帰で奥まで進んでから戻る',svg:SV(190,
+  ln('M170,28 L82,76 M170,28 L258,76 M82,94 L48,132 M82,94 L132,132 M258,94 L208,132 M258,94 L292,132',CV.line,2)+
+  nd(170,28,'A')+nd(82,76,'B')+nd(258,76,'C')+nd(48,132,'D')+nd(132,132,'E')+nd(208,132,'F')+nd(292,132,'G')+
+  tx(170,164,'幅優先: A → B → C → D → E → F → G',{s:10,w:700,c:CV.acc})+
+  tx(170,182,'深さ優先: A → B → D → E → C → F → G',{s:10,w:700,c:CV.amb}))},
  queue:{cap:'キューは先頭から取り出し、末尾へ追加。環状キューでは末尾が配列の端に着くと先頭へ戻る',svg:SV(142,
   tx(170,14,'配列の箱と、論理的な順番は別',{s:11,w:700})+
   rc(58,32,224,48,CV.bg,CV.mute,10)+[3,7,5,'空'].map((v,i)=>cb(68+i*51,42,String(v),i===0?AMB:ACC)).join('')+
@@ -1795,7 +1891,7 @@ zc({id:'al-treewalk',cat:'al',t:'木の走査(先行・中間・後行)',
  p:'木のすべての節を訪ねる順番は3種類。「自分」をいつ処理するかで決まる。',an:'自分の番を「最初」にするか「真ん中」にするか「最後」にするかの違いだけ。',
  b:['どれも再帰で書ける(左の部分木 → 右の部分木)','二分探索木を中間順でたどると昇順になる','数式の木を後行順でたどると逆ポーランド記法'],
  tip:'再帰関数の中で「出力」が再帰呼び出しの前・間・後のどこにあるかで、3種類のどれかがわかる。'});
-zc({id:'al-bfsdfs',cat:'al',t:'幅優先探索と深さ優先探索',
+zc({id:'al-bfsdfs',cat:'al',t:'幅優先探索と深さ優先探索',lesson:'bfsdfs',
  svg:SV(140,[0,1].map(t=>{const ox=t?172:0,ord=t?[1,2,5,3,4,6,7]:[1,2,3,4,5,6,7];const P=[[80,22],[40,64],[120,64],[20,108],[60,108],[100,108],[140,108]];
   return ln(['M80,22 L40,64','M80,22 L120,64','M40,64 L20,108','M40,64 L60,108','M120,64 L100,108','M120,64 L140,108'].map(d=>d.replace(/(\d+),(\d+)/g,(m,a,b)=>(+a+ox)+','+b)).join(' '))+P.map((p,i)=>nd(p[0]+ox,p[1],ord[i],{r:12,f:t?CV.ambS:CV.accS,e:t?CV.amb:CV.acc,s:11})).join('')+tx(80+ox,136,t?'深さ優先(奥まで行ってから戻る)':'幅優先(近い段から順に)',{s:10,w:700,c:t?CV.amb:CV.acc})}).join('')),
  p:'幅優先は近い所から一段ずつ、深さ優先は行けるところまで奥へ進んでから戻る。',an:'幅優先は「1階の部屋を全部見てから2階へ」、深さ優先は「1つの通路を突き当たりまで進む」。',
@@ -2235,7 +2331,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
 
 
 /* ---- ずかん view ---- */
@@ -2481,6 +2577,13 @@ function renderVis(s,prev,x){
   edges.forEach(([a,b])=>{const p=pos[a],q=pos[b];h+='<line class="tree-edge" x1="'+p[0]+'" y1="'+(p[1]+15)+'" x2="'+q[0]+'" y2="'+(q[1]-16)+'"/>'});
   s.tree.nodes.forEach(([id,value])=>{const p=pos[id],cls=id===s.tree.current?'current':s.tree.seen.includes(id)?'seen':'';const rank=s.tree.order.indexOf(id);h+='<circle class="tree-node '+cls+'" cx="'+p[0]+'" cy="'+p[1]+'" r="16"/><text class="tree-value" x="'+p[0]+'" y="'+p[1]+'">'+esc(value)+'</text>'+(rank>=0?'<text class="tree-rank" x="'+(p[0]+16)+'" y="'+(p[1]+17)+'">'+(rank+1)+'</text>':'')});
   h+='</svg><p class="tree-order">訪問順: '+(s.tree.order.length?s.tree.order.map(id=>esc(nodeMap.get(id))).join(' → '):'まだ出力していません')+'</p></div>';
+ }
+ if(s.graph){
+  const pos=new Map(s.graph.nodes.map(([name,x,y])=>[name,[x,y]]));
+  h+='<div class="vlabel">'+esc(s.graph.mode)+' — 黄色＝今いる頂点、緑＝訪問順</div><div class="graph-wrap"><svg class="graph-svg" viewBox="0 0 340 178" role="img" aria-label="頂点を順にたどるグラフ図">';
+  s.graph.edges.forEach(([a,b])=>{const p=pos.get(a),q=pos.get(b),active=s.graph.edge&&((s.graph.edge[0]===a&&s.graph.edge[1]===b)||(s.graph.edge[0]===b&&s.graph.edge[1]===a));h+='<line class="graph-edge'+(active?' active':'')+'" x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'"/>'});
+  s.graph.nodes.forEach(([name,x,y])=>{const cls=name===s.graph.current?'current':s.graph.order.includes(name)?'visited':s.graph.discovered.includes(name)?'discovered':'';const rank=s.graph.order.indexOf(name);h+='<circle class="graph-node '+cls+'" cx="'+x+'" cy="'+y+'" r="17"/><text class="graph-value" x="'+x+'" y="'+y+'">'+esc(name)+'</text>'+(rank>=0?'<text class="graph-rank" x="'+(x+16)+'" y="'+(y+18)+'">'+(rank+1)+'</text>':'')});
+  h+='</svg><p class="graph-frontier"><b>'+esc(s.graph.frontierLabel)+':</b> ['+s.graph.frontier.map(esc).join(', ')+']</p><p class="graph-order">訪問順: '+(s.graph.order.length?s.graph.order.map(esc).join(' → '):'まだありません')+'</p></div>';
  }
  Object.keys(s.a).forEach(name=>{
   const arr=s.a[name],pa=prev&&prev.a[name];
