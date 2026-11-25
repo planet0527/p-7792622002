@@ -573,6 +573,23 @@ details.card{border-radius:14px}
 .graph-node.current+.graph-value{fill:#2a2200}
 .graph-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--ok);text-anchor:middle}
 .graph-frontier,.graph-order{margin:4px 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.gridt{border-collapse:separate;border-spacing:5px;margin:0 0 12px;font-family:"JetBrains Mono",monospace}
+.gridt th{font-size:11px;color:var(--mute);font-weight:700;padding:0 4px}
+.gridt td{width:44px;height:38px;text-align:center;font-weight:700;font-size:15px;background:var(--tile);border:1.5px solid var(--line);border-radius:4px;transition:background .2s}
+.gridt tr.cur td{background:var(--accSoft);border-color:var(--acc)}
+.gridt tr.cur th{color:var(--acc)}
+.gridt td.hl{background:var(--hl)!important;border-color:var(--ink)!important;color:#2a2200}
+.cell.ghostc{visibility:hidden}
+.lc{display:flex;align-items:center;flex-wrap:wrap;gap:16px 4px;padding-top:16px;margin-bottom:12px}
+.lc.det{padding:16px 10px 8px;border:1.5px dashed var(--line);border-radius:12px}
+.lch{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;color:var(--mute)}
+.lcn{position:relative;min-width:44px;padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--tile);text-align:center;font-family:"JetBrains Mono",monospace}
+.lcn b{font-size:16px}
+.lcn.on{background:var(--hl);border-color:var(--ink);color:#2a2200}
+.lcp{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--ink);white-space:nowrap}
+.lcend{font-size:11px;color:var(--mute);border:1.5px dashed var(--line);border-radius:8px;padding:4px 6px}
+.cells.cmp .col{width:38px}
+.cells.cmp .cell{width:32px;height:32px;margin-right:7px;font-size:13.5px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -620,9 +637,9 @@ function rec(){
 /* ================= lessons ================= */
 const UNITS=[
  {name:'0. はじめに',ids:['intro']},
- {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','func']},
- {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','recur','intcalc','bfsdfs']},
- {name:'3. データ構造',ids:['stack','queue','tree','list']},
+ {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','matrix','func']},
+ {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
+ {name:'3. データ構造',ids:['stack','queue','list','listc','tree','heap','hash']},
  {name:'4. 情報セキュリティ(問17〜20)',ids:['sec']}
 ];
 
@@ -1329,6 +1346,270 @@ run(){const {st,S,steps}=rec();
 quiz:[
  {q:'幅優先探索(BFS)が、次に調べる頂点を管理するのに使うものは？',c:['キュー','スタック','二分探索木','ハッシュ表'],e:'BFSは先に見つけた近い頂点から調べるので、先入れ先出し(FIFO)のキューを使う。'},
  {q:'深さ優先探索(DFS)が、AからまずB、その次にDへ進んだあと、Dの先がなかったらどうする？',c:['直前の分岐点Bへ戻って、次の道を試す','最初のAへ戻る','BFSに切り替える','訪問済みのDをもう一度調べる'],e:'DFSは深く進み、先がなくなったら直前の分岐点へ戻る。呼び出し履歴(スタック)を使って戻る場所を保つ。'}
+]});
+
+/* ---------- 追加の動くレッスン ---------- */
+def({id:'insort',title:'挿入ソート',sub:'整列済みの部分に、1枚ずつ差し込む',
+pts:['左側(a[1]〜a[i−1])は常に整列済み','差し込む値を x に退避してから、大きい値を1つずつ右へずらす','止まった場所の右隣 a[j + 1] に x を入れる','ほぼ整列済みのデータでは、ずらす回数が少なく速い'],
+trap:'最後に入れる場所は a[j] ではなく a[j + 1]。ループを抜けたときの j は「x より小さい値の位置」か 0。',
+code:L(`
+○insertionSort(整数型の配列: a)
+  整数型: i, j, x
+  for (i を 2 から aの要素数 まで 1 ずつ増やす)
+    x ← a[i]
+    j ← i − 1
+    while (j ≥ 1 and a[j] > x)
+      a[j + 1] ← a[j]
+      j ← j − 1
+    endwhile
+    a[j + 1] ← x
+  endfor
+`),
+run(){const {st,S,steps}=rec();const a=[4,2,5,1],n=4;let x=null,j=null;
+ st.a.a=a.slice();S(0,'a = {4, 2, 5, 1} を挿入ソートで小さい順に並べる。');
+ st.v={i:null,j:null,x:null};S(1,'i, j, x を宣言。x は「今から差し込む値」を入れておく箱。');
+ for(let i=2;i<=n;i++){st.v.i=i;st.v.j=null;st.done.a=range(1,i-1);st.p.a={i};
+  S(2,'i = '+i+'。a[1]〜a['+(i-1)+'] は整列済み(青)。a['+i+'] を正しい位置に差し込む。');
+  x=a[i-1];st.v.x=x;st.hl.a=[i];S(3,'差し込む値 a['+i+'] = '+x+' を x に退避。この場所はずらしたときに上書きされるため。');
+  j=i-1;st.v.j=j;st.p.a={j,i};S(4,'j ← '+j+'。x と比べる相手は、すぐ左の a['+j+']。');
+  while(true){
+   if(j<1){S(5,'j = 0。左端まで来たのでループを抜ける。',{cond:['j ≥ 1',false]});break}
+   const c2=a[j-1]>x;st.hl.a=[j];
+   S(5,'a['+j+'] = '+a[j-1]+' > x = '+x+' は'+(c2?'真 → 右へずらす。':'偽 → ここで止まる。'),{cond:[a[j-1]+' > '+x,c2]});
+   if(!c2)break;
+   a[j]=a[j-1];st.a.a=a.slice();st.hl.a=[j+1];S(6,'a['+(j+1)+'] ← a['+j+'] の '+a[j]+'。大きい値を1つ右へずらした。',{arc:['a',j,j+1,'ずらす']});
+   j--;st.v.j=j;st.p.a=j>=1?{j,i}:{i};S(7,'j を1減らして '+j+'。');
+  }
+  a[j]=x;st.a.a=a.slice();st.hl.a=[j+1];st.p.a={'j+1':j+1};S(9,'a['+(j+1)+'] ← x('+x+')。空いた場所に差し込んだ。今の配列：{'+a.join(', ')+'}');
+ }
+ st.p.a={};st.done.a=range(1,n);S(10,'完成！ {'+a.join(', ')+'}');return steps;},
+quiz:[
+ {q:'a = {3, 1, 2} に insertionSort を実行したとき、外側ループの i = 2 の処理が終わった時点の配列は？',c:['{1, 3, 2}','{1, 2, 3}','{3, 1, 2}','{1, 1, 2}'],e:'i=2：x ← 1。a[1] = 3 > 1 なので 3 を a[2] へずらし、j = 0 で抜ける。a[1] ← 1 で {1, 3, 2}。2 はまだ見ていない。'},
+ {q:'すでに整列済みの a = {1, 2, 3, 4, 5} に insertionSort を実行したとき、「a[j + 1] ← a[j]」(ずらす処理)は何回実行される？',c:['0回','4回','10回','5回'],e:'どの i でも、すぐ左の a[i − 1] は x 以下なので while の条件がすぐ偽になる。ずらす処理は1回も起きない。だから挿入ソートは「ほぼ整列済み」に強い。'}
+]});
+
+def({id:'merge',title:'併合(マージ)',sub:'整列済みの2つの列を、1つの整列済みの列にまとめる',
+pts:['a と b の「次に見る位置」i と j を持つ','先頭どうしを比べ、小さいほうを c の末尾に追加して、その側だけ進める','どちらかを使い切ったら、もう片方の残りはそのまま追加してよい(すでに整列済み)','マージソートの「合わせる」部分そのもの'],
+trap:'while を抜けた時点では、まだ残りがある。残りを追加する処理を忘れた選択肢に注意。',
+code:L(`
+○整数型の配列: merge(整数型の配列: a, 整数型の配列: b)
+  整数型の配列: c ← {}
+  整数型: i ← 1, j ← 1
+  while (i ≤ aの要素数 and j ≤ bの要素数)
+    if (a[i] ≤ b[j])
+      c の末尾に a[i] を追加する
+      i ← i + 1
+    else
+      c の末尾に b[j] を追加する
+      j ← j + 1
+    endif
+  endwhile
+  a の a[i] 以降を c の末尾に追加する
+  b の b[j] 以降を c の末尾に追加する
+  return c
+`),
+run(){const {st,S,steps}=rec();const a=[2,5,8],b=[3,4,9],c=[];let i=1,j=1;
+ const dimS=()=>{st.dim.a=range(1,i-1);st.dim.b=range(1,j-1)};
+ st.a.a=a.slice();st.a.b=b.slice();S(0,'整列済みの a = {2, 5, 8} と b = {3, 4, 9} を、1つの整列済みの配列にまとめる。');
+ st.a.c=[];S(1,'結果を入れる空の配列 c を用意。');
+ st.v={i,j};st.p.a={i};st.p.b={j};S(2,'i は a の、j は b の「次に見る位置」。どちらも先頭から。');
+ while(true){const ok=i<=3&&j<=3;
+  if(!ok){S(3,(i>3?'a':'b')+' を全部使い切ったのでループを抜ける。',{cond:['i ≤ 3 and j ≤ 3',false]});break}
+  S(3,'a にも b にもまだ残っている → 続ける。',{cond:['i ≤ 3 and j ≤ 3',true]});
+  const t=a[i-1]<=b[j-1];st.hl.a=[i];st.hl.b=[j];S(4,'a['+i+'] = '+a[i-1]+' と b['+j+'] = '+b[j-1]+' を比べる。小さいほうを先に出す。',{cond:[a[i-1]+' ≤ '+b[j-1],t]});
+  if(t){c.push(a[i-1]);st.a.c=c.slice();st.hl.c=[c.length];st.hl.a=[i];S(5,'c の末尾に a['+i+'] の '+a[i-1]+' を追加。');i++;st.v.i=i;st.p.a=i<=3?{i}:{};dimS();S(6,'i を進めて '+i+'。a の使い終わった所は薄く表示。')}
+  else{S(7,'else へ。b のほうが小さい。');c.push(b[j-1]);st.a.c=c.slice();st.hl.c=[c.length];st.hl.b=[j];S(8,'c の末尾に b['+j+'] の '+b[j-1]+' を追加。');j++;st.v.j=j;st.p.b=j<=3?{j}:{};dimS();S(9,'j を進めて '+j+'。')}
+ }
+ S(12,i<=3?'a の残りを c の末尾に追加する。':'a はもう残っていない(i = '+i+')ので、何も追加しない。');
+ while(i<=3){c.push(a[i-1]);i++}st.a.c=c.slice();
+ const before=c.length;while(j<=3){c.push(b[j-1]);j++}st.a.c=c.slice();st.v={i,j};dimS();st.p.a={};st.p.b={};st.hl.c=range(before+1,c.length);
+ S(13,'b の残りは整列済みなので、そのまま c の末尾へ。');
+ S(14,'return c = {'+c.join(', ')+'}。比較は5回で済んだ。');return steps;},
+quiz:[
+ {q:'a = {1, 4}、b = {2, 3, 5} で merge を実行した。while ループを抜けた時点の c は？',c:['{1, 2, 3, 4}','{1, 2, 3, 4, 5}','{1, 2, 3}','{1, 4, 2, 3}'],e:'1(a)・2(b)・3(b)・4(a) と追加した時点で a を使い切り(i = 3)、ループを抜ける。5 は次の「残りを追加する」処理で入る。'},
+ {q:'a の要素数が m、b の要素数が n のとき、「a[i] ≤ b[j]」の比較は最大で何回行われる？',c:['m + n − 1 回','m × n 回','m + n 回','m と n の大きいほうの回数'],e:'1回比べるたびに c に1個ずつ入る。最後の1個は比べずに残りとして入るので、最大 m + n − 1 回。'}
+]});
+
+def({id:'matrix',title:'二次元配列と二重ループ',sub:'外側が行、内側が列。表を1マスずつ処理する',
+pts:['m[i, j] は「i 行目の j 列目」','外側ループで行を、内側ループで列を動かすと、表を左上から横に読んでいける','内側ループが1周終わるたびに、次の行へ進む','行ごとの合計は rowSum[i]、列ごとの合計は colSum[j] に足す'],
+trap:'m[i, j] の i と j を逆に読むと、行と列が入れ替わる。「行が先」と覚える。',
+code:L(`
+整数型の二次元配列: m ← {{1, 2, 3}, {4, 5, 6}}
+整数型の配列: rowSum ← {0, 0}
+整数型: i, j
+for (i を 1 から 2 まで 1 ずつ増やす)
+  for (j を 1 から 3 まで 1 ずつ増やす)
+    rowSum[i] ← rowSum[i] + m[i, j]
+  endfor
+endfor
+`),
+run(){const {st,S,steps}=rec();const m=[[1,2,3],[4,5,6]];const rs=[0,0];
+ st.g={m:{rows:m,hl:[],row:null}};S(0,'2行3列の二次元配列 m。m[i, j] は i 行目の j 列目。');
+ st.a.rowSum=rs.slice();S(1,'行ごとの合計を入れる配列 rowSum。最初はどちらも 0。');
+ st.v={i:null,j:null};S(2,'i(行)と j(列)を宣言。');
+ for(let i=1;i<=2;i++){st.v.i=i;st.v.j=null;st.g.m.row=i;st.g.m.hl=[];st.p.rowSum={i};S(3,'i = '+i+'。'+i+' 行目を処理する(外側のループ＝行)。');
+  for(let j=1;j<=3;j++){st.v.j=j;st.g.m.hl=[[i,j]];S(4,'j = '+j+'。'+i+' 行目の '+j+' 列目へ(内側のループ＝列)。');
+   rs[i-1]+=m[i-1][j-1];st.a.rowSum=rs.slice();st.hl.rowSum=[i];S(5,'rowSum['+i+'] ← '+(rs[i-1]-m[i-1][j-1])+' + m['+i+', '+j+'](= '+m[i-1][j-1]+') = '+rs[i-1])}
+  st.g.m.hl=[];S(6,i+' 行目の列を全部足し終えた。rowSum['+i+'] = '+rs[i-1]+'。次の行へ。')}
+ st.g.m.row=null;st.p.rowSum={};S(7,'完了。rowSum = {'+rs.join(', ')+'}。内側の文は 2 × 3 = 6 回実行された。');return steps;},
+quiz:[
+ {q:'m ← {{1, 2}, {3, 4}, {5, 6}}(3行2列)で、colSum[j] ← colSum[j] + m[i, j] を二重ループで全マスに実行した。colSum は？(最初は {0, 0})',c:['{9, 12}','{3, 7, 11}','{21}','{4, 6}'],e:'1列目は 1 + 3 + 5 = 9、2列目は 2 + 4 + 6 = 12。列ごとに足すので要素数は列の数(2)。{3, 7, 11} は行ごとの合計。'},
+ {q:'m ← {{1, 2, 3}, {4, 5, 6}} の転置 t を t[j, i] ← m[i, j] で作った。t[3, 1] の値は？',c:['3','6','4','未定義'],e:'t[3, 1] = m[1, 3]。1行目の3列目なので 3。転置すると 2行3列が 3行2列になる。'}
+]});
+
+def({id:'strsearch',title:'文字列探索(力まかせ法)',sub:'パターンを1文字ずつずらしながら重ねて比べる',
+pts:['外側の i は「パターンを本文の何文字目に重ねるか」','内側の k は「パターンの何文字目を比べているか」','1文字でも違ったら内側を抜け、i を1つ進める','k がパターンの長さを超えたら、全部一致した＝発見'],
+trap:'外側の終わりは「本文の長さ − パターンの長さ + 1」。+1 を忘れると最後の位置を調べない。',
+code:L(`
+○整数型: search(文字列型: text, 文字列型: pat)
+  整数型: i, k
+  for (i を 1 から textの長さ − patの長さ + 1 まで 1 ずつ増やす)
+    k ← 1
+    while (k ≤ patの長さ and textの(i + k − 1)文字目 = patのk文字目)
+      k ← k + 1
+    endwhile
+    if (k > patの長さ)
+      return i
+    endif
+  endfor
+  return −1
+`),
+run(){const {st,S,steps}=rec();const T='ABCABD'.split(''),P='ABD'.split('');const n=6,m=3;
+ const sync=(i,k)=>{const pat=Array(n).fill(null);for(let q=0;q<m;q++)pat[i-1+q]=P[q];st.a.text=T.slice();st.a.pat=pat;st.ghost={pat:true};st.p.text=k?{}:{i};st.p.pat=k&&k<=m?{k:i+k-1}:{}};
+ st.a.text=T.slice();S(0,'本文 text = "ABCABD" から、パターン pat = "ABD" を探す。');
+ st.v={i:null,k:null};S(1,'i(パターンを重ねる開始位置)と k(パターンの何文字目か)を宣言。');
+ for(let i=1;i<=n-m+1;i++){st.v={i,k:null};sync(i,0);S(2,'i = '+i+'。パターンを本文の '+i+' 文字目に重ねる。(i の最後は 6 − 3 + 1 = 4)');
+  let k=1;st.v.k=k;sync(i,k);S(3,'k ← 1。パターンの1文字目から比べる。');
+  while(true){
+   if(k>m){sync(i,k);S(4,'k = '+k+'。パターンの長さ 3 を超えたのでループを抜ける。',{cond:['k ≤ 3',false]});break}
+   const eq=T[i+k-2]===P[k-1];sync(i,k);st.hl.text=[i+k-1];st.hl.pat=[i+k-1];
+   S(4,'本文の '+(i+k-1)+' 文字目 "'+T[i+k-2]+'" と パターンの '+k+' 文字目 "'+P[k-1]+'" は'+(eq?'一致。':'不一致 → この位置はあきらめる。'),{cond:['"'+T[i+k-2]+'" = "'+P[k-1]+'"',eq]});
+   if(!eq)break;
+   k++;st.v.k=k;sync(i,k);S(5,'k を1増やして '+k+'。次の文字へ。')}
+  const found=k>m;S(7,'k > 3 は'+(found?'真 → 全文字一致！':'偽 → '+i+' 文字目からでは見つからない。'),{cond:[k+' > 3',found]});
+  if(found){S(8,'return '+i+'。パターンは本文の '+i+' 文字目から始まる。');return steps}
+ }
+ return steps;},
+quiz:[
+ {q:'本文が7文字、パターンが3文字のとき、外側ループ(i)は最大で何回まわる？',c:['5回','7回','4回','21回'],e:'i の終わりは 7 − 3 + 1 = 5。i = 1, 2, 3, 4, 5 の5回。i = 6 から重ねるとパターンがはみ出す。'},
+ {q:'text = "AAB"、pat = "AB" のとき、search の戻り値は？',c:['2','1','−1','3'],e:'i = 1：A = A、次に A と B が不一致。i = 2：A = A、B = B で全部一致 → return 2。'}
+]});
+
+def({id:'listc',title:'リストへの挿入(クラス版)',sub:'prev と cur で場所を探し、next をつなぎ替える',
+pts:['cur で先頭からたどり、入れる場所の「1つ前」を prev に覚えておく','新しい要素 e を作ったら、先に e.next ← cur でつなぐ','prev があれば prev.next ← e、なければ(先頭に入れる)listHead ← e','つなぎ替えの順番を逆にすると、後ろの要素への道が消える'],
+trap:'先頭に入れる場合(prev が未定義)を忘れると、listHead が古い先頭のままになる。if で場合分けしているかを確認。',
+code:L(`
+// ListElement：val(値)と next(次の要素)を持つクラス
+大域: ListElement: listHead  // 10 → 30 → 40
+○insert(整数型: v)
+  ListElement: prev ← 未定義の値
+  ListElement: cur ← listHead
+  while (cur ≠ 未定義の値 and cur.val < v)
+    prev ← cur
+    cur ← cur.next
+  endwhile
+  ListElement: e ← ListElement(v)
+  e.next ← cur
+  if (prev = 未定義の値)
+    listHead ← e
+  else
+    prev.next ← e
+  endif
+// 実行: insert(25) → insert(5)
+`),
+run(){const {st,S,steps}=rec();const N={a:{val:10,next:'b'},b:{val:30,next:'c'},c:{val:40,next:null}};let head='a';
+ const sync=ptr=>{st.lc={nodes:JSON.parse(JSON.stringify(N)),head,ptr:ptr||{}}};
+ sync();S(0,'ListElement は val(値)と next(次の要素)を持つクラス。');
+ S(1,'今のリストは 10 → 30 → 40。listHead は先頭の 10 を指している。');
+ const ins=(v,newId)=>{st.calls=['insert('+v+')'];st.v={v};sync();S(2,'insert('+v+') を呼ぶ。小さい順を保ったまま '+v+' を入れる。');
+  let prev=null,cur=head;st.v.prev=null;sync({});S(3,'prev は「入れる場所の1つ前」。最初は未定義。');
+  st.v.cur=N[cur].val;sync({cur});S(4,'cur ← listHead。先頭の '+N[cur].val+' から見ていく。');
+  while(true){
+   if(cur===null){S(5,'cur が未定義(末尾を越えた)のでループを抜ける。',{cond:['cur ≠ 未定義',false]});break}
+   const c2=N[cur].val<v;S(5,'cur.val = '+N[cur].val+' < '+v+' は'+(c2?'真 → まだ先へ進む。':'偽 → cur の前が入れる場所。'),{cond:[N[cur].val+' < '+v,c2]});
+   if(!c2)break;
+   prev=cur;st.v.prev=N[prev].val;sync({prev,cur});S(6,'prev ← cur(値 '+N[prev].val+')。');
+   cur=N[cur].next;st.v.cur=cur?N[cur].val:null;sync({prev,cur});S(7,'cur ← cur.next(値 '+(cur?N[cur].val:'未定義')+')。1つ先へ進む。')}
+  N[newId]={val:v,next:null};st.v.e=v;sync({prev,cur,e:newId});S(9,'新しい要素 e = ListElement('+v+') を作る。まだどこにもつながっていない。');
+  N[newId].next=cur;sync({prev,cur,e:newId});S(10,'e.next ← cur。先に「'+v+' の次」をつないでおく。');
+  if(prev===null){S(11,'prev は未定義 → 先頭に入れる場合。',{cond:['prev = 未定義',true]});head=newId;sync({e:newId});S(12,'listHead ← e。'+v+' が新しい先頭になった。')}
+  else{S(11,'prev は未定義ではない → 途中に入れる場合。',{cond:['prev = 未定義',false]});S(13,'else へ。');N[prev].next=newId;sync({prev,e:newId});S(14,'prev.next ← e。'+N[prev].val+' の次を '+v+' に付け替えた。')}
+  st.calls=[];st.v={};sync()};
+ ins(25,'d');S(16,'次は insert(5)。いちばん小さいので先頭に入るはず。');ins(5,'e');
+ S(-1,'完成：5 → 10 → 25 → 30 → 40。途中への挿入は prev.next、先頭への挿入は listHead を書き換える。');return steps;},
+quiz:[
+ {q:'リスト 10 → 30 → 40 に insert(35) を実行した。while ループを抜けたとき、prev.val と cur.val は？',c:['prev.val = 30、cur.val = 40','prev.val = 10、cur.val = 30','prev.val = 40、cur.val は未定義','prev は未定義、cur.val = 10'],e:'10 < 35、30 < 35 と進み、40 < 35 が偽で止まる。そのとき prev は 30、cur は 40。35 は 30 と 40 の間に入る。'},
+ {q:'insert の最後の部分で「e.next ← cur」と「prev.next ← e」の順番を逆にするとどうなる？',c:['結果は同じ(この2行は順番を入れ替えても問題ない)','e の後ろが切れてリストが短くなる','listHead が変わる','無限ループになる'],e:'このプログラムでは cur を別の変数に覚えているので、prev.next を先に書き換えても cur は失われず、結果は同じ。cur を使わずに prev.next から後ろをたどる書き方のときは、順番が大事になる。'}
+]});
+
+def({id:'heap',title:'ヒープへの追加(上方移動)',sub:'末尾に置いて、親より小さい間は上へ上がる',
+pts:['配列 heap を木とみなす：heap[i] の親は heap[i ÷ 2 の商]、子は heap[2i] と heap[2i + 1]','追加する値はまず末尾(木のいちばん下)に置く','親のほうが大きければ入れ替えて、1段上へ。親以下になるか根に着いたら終わり','最小ヒープでは根 heap[1] に常に最小値がある'],
+trap:'入れ替える相手は「親」だけ。兄弟(隣の要素)とは比べない。',
+code:L(`
+大域: 整数型の配列: heap  // 要素数7。今は {1, 3, 2, 7, 4}
+大域: 整数型: n ← 5
+○push(整数型: x)
+  n ← n + 1
+  heap[n] ← x
+  整数型: i ← n
+  while (i > 1 and heap[i ÷ 2 の商] > heap[i])
+    heap[i] と heap[i ÷ 2 の商] を入れ替える
+    i ← i ÷ 2 の商
+  endwhile
+// 実行: push(0) → push(5)
+`),
+run(){const {st,S,steps}=rec();const H=[1,3,2,7,4,null,null];let n=5;
+ const sync=(cur,par)=>{st.a.heap=H.slice();st.p.heap=cur?(par?{i:cur,'親':par}:{i:cur}):{};st.dim.heap=range(n+1,7);
+  st.tree={nodes:H.map((v,k)=>[k+1,v]).filter(x=>x[1]!==null&&x[0]<=n),current:cur||null,seen:par?[par]:[],order:[],label:'ヒープを木で見た形(黄色＝今の位置 i、青＝比べる親)',hideOrder:true}};
+ sync();S(0,'配列 heap を「木」とみなす。heap[i] の親は heap[i ÷ 2 の商]。どの親も子以下(最小ヒープ)。');
+ st.v={n};S(1,'今は 5 個入っている。');
+ const push=x=>{st.calls=['push('+x+')'];st.v={n,x};S(2,'push('+x+') を呼ぶ。');
+  n++;st.v.n=n;sync();S(3,'n を1増やして '+n+'。');
+  H[n-1]=x;sync(n);st.hl.heap=[n];S(4,'いちばん後ろ heap['+n+'] に '+x+' を置く。木ではいちばん下の段。');
+  let i=n;st.v.i=i;S(5,'i ← '+n+'。ここから上へ上がれるか調べる。');
+  while(true){
+   if(i<=1){sync(i);S(6,'i = 1(根)に着いたので終了。',{cond:['i > 1',false]});break}
+   const p=Math.floor(i/2);sync(i,p);st.hl.heap=[i,p];const t=H[p-1]>H[i-1];
+   S(6,'親 heap['+p+'] = '+H[p-1]+' > heap['+i+'] = '+H[i-1]+' は'+(t?'真 → 親のほうが大きいので入れ替える。':'偽 → 正しい順なので終了。'),{cond:[H[p-1]+' > '+H[i-1],t]});
+   if(!t)break;
+   [H[p-1],H[i-1]]=[H[i-1],H[p-1]];sync(p,i);st.hl.heap=[i,p];S(7,'heap['+i+'] と heap['+p+'] を入れ替え。'+x+' が1段上がった。',{arc:['heap',p,i,'交換']});
+   i=p;st.v.i=i;sync(i);S(8,'i ← '+p+'。親の位置へ移動。')}
+  sync();st.calls=[]};
+ push(0);push(5);
+ S(-1,'完成：{'+H.filter(v=>v!==null).join(', ')+'}。0 は根まで上がり、5 は親(1)より大きいのでその場にとどまった。');return steps;},
+quiz:[
+ {q:'最小ヒープ heap = {2, 5, 3, 8, 6} に push(1) を実行した後の配列は？',c:['{1, 5, 2, 8, 6, 3}','{1, 2, 3, 5, 6, 8}','{2, 5, 3, 8, 6, 1}','{1, 5, 3, 8, 6, 2}'],e:'1 を heap[6] に置く。親 heap[3] = 3 > 1 で交換 → {2, 5, 1, 8, 6, 3}。親 heap[1] = 2 > 1 で交換 → {1, 5, 2, 8, 6, 3}。根に着いて終了。'},
+ {q:'heap[6] の親と、heap[3] の子の要素番号の組合せとして正しいものは？',c:['親は heap[3]、子は heap[6] と heap[7]','親は heap[2]、子は heap[4] と heap[5]','親は heap[5]、子は heap[6] と heap[7]','親は heap[3]、子は heap[4] と heap[5]'],e:'親は i ÷ 2 の商 = 6 ÷ 2 = 3。子は 2i と 2i + 1 = 6 と 7。'}
+]});
+
+def({id:'hash',title:'ハッシュ表と衝突',sub:'計算で場所を決め、ふさがっていたら隣へ',
+pts:['(key mod 7) + 1 で格納する場所を計算する(ハッシュ関数)','違うキーが同じ場所になる＝衝突(シノニム)','この例では、ふさがっていたら1つ隣を見る(線形探査)','最後まで行ったら (h mod 7) + 1 で先頭に戻る'],
+trap:'「+ 1」は要素番号を1から始めるため。key mod 7 は 0〜6 なので、+1 して 1〜7 にしている。',
+code:L(`
+大域: 整数型の配列: table  // 要素数7。最初はすべて未定義
+○add(整数型: key)
+  整数型: h ← (key mod 7) + 1
+  while (table[h] ≠ 未定義の値)
+    h ← (h mod 7) + 1
+  endwhile
+  table[h] ← key
+// 実行: add(10) → add(15) → add(22) → add(8)
+`),
+run(){const {st,S,steps}=rec();const t=[null,null,null,null,null,null,null];
+ const sync=()=>{st.a.table=t.slice()};sync();S(0,'7つの箱を持つハッシュ表 table。最初はすべて空。');
+ S(7,'これから add(10) → add(15) → add(22) → add(8) を実行する。');
+ const add=key=>{st.calls=['add('+key+')'];st.v={key};st.p.table={};S(1,'add('+key+') を呼ぶ。');
+  let h=key%7+1;st.v.h=h;st.p.table={h};st.hl.table=[h];S(2,'h ← ('+key+' mod 7) + 1 = '+(key%7)+' + 1 = '+h+'。まず '+h+' 番目を見る。');
+  while(true){const occ=t[h-1]!==null;st.hl.table=[h];
+   S(3,'table['+h+'] は'+(occ?'使用中('+t[h-1]+') → 衝突！':'空き。'),{cond:['table['+h+'] ≠ 未定義',occ]});
+   if(!occ)break;
+   const ph=h;h=ph%7+1;st.v.h=h;st.p.table={h};st.hl.table=[h];S(4,'h ← ('+ph+' mod 7) + 1 = '+h+'。隣の箱を見る。')}
+  t[h-1]=key;sync();st.hl.table=[h];S(6,'table['+h+'] に '+key+' を格納。');st.calls=[]};
+ add(10);add(15);add(22);add(8);
+ st.p.table={};st.v={};S(-1,'完成。15・22・8 は計算するとどれも 2 番目だったが、衝突したら隣へずらして格納した。');return steps;},
+quiz:[
+ {q:'上のレッスンの後(table に 10, 15, 22, 8 が入った状態)で add(29) を実行すると、29 が入る要素番号は？',c:['6','2','5','1'],e:'(29 mod 7) + 1 = 2。2・3・4・5 番目はすべて使用中なので、6 番目に入る。衝突が続くほど探す回数が増える。'},
+ {q:'ハッシュ表で「衝突(シノニム)」とは何か？',c:['異なるキーから同じ格納位置が計算されること','同じキーを2回格納しようとすること','表がいっぱいになること','キーが負の数になること'],e:'ハッシュ関数の値(格納位置)が同じになることを衝突という。15 と 22 は どちらも (mod 7) + 1 = 2 になる。'}
 ]});
 
 /* ---------- 16 list ---------- */
@@ -2341,7 +2622,8 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
+[['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
 
 
 /* ---- ずかん view ---- */
@@ -2394,7 +2676,7 @@ function termList(){if(TERM_LIST)return TERM_LIST;const L=[];
  TERM_EXTRA.forEach(t=>L.push([t[0],t[1],.8]));
  [['戻り値','syn-func'],['return','syn-func'],['引数','syn-func'],['手続き','syn-func']].forEach(t=>L.push([t[0],t[1],.45]));
  return TERM_LIST=L.sort((a,b)=>b[0].length-a[0].length)}
-const QFIG={'d-18':['sec-risk'],'d-19':['sec-mailauth'],'d-20':['sec-web2','sec-xss'],'d-21':['sec-detect','sec-network'],'d-22':['syn-arrarr','syn-2d'],'d-23':['al-strsearch'],'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
+const QFIG={'insort-0':['al-insert'],'insort-1':['al-insert','al-order'],'merge-0':['al-merge'],'merge-1':['al-merge','al-order'],'matrix-0':['syn-2d','syn-for'],'matrix-1':['syn-2d','syn-arrarr'],'strsearch-0':['al-strsearch'],'strsearch-1':['al-strsearch'],'listc-0':['ds-listop','ds-list'],'listc-1':['ds-listop','syn-class'],'heap-0':['ds-heap','ds-pqueue'],'heap-1':['ds-heap','ds-tree'],'hash-0':['ds-hash'],'hash-1':['ds-hash','syn-arith'],'d-18':['sec-risk'],'d-19':['sec-mailauth'],'d-20':['sec-web2','sec-xss'],'d-21':['sec-detect','sec-network'],'d-22':['syn-arrarr','syn-2d'],'d-23':['al-strsearch'],'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
 function termCards(q,lessonId){
  if(QFIG[q.id])return QFIG[q.id].map(id=>({id}));
  const text=[q.q,q.e].concat(q.c).join('\n');const code=q.code||'';const score={};const isSec=q.cat==='sec';
@@ -2579,14 +2861,22 @@ function renderVis(s,prev,x){
    h+='<div class="node'+(cur?' cur':'')+(seen&&!cur?' seen':'')+'"><span class="ni">['+nd[0]+']</span><b>'+nd[1]+'</b>'+(cur?'<span class="np">p</span>':'')+'</div><span class="link">→</span>';});
   h+='<div class="node end'+(s.chain.cur===null&&s.chain.seen.length?' cur':'')+'"><b>0</b><span class="ni">終わり</span></div></div>';
  }
+ if(s.g){Object.keys(s.g).forEach(name=>{const G=s.g[name];const isH=(r,c)=>(G.hl||[]).some(p=>p[0]===r&&p[1]===c);
+  h+='<div class="vlabel">二次元配列 '+esc(name)+'(黄色＝今のマス、青い行＝今の行)</div><table class="gridt"><tr><th></th>'+G.rows[0].map((_,c)=>'<th>'+(c+1)+'列</th>').join('')+'</tr>'+
+   G.rows.map((row,r)=>'<tr class="'+(G.row===r+1?'cur':'')+'"><th>'+(r+1)+'行</th>'+row.map((v,c)=>'<td class="'+(isH(r+1,c+1)?'hl':'')+'">'+esc(fmt(v))+'</td>').join('')+'</tr>').join('')+'</table>'})}
+ if(s.lc){const Lc=s.lc,order=[];let c=Lc.head,guard=0;while(c&&guard++<20){order.push(c);c=Lc.nodes[c].next}
+  const det=Object.keys(Lc.nodes).filter(k=>!order.includes(k));const lab=k=>Object.keys(Lc.ptr).filter(p=>Lc.ptr[p]===k);
+  const box=k=>{const ls=lab(k);return '<div class="lcn'+(ls.length?' on':'')+'">'+(ls.length?'<span class="lcp">'+esc(ls.join(','))+'</span>':'')+'<b>'+esc(Lc.nodes[k].val)+'</b></div>'};
+  h+='<div class="vlabel">リストのつながり(黄色＝prev・cur・e が指している要素)</div><div class="lc"><span class="lch">listHead</span><span class="link">→</span>'+order.map(k=>box(k)+'<span class="link">→</span>').join('')+'<span class="lcend">未定義</span></div>';
+  if(det.length)h+='<div class="lc det"><span class="lch">まだつながっていない</span>'+det.map(k=>box(k)+'<span class="link">→ '+(Lc.nodes[k].next?esc(Lc.nodes[Lc.nodes[k].next].val):'未定義')+'</span>').join('')+'</div>';}
  if(s.tree){
   const pos={1:[160,24],2:[90,76],3:[230,76],4:[48,132],5:[132,132],6:[188,132],7:[272,132]};
   const edges=[[1,2],[1,3],[2,4],[2,5],[3,6],[3,7]];
   const nodeMap=new Map(s.tree.nodes);
-  h+='<div class="vlabel">二分木の中間順(黄色＝今いる節、青＝出力済み・数字は出力した順)</div><div class="tree-wrap"><svg class="tree-svg" viewBox="0 0 320 160" role="img" aria-label="二分木を左、自分、右の順にたどる図">';
-  edges.forEach(([a,b])=>{const p=pos[a],q=pos[b];h+='<line class="tree-edge" x1="'+p[0]+'" y1="'+(p[1]+15)+'" x2="'+q[0]+'" y2="'+(q[1]-16)+'"/>'});
+  h+='<div class="vlabel">'+esc(s.tree.label||'二分木の中間順(黄色＝今いる節、青＝出力済み・数字は出力した順)')+'</div><div class="tree-wrap"><svg class="tree-svg" viewBox="0 0 320 160" role="img" aria-label="二分木を左、自分、右の順にたどる図">';
+  edges.forEach(([a,b])=>{if(!nodeMap.has(a)||!nodeMap.has(b))return;const p=pos[a],q=pos[b];h+='<line class="tree-edge" x1="'+p[0]+'" y1="'+(p[1]+15)+'" x2="'+q[0]+'" y2="'+(q[1]-16)+'"/>'});
   s.tree.nodes.forEach(([id,value])=>{const p=pos[id],cls=id===s.tree.current?'current':s.tree.seen.includes(id)?'seen':'';const rank=s.tree.order.indexOf(id);h+='<circle class="tree-node '+cls+'" cx="'+p[0]+'" cy="'+p[1]+'" r="16"/><text class="tree-value" x="'+p[0]+'" y="'+p[1]+'">'+esc(value)+'</text>'+(rank>=0?'<text class="tree-rank" x="'+(p[0]+16)+'" y="'+(p[1]+17)+'">'+(rank+1)+'</text>':'')});
-  h+='</svg><p class="tree-order">訪問順: '+(s.tree.order.length?s.tree.order.map(id=>esc(nodeMap.get(id))).join(' → '):'まだ出力していません')+'</p></div>';
+  h+='</svg>'+(s.tree.hideOrder?'':'<p class="tree-order">訪問順: '+(s.tree.order.length?s.tree.order.map(id=>esc(nodeMap.get(id))).join(' → '):'まだ出力していません')+'</p>')+'</div>';
  }
  if(s.graph){
   const pos=new Map(s.graph.nodes.map(([name,x,y])=>[name,[x,y]]));
@@ -2599,8 +2889,9 @@ function renderVis(s,prev,x){
   const arr=s.a[name],pa=prev&&prev.a[name];
   const ptr={};const pp=s.p[name]||{};Object.keys(pp).forEach(lb=>{const k=pp[lb];(ptr[k]=ptr[k]||[]).push(lb)});
   const hl=(s.hl[name]||[]),dim=(s.dim[name]||[]),done=(s.done[name]||[]);
-  const cell=(v,k)=>{const ch=pa&&pa[k-1]!==v;const cls=['cell'];if(hl.includes(k))cls.push('hl');if(ch)cls.push('chg');if(dim.includes(k))cls.push('dim');if(done.includes(k))cls.push('done');if(v===null)cls.push('empty');
-   return '<div class="'+cls.join(' ')+'">'+(v===null?'':esc(fmt(v)))+'</div>'};
+  const ghost=s.ghost&&s.ghost[name];
+  const cell=(v,k)=>{if(ghost&&v===null)return '<div class="cell ghostc"></div>';const ch=pa&&pa[k-1]!==v;const cls=['cell'];if(hl.includes(k))cls.push('hl');if(ch)cls.push('chg');if(dim.includes(k))cls.push('dim');if(done.includes(k))cls.push('done');if(v===null)cls.push('empty');
+   return '<div class="'+cls.join(' ')+'">'+(v===null?'':esc(typeof v==='string'&&v.length===1?v:fmt(v)))+'</div>'};
   if(s.vert&&s.vert.includes(name)){
    h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'(スタック：下から積む)</div><div class="vstack">';
    for(let k=arr.length;k>=1;k--){h+='<div class="vrow"><span class="idx">['+k+']</span>'+cell(arr[k-1],k)+'<span class="ptr2">'+(ptr[k]?'◀ '+esc(ptr[k].join(',')):'')+'</span></div>'}
@@ -2608,11 +2899,11 @@ function renderVis(s,prev,x){
   }
   let arc='';
   if(x.arc&&x.arc[0]===name){const i1=Math.min(x.arc[1],x.arc[2]),i2=Math.max(x.arc[1],x.arc[2]);
-   const cx=k=>(k-1)*52+20,x1=cx(i1),x2=cx(i2),sw=x.arc[3]==='交換',hgt=Math.min(30,10+(i2-i1)*6);
-   arc='<svg class="arc" width="'+(arr.length*52)+'" height="34" style="overflow:visible"><path d="M'+x1+',32 C'+x1+','+(32-hgt)+' '+x2+','+(32-hgt)+' '+x2+',32" style="fill:none;stroke:'+(sw?'var(--acc)':'var(--amb)')+';stroke-width:2.5;stroke-dasharray:'+(sw?'0':'5 4')+'" marker-end="url(#ah'+(sw?'g':'a')+')"'+(sw?' marker-start="url(#ah'+(sw?'g':'a')+'s)"':'')+'/><text x="'+((x1+x2)/2)+'" y="'+(28-hgt)+'" text-anchor="middle" style="font-size:11px;font-weight:700;fill:'+(sw?'var(--acc)':'var(--amb)')+'">'+x.arc[3]+'</text></svg>';}
-  h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'</div><div class="arcwrap">'+(arc||'<div style="height:'+(window._arc?34:4)+'px"></div>')+'<div class="cells">';
+   const cmp=arr.length>=7,PI=cmp?44:52,CO=cmp?16:20,cx=k=>(k-1)*PI+CO,x1=cx(i1),x2=cx(i2),sw=x.arc[3]==='交換',hgt=Math.min(30,10+(i2-i1)*6);
+   arc='<svg class="arc" width="'+(arr.length*PI)+'" height="34" style="overflow:visible"><path d="M'+x1+',32 C'+x1+','+(32-hgt)+' '+x2+','+(32-hgt)+' '+x2+',32" style="fill:none;stroke:'+(sw?'var(--acc)':'var(--amb)')+';stroke-width:2.5;stroke-dasharray:'+(sw?'0':'5 4')+'" marker-end="url(#ah'+(sw?'g':'a')+')"'+(sw?' marker-start="url(#ah'+(sw?'g':'a')+'s)"':'')+'/><text x="'+((x1+x2)/2)+'" y="'+(28-hgt)+'" text-anchor="middle" style="font-size:11px;font-weight:700;fill:'+(sw?'var(--acc)':'var(--amb)')+'">'+x.arc[3]+'</text></svg>';}
+  h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'</div><div class="arcwrap">'+(arc||'<div style="height:'+(window._arc?34:4)+'px"></div>')+'<div class="cells'+(arr.length>=7?' cmp':'')+'">';
   arr.forEach((v,i)=>{const k=i+1;
-   h+='<div class="col"><span class="idx">['+k+']</span>'+cell(v,k)+'<span class="ptr">'+(ptr[k]?esc(ptr[k].join(',')):'')+'</span></div>'});
+   h+='<div class="col"><span class="idx">'+(ghost&&v===null?'':'['+k+']')+'</span>'+cell(v,k)+'<span class="ptr">'+(ptr[k]?esc(ptr[k].join(',')):'')+'</span></div>'});
   h+='</div></div></div>';
  });
  if(s.out!==null&&s.out!==undefined)h+='<div class="vlabel">出力・取り出した値</div><div class="out">'+esc(s.out)+'</div>';
