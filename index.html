@@ -552,15 +552,25 @@ details.card{border-radius:14px}
 .tree-node.current+.tree-value{fill:#2a2200}
 .tree-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--acc);text-anchor:middle}
 .tree-order{margin:4px 0 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.cb.nxt{display:flex;flex-direction:column;justify-content:center;line-height:1.25;min-width:0;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb.nxt small{font-size:10.5px;font-weight:700;opacity:.85}
+.result{padding:22px 10px 8px}
+.rlist{display:grid;gap:6px;margin:6px 0 10px}
+.ri{display:grid;grid-template-columns:22px 1fr;gap:2px 8px;background:var(--card);border:1.5px solid var(--line);border-left:5px solid var(--ok);border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.5}
+.ri.ng{border-left-color:var(--ng)}
+.ri .mk{font-weight:900;color:var(--ok)}.ri.ng .mk{color:var(--ng)}
+.ri .ra{grid-column:2;font-size:12.5px;font-weight:700;color:var(--ok)}
+.rnote{font-size:13.5px;color:var(--mute);text-align:center}
 .graph-wrap{max-width:380px;margin:4px auto 12px;text-align:center;overflow-x:auto}
 .graph-svg{display:block;width:min(100%,350px);height:auto;margin:0 auto}
 .graph-edge{stroke:var(--line);stroke-width:3;transition:stroke .18s,stroke-width .18s}
-.graph-edge.active{stroke:var(--amb);stroke-width:5}
+.graph-edge.active{stroke:var(--ink);stroke-width:5}
 .graph-node{fill:var(--tile);stroke:var(--line);stroke-width:2;transition:fill .18s,stroke .18s}
-.graph-node.discovered{fill:var(--accS);stroke:var(--acc)}
+.graph-node.discovered{fill:var(--accSoft);stroke:var(--acc)}
 .graph-node.visited{fill:var(--okSoft);stroke:var(--ok)}
-.graph-node.current{fill:var(--ambS);stroke:var(--amb);stroke-width:3}
+.graph-node.current{fill:var(--hl);stroke:var(--ink);stroke-width:3}
 .graph-value{font:700 12px "JetBrains Mono",monospace;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}
+.graph-node.current+.graph-value{fill:#2a2200}
 .graph-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--ok);text-anchor:middle}
 .graph-frontier,.graph-order{margin:4px 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
@@ -643,7 +653,7 @@ html:`
 <p>こんな表を、値が変わるたびに1行ずつ書き足していくだけ。</p>
 <h3>このアプリの使い方</h3>
 <ol>
-<li>各レッスンの<b>ステップ実行</b>で、コードが1行ずつ動く様子を見る(黄色＝今の行、オレンジ＝値が変わった変数)</li>
+<li>各レッスンの<b>ステップ実行</b>で、コードが1行ずつ動く様子を見る(黄色のマーカー＝今の行と、値が変わった箱)</li>
 <li>余裕があれば、紙とペンで同じトレースをしてみる</li>
 <li>慣れてきたら、レッスン画面の <b>🤔 ボタン</b>で「予想モード」に。値が変わる前に「次はいくつ？」と聞かれます</li>
 <li>最後の<b>確認問題</b>で、本番形式の問題を解く</li>
@@ -1163,7 +1173,7 @@ pts:['enqueue は末尾に追加、dequeue は先頭から取り出す(FIFO)','h
 trap:'配列の左から右へ読む順と、キューから出る順が一致するとは限らない。必ず head から配列の端を越えて折り返す。',
 code:L(`
 大域: 整数型の配列: q  // 要素数4。最初は空
-定数: N ← 4
+大域: 整数型: N ← 4
 大域: 整数型: head ← 1, tail ← 1, count ← 0
 ○enqueue(整数型: x)
   q[tail] ← x
@@ -1206,7 +1216,7 @@ def({id:'tree',title:'二分木をたどる',sub:'左の部分木 → 自分 →
 pts:['二分木は、各節が左と右の子を持つ木構造','中間順(通りがけ順)は「左 → 自分 → 右」の順に出力','再帰呼出し中は、親の処理を一時停止して子の処理を行う','子が未定義なら、その場所では何も出力せず戻る'],
 trap:'木の図を見て値を読むだけではない。関数の呼び出し順と、値を出力するタイミングを分けて追う。',
 code:L(`
-○walk(節: node)
+○walk(Node: node)
   if (node ≠ 未定義)
     walk(node.left)
     node.val を出力
@@ -1218,7 +1228,7 @@ run(){const {st,S,steps}=rec();
  const nodes={1:{value:8,left:2,right:3},2:{value:3,left:4,right:5},3:{value:10,left:6,right:7},4:{value:1,left:null,right:null},5:{value:6,left:null,right:null},6:{value:9,left:null,right:null},7:{value:14,left:null,right:null}};
  const viewNodes=Object.entries(nodes).map(([id,node])=>[Number(id),node.value]);let current=null,seen=[],order=[];
  const sync=()=>{st.tree={nodes:viewNodes,current,seen:seen.slice(),order:order.slice()}};
- sync();st.calls=['メイン: walk(root)'];S(-1,'root は値 8。左に 3、右に 10 がある二分木を、中間順でたどる。');
+ sync();st.calls=['メイン: walk(root)'];S(6,'walk(root) で根(値 8)から始める。左に 3、右に 10 がある二分木を、中間順でたどる。');
  function walk(id,parent=null){
   const node=id===null?null:nodes[id],label=node?'walk('+node.value+')':'walk(未定義)';
   st.calls.push(label);st.v={node:node?node.value:null};current=id;sync();
@@ -1246,13 +1256,13 @@ def({id:'bfsdfs',title:'グラフ探索：幅優先と深さ優先',sub:'訪問�
 pts:['幅優先探索(BFS)は近い頂点から順に見る。待ち行列(キュー)を使う','深さ優先探索(DFS)は行ける所まで進み、戻って別の道を見る。再帰やスタックを使う','訪問済みを記録しないと、つながりを往復して同じ場所を回り続ける','同じグラフでも、探索方法で訪問順が変わる'],
 trap:'隣接する頂点を調べる順序が変わると訪問順も変わる。このレッスンでは A→B→C…の順に確認する。',
 code:L(`
-○bfs(開始点: start)
+○bfs(文字列型: start)
   queue ← {start}
   visited[start] ← true
   while (queue ≠ 空)
     v ← queueの先頭を取り出す
     v を出力
-    for each 隣接頂点 u
+    for each v に隣接する頂点 u
       if (visited[u] = false)
         visited[u] ← true
         queueの末尾に u を追加
@@ -1260,14 +1270,14 @@ code:L(`
     endfor
   endwhile
 
-○dfs(頂点: v)
-  if (visited[v] = false)
-    visited[v] ← true
-    v を出力
-    for each 隣接頂点 u
+○dfs(文字列型: v)
+  visited[v] ← true
+  v を出力
+  for each v に隣接する頂点 u
+    if (visited[u] = false)
       dfs(u)
-    endfor
-  endif
+    endif
+  endfor
 `),
 run(){const {st,S,steps}=rec();
  const nodes=[['A',160,24],['B',82,84],['C',238,84],['D',48,146],['E',132,146],['F',208,146],['G',292,146]];
@@ -1293,22 +1303,22 @@ run(){const {st,S,steps}=rec();
   }
  }
  const bfsOrder=order.join(' → ');
- S(10,'BFSの訪問順は '+bfsOrder+'。近い段の頂点を先に処理した。');
+ S(12,'queue が空になったので終了。BFSの訪問順は '+bfsOrder+'。近い段の頂点を先に処理した。',{cond:['queue ≠ 空',false]});
  mode='深さ優先探索 (DFS)';frontierLabel='再帰中の呼び出し';current=null;edge=null;discovered=[];order=[];frontier=[];st.out='';st.v={方法:'DFS'};sync();
- st.calls=[];S(11,'同じグラフを DFS で開始。隣接頂点を A→B→C の順に確認する。');
+ st.calls=[];S(14,'同じグラフを DFS で開始。隣接頂点を A→B→C の順に確認する。');
  function dfs(v,parent=null){
   st.calls.push('dfs('+v+')');current=v;frontier=st.calls.map(call=>call.slice(4,-1));st.v={方法:'DFS',現在:v};sync();
-  S(11,'dfs('+v+') を呼び出す。');
-  const isNew=!discovered.includes(v);S(12,'visited['+v+'] = false ?', {cond:['visited['+v+'] = false',isNew]});
-  if(!isNew){st.calls.pop();current=parent;frontier=st.calls.map(call=>call.slice(4,-1));edge=parent?[parent,v]:null;sync();S(17,v+' は訪問済み。ここで戻る。');return}
-  discovered.push(v);order.push(v);st.out=order.join(' → ');sync();S(13,v+' を訪問済みにする。');
-  S(14,v+' を訪問順に追加。順番: '+st.out);
+  S(14,'dfs('+v+') の中へ。');
+  discovered.push(v);sync();S(15,v+' を訪問済みにする。');
+  order.push(v);st.out=order.join(' → ');sync();S(16,v+' を訪問順に追加。順番: '+st.out);
   for(const u of adj[v]){
-   edge=[v,u];current=v;sync();S(15,v+' から隣の '+u+' へ進めるか確認。');
-   if(discovered.includes(u)){S(16,u+' は訪問済み。ここでは先へ進まず戻る。',{cond:['visited['+u+'] = false',false]});continue}
-   S(16,u+' は未訪問。ここからさらに奥へ進む。',{cond:['visited['+u+'] = false',true]});dfs(u,v);
-   current=v;edge=[v,u];frontier=st.calls.map(call=>call.slice(4,-1));sync();S(17,u+' の探索から '+v+' に戻った。');
+   edge=[v,u];current=v;sync();S(17,v+' の隣の '+u+' を確認する。');
+   if(discovered.includes(u)){S(18,u+' は訪問済み。先へは進まない。',{cond:['visited['+u+'] = false',false]});continue}
+   S(18,u+' は未訪問。ここからさらに奥へ進む。',{cond:['visited['+u+'] = false',true]});
+   S(19,'dfs('+u+') を呼び出す。'+v+' の処理はここで一時停止。');dfs(u,v);
+   current=v;edge=[v,u];frontier=st.calls.map(call=>call.slice(4,-1));st.v={方法:'DFS',現在:v};sync();S(19,u+' の探索が終わり、'+v+' に戻ってきた。');
   }
+  S(21,v+' の隣を全部確認したので、呼び出し元へ戻る。');
   st.calls.pop();current=parent;frontier=st.calls.map(call=>call.slice(4,-1));edge=parent?[parent,v]:null;sync();
  }
  dfs('A',null);
@@ -2580,7 +2590,7 @@ function renderVis(s,prev,x){
  }
  if(s.graph){
   const pos=new Map(s.graph.nodes.map(([name,x,y])=>[name,[x,y]]));
-  h+='<div class="vlabel">'+esc(s.graph.mode)+' — 黄色＝今いる頂点、緑＝訪問順</div><div class="graph-wrap"><svg class="graph-svg" viewBox="0 0 340 178" role="img" aria-label="頂点を順にたどるグラフ図">';
+  h+='<div class="vlabel">'+esc(s.graph.mode)+'(黄色＝今いる頂点、青＝発見済み、緑＝訪問済み・数字は訪問した順)</div><div class="graph-wrap"><svg class="graph-svg" viewBox="0 0 340 178" role="img" aria-label="頂点を順にたどるグラフ図">';
   s.graph.edges.forEach(([a,b])=>{const p=pos.get(a),q=pos.get(b),active=s.graph.edge&&((s.graph.edge[0]===a&&s.graph.edge[1]===b)||(s.graph.edge[0]===b&&s.graph.edge[1]===a));h+='<line class="graph-edge'+(active?' active':'')+'" x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'"/>'});
   s.graph.nodes.forEach(([name,x,y])=>{const cls=name===s.graph.current?'current':s.graph.order.includes(name)?'visited':s.graph.discovered.includes(name)?'discovered':'';const rank=s.graph.order.indexOf(name);h+='<circle class="graph-node '+cls+'" cx="'+x+'" cy="'+y+'" r="17"/><text class="graph-value" x="'+x+'" y="'+y+'">'+esc(name)+'</text>'+(rank>=0?'<text class="graph-rank" x="'+(x+16)+'" y="'+(y+18)+'">'+(rank+1)+'</text>':'')});
   h+='</svg><p class="graph-frontier"><b>'+esc(s.graph.frontierLabel)+':</b> ['+s.graph.frontier.map(esc).join(', ')+']</p><p class="graph-order">訪問順: '+(s.graph.order.length?s.graph.order.map(esc).join(' → '):'まだありません')+'</p></div>';
@@ -2664,10 +2674,13 @@ function runQuiz(qs,{title,small,lessonId,back}){
   markDay();save();
   const nextId=lessonId?ORDER[ORDER.indexOf(lessonId)+1]:null;
   const msg=sc===qs.length?'全問正解！ この調子。':sc>=qs.length*0.6?'合格ライン。間違えた問題は「復習」に入っています。':'もう一度ステップ実行を見直すと、つかめるはず。';
-  app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="result"><div class="rlabel">結果</div><div class="big">'+sc+' / '+qs.length+'</div><p>'+msg+'</p></div></div>';
+  const wrongN=qs.length-sc;
+  app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="result"><div class="rlabel">結果</div><div class="big">'+sc+' / '+qs.length+'</div><p>'+msg+'</p></div>'+
+   '<div class="rlist">'+qs.map((q,k)=>'<div class="ri '+(st.res[k]?'ok':'ng')+'"><span class="mk">'+(st.res[k]?'○':'✕')+'</span><span class="rq">'+esc(q.q.split('\n')[0])+'</span>'+(st.res[k]?'':'<span class="ra">正解：'+esc(q.c[0])+'</span>')+'</div>').join('')+'</div>'+
+   (wrongN?'<p class="rnote">間違えた '+wrongN+'問は「復習」に入りました。<button class="glink" onclick="go(\'review\')">今すぐ復習する</button></p>':'')+'</div>';
   let b='';
   if(lessonId&&LESSONS[lessonId].run)b+='<button class="cb" style="flex:1" onclick="go(\''+lessonId+'\')">レッスンを見直す</button>';
-  if(nextId)b+='<button class="cb main" onclick="go(\''+nextId+'\')">次のレッスン：'+esc(LESSONS[nextId].title)+'</button>';
+  if(nextId)b+='<button class="cb main nxt" onclick="go(\''+nextId+'\')"><small>次のレッスン</small>'+esc(LESSONS[nextId].title)+'</button>';
   else b+='<button class="cb main" onclick="go(\'home\')">ホームへ</button>';
   ctrl.innerHTML='<div class="ctrl"><div class="in">'+b+'</div></div>';
  }
@@ -2695,10 +2708,14 @@ function viewCheat(){
  ['大域: 整数型: x','大域変数(どの関数からも使える)'],
  ['未定義の値','何も入っていない状態'],
  ['p.next','インスタンス p のメンバ変数 next(連結リストで頻出)'],
+ ['a ← {{1, 2}, {3, 4, 5}} と a[i][j]','配列の配列。i番目の配列の j番目(行ごとに長さが違ってよい)'],
+ ['x ← Counter(0)','クラスからインスタンスを作る(コンストラクタを呼ぶ)'],
+ ['x.add(5)','インスタンス x のメソッド add を呼ぶ'],
+ ['(i mod N) + 1','1〜N を循環する番号(環状キューなどで頻出)'],
  ['// コメント','説明書き。実行されない']];
- let h=topbar('REFERENCE','擬似言語 早見表')+'<div class="wrap"><div class="card prose"><table><tr><th>書き方</th><th>意味</th></tr>'+rows.map(r=>'<tr><td><code>'+esc(r[0])+'</code></td><td>'+esc(r[1])+'</td></tr>').join('')+'</table>';
+ let h=topbar('早見表','擬似言語の書き方')+'<div class="wrap"><div class="card prose"><table><tr><th>書き方</th><th>意味</th></tr>'+rows.map(r=>'<tr><td><code>'+esc(r[0])+'</code></td><td>'+esc(r[1])+'</td></tr>').join('')+'</table>';
  h+='<h3>演算子の優先順位(高い順)</h3><ol><li><code>not</code>、単項の <code>＋ −</code></li><li><code>× ÷ mod</code></li><li><code>＋ −</code></li><li><code>= ≠ &lt; ≤ &gt; ≥</code></li><li><code>and</code></li><li><code>or</code></li></ol>';
- h+='<h3>トレースのやり方(本番用)</h3><ol><li>メモ用紙(CBTではメモ用ボードなど)に、変数名を横一列に書く</li><li>1行実行するごとに、値が変わった変数だけ下に書き足す</li><li>配列は箱を描いて、番号(1から)を上に振る</li><li>ループは「今何周目か」と条件の真偽を毎回書く</li><li>関数呼び出しは「どこで待っているか」を矢印で残す</li></ol></div></div>';
+ h+='<h3>トレースのやり方(本番用)</h3><ol><li>試験中に使えるメモ用紙に、変数名を横一列に書く(使える用紙や筆記具は受験案内で確認)</li><li>1行実行するごとに、値が変わった変数だけ下に書き足す</li><li>配列は箱を描いて、番号(1から)を上に振る</li><li>ループは「今何周目か」と条件の真偽を毎回書く</li><li>関数呼び出しは「どこで待っているか」を矢印で残す</li></ol></div></div>';
  app.innerHTML=h;
 }
 
