@@ -592,7 +592,7 @@ details.card{border-radius:14px}
 .cells.cmp .cell{width:32px;height:32px;margin-right:7px;font-size:13.5px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
-.crypto-flow{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--tile)}.crypto-track{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:5px}.crypto-step{flex:0 0 105px;min-height:76px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);opacity:.55;transition:.2s}.crypto-step.done{opacity:.85;border-color:var(--ok)}.crypto-step.active{opacity:1;transform:translateY(-3px);border:2px solid var(--amb);background:var(--ambSoft)}.crypto-step small,.crypto-step b,.crypto-step span{display:block}.crypto-step small,.crypto-step span{font-size:10px;color:var(--mute)}.crypto-step b{font-size:12px;margin:5px 0}.crypto-arrow{font-weight:800;color:var(--mute)}.crypto-note{margin:6px 0 0;padding:8px;border-radius:8px;background:var(--accSoft);font-size:12px;font-weight:700;line-height:1.5}</style>
+.crypto-flow{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--tile)}.crypto-track{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:5px}.crypto-step{flex:0 0 105px;min-height:76px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);opacity:.55;transition:.2s}.crypto-step.done{opacity:.85;border-color:var(--ok)}.crypto-step.active{opacity:1;transform:translateY(-3px);border:2px solid var(--amb);background:var(--ambSoft)}.crypto-step small,.crypto-step b,.crypto-step span{display:block}.crypto-step small,.crypto-step span{font-size:10px;color:var(--mute)}.crypto-step b{font-size:12px;margin:5px 0}.crypto-arrow{font-weight:800;color:var(--mute)}.crypto-note{margin:6px 0 0;padding:8px;border-radius:8px;background:var(--accSoft);font-size:12px;font-weight:700;line-height:1.5}.backup-visual{margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--tile);overflow-x:auto}.backup-table{min-width:430px}.backup-head,.backup-row{display:grid;grid-template-columns:82px repeat(4,minmax(78px,1fr));gap:5px;margin:5px 0}.backup-head span,.backup-cell,.backup-label{padding:7px 5px;border-radius:8px;text-align:center;font-size:11px}.backup-head span{color:var(--mute);font-weight:700}.backup-label{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink)}.backup-cell{background:var(--bg);border:1px solid var(--line);color:var(--mute);min-height:38px}.backup-cell.saved{color:var(--ink);border-color:var(--line);opacity:.8}.backup-row.selected .backup-label{background:var(--accSoft);color:var(--acc)}.backup-row.selected .backup-cell.saved{border-color:var(--acc);background:var(--accSoft);opacity:1}.backup-cell.current{outline:2px solid var(--amb);outline-offset:1px}.backup-restore{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;align-items:center;font-size:12px}.backup-chip{padding:5px 8px;border-radius:999px;background:var(--okSoft);color:var(--ok);font-weight:800}.backup-caption{font-size:12px;line-height:1.5;color:var(--mute);margin:8px 0 0}</style>
 </head>
 <body>
 <div id="app"></div>
@@ -640,7 +640,7 @@ const UNITS=[
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','matrix','func']},
  {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
  {name:'3. データ構造',ids:['stack','queue','list','listc','tree','heap','hash']},
- {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto','network']}
+ {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto','network','backup']}
 ];
 
 const LESSONS={};
@@ -1723,7 +1723,40 @@ quiz:[
  {q:'外部公開サーバを社内LANから分けて置く区画は？',c:['DMZ','VPN','WAF','DNS'],e:'DMZは公開サーバを社内LANから隔離する区画。'}
 ]});
 
+/* ---------- backup: full・differential・incremental ---------- */
+def({id:'backup',title:'バックアップ方式と復元手順',sub:'日ごとの保存内容を並べて違いを確認',
+pts:['フルは毎回すべてを保存。復元は簡単だが保存量が大きい','差分は前回のフル以降の変更をまとめて保存。日が進むほど大きくなる','増分は直前のバックアップ以降の変更だけを保存。保存量は小さいが復元に全段階が必要','差分の復元はフル＋最新差分。増分の復元はフル＋各増分'],
+trap:'「何を基準に変更を比べるか」が違う。差分＝最後のフル、増分＝直前のバックアップ。',
+code:L(\`フル: 毎回すべてのデータを保存
+差分: 前回のフルからの変更を保存
+増分: 前回のバックアップからの変更を保存
+差分を復元: フル + 最新の差分
+増分を復元: フル + すべての増分\`),
+run(){const {st,S,steps}=rec();
+ const show=(mode,day,restore=false)=>{st.backup={mode,day,restore}};
+ S(-1,'A・B・Cのデータがあり、1日ごとにB、C、Aが更新される例で比較します。');
+ show('full',0);S(0,'フルバックアップ: 1日目は全データ A+B+C を保存。');
+ show('full',1);S(0,'2日目も全データ A+B+C を保存。');
+ show('full',2);S(0,'3日目も全データ A+B+C を保存。');
+ show('full',3);S(0,'4日目も全データ。保存は重いが、復元は最新の1つで済む。');
+ show('full',3,true);S(3,'フルの復元は、必要な日のフルバックアップを1つ選ぶ。');
+ show('diff',0);S(1,'差分: まずフルで A+B+C を保存。');
+ show('diff',1);S(1,'2日目は前回フルから変わった B を保存。');
+ show('diff',2);S(1,'3日目は前回フルからの B と C をまとめて保存。');
+ show('diff',3);S(1,'4日目は B・C・A の変更が累積し、差分が大きくなる。');
+ show('diff',3,true);S(3,'差分の復元はフルと、復元したい日の最新差分だけ。');
+ show('inc',0);S(2,'増分: 最初にフルで A+B+C を保存。');
+ show('inc',1);S(2,'2日目は直前のバックアップ以降に変わった B だけ。');
+ show('inc',2);S(2,'3日目は新たに変わった C だけ。');
+ show('inc',3);S(2,'4日目は新たに変わった A だけ。各日の保存量は小さい。');
+ show('inc',3,true);S(4,'増分の復元はフルの後に、必要な増分を古い順ですべて適用。');return steps;},
+quiz:[
+ {q:'差分バックアップから4日目の状態へ戻すとき必要なものは？',c:['フルバックアップと4日目の差分','フルと2〜4日目の差分すべて','4日目の差分だけ','毎日のフルすべて'],e:'差分は前回のフル以降の変更を累積するので、フルと最新の差分があれば復元できる。'},
+ {q:'保存量は小さいが、復元時にフルと複数のバックアップを順に適用する方式は？',c:['増分バックアップ','差分バックアップ','フルバックアップ','ミラーリング'],e:'増分は直前からの変更だけを保存するため、復元にはフルとその後の増分すべてが必要。'}
+]});
+
 /* ---------- extra drill ---------- */
+
 
 
 const DRILL=[
@@ -2362,7 +2395,7 @@ zc({id:'sec-access',cat:'sec',t:'アクセス制御と最小権限',
  p:'誰が何にどこまでアクセスできるかを決める。原則は「必要最小限の権限」。',
  b:['最小権限の原則：業務に必要な権限だけを与える','職務分掌：申請と承認を別の人にする','異動・退職したらすぐにアカウントを無効化','アカウントの共有は禁止(誰が何をしたか追えなくなる)','アクセスログを取り、定期的に確認する'],
  tip:'「管理を楽にするため全員に管理者権限」「共用アカウント」は必ず×。'});
-zc({id:'sec-backup',cat:'sec',t:'バックアップ(フル・差分・増分)',
+zc({id:'sec-backup',cat:'sec',t:'バックアップ(フル・差分・増分)',lesson:'backup',
  svg:SV(150,['日','月','火','水'].map((d,i)=>tx(90+i*62,18,d,{s:11,w:700})).join('')+
   tx(8,44,'差分',{s:12,w:700,a:'start',c:CV.acc})+rc(66,30,48,22,CV.ambS,CV.amb,3)+tx(90,45,'フル',{s:10,w:700})+[1,2,3].map(i=>rc(128+(i-1)*62,30,14+i*14,22,CV.accS,CV.acc,3)).join('')+
   tx(8,88,'増分',{s:12,w:700,a:'start',c:CV.amb})+rc(66,74,48,22,CV.ambS,CV.amb,3)+tx(90,89,'フル',{s:10,w:700})+[1,2,3].map(i=>rc(128+(i-1)*62,74,18,22,CV.accS,CV.acc,3)).join('')+
@@ -2676,7 +2709,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero'],backup:['sec-backup','sec-incident']};
 [['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
 
 
@@ -2951,6 +2984,19 @@ function renderVis(s,prev,x){
   h+='<div class="crypto-flow"><b>'+(s.net.mode==='web'?'🌐 公開Webサイトへの通信':'🔐 在宅端末からのVPN接続')+'</b><div class="crypto-track">';
   items.forEach((it,i)=>{const cl=i===s.net.step?'active':i<s.net.step?'done':'';h+='<div class="crypto-step '+cl+'"><small>STEP '+(i+1)+'</small><b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span></div>'+(i<items.length-1?'<span class="crypto-arrow" aria-hidden="true">→</span>':'')});
   h+='</div><div class="crypto-note">'+(s.net.mode==='web'?'外部 → FW → WAF → DMZのWebサーバ → 内部FW → Appサーバ → DB。外部からDBへの直接接続は拒否。':'本人確認 → 暗号化トンネル → ゲートウェイで権限確認 → 許可された社内資源へ。')+'</div></div>';
+ }
+ if(s.backup){
+  const rows=[
+   ['フル',['全 A+B+C','全 A+B+C','全 A+B+C','全 A+B+C']],
+   ['差分',['フル A+B+C','ΔB','ΔB+ΔC','ΔB+ΔC+ΔA']],
+   ['増分',['フル A+B+C','ΔB','ΔC','ΔA']]
+  ];
+  const names={full:'フル',diff:'差分',inc:'増分'};
+  h+='<div class="backup-visual"><div class="vlabel">保存内容の比較 — 変更: 2日目 B、3日目 C、4日目 A</div><div class="backup-table"><div class="backup-head"><span>方式</span>'+['1日目','2日目','3日目','4日目'].map(x=>'<span>'+x+'</span>').join('')+'</div>';
+  rows.forEach(([name,cells])=>{const key=name==='フル'?'full':name==='差分'?'diff':'inc',selected=key===s.backup.mode;h+='<div class="backup-row '+(selected?'selected':'')+'"><div class="backup-label">'+name+'</div>'+cells.map((cell,i)=>{const saved=i<=s.backup.day,cur=i===s.backup.day;return '<div class="backup-cell '+(saved?'saved ':'')+(cur?'current':'')+'">'+(saved?cell:'—')+'</div>'}).join('')+'</div>'});
+  h+='</div>';
+  if(s.backup.restore){const recipe=s.backup.mode==='full'?['選んだ日のフル']:s.backup.mode==='diff'?['フル','最新の差分']:['フル','増分1','増分2','増分3'];h+='<div class="backup-restore"><b>復元に使うもの:</b>'+recipe.map(x=>'<span class="backup-chip">'+x+'</span>').join(' → ')+'</div>'}
+  h+='<p class="backup-caption">'+(s.backup.mode==='full'?'保存量は最大。復元は単純。':s.backup.mode==='diff'?'差分は前回フルから累積。復元はフル＋最新差分。':'増分は直前からの変更だけ。復元はフル＋増分を古い順にすべて。')+'</p></div>';
  }
  Object.keys(s.a).forEach(name=>{
   const arr=s.a[name],pa=prev&&prev.a[name];
