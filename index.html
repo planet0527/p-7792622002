@@ -544,6 +544,16 @@ details.card{border-radius:14px}
 .gi.abbr b{font-family:"JetBrains Mono",monospace;font-size:16px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
+
+.tree-wrap{max-width:360px;margin:4px auto 12px;text-align:center;overflow-x:auto}
+.tree-svg{display:block;width:min(100%,340px);height:auto;margin:0 auto}
+.tree-edge{stroke:var(--line);stroke-width:2}
+.tree-node{fill:var(--tile);stroke:var(--line);stroke-width:2;transition:fill .2s,stroke .2s}
+.tree-node.seen{fill:var(--accS);stroke:var(--acc)}
+.tree-node.current{fill:var(--ambS);stroke:var(--amb);stroke-width:3}
+.tree-value{font:700 12px "JetBrains Mono",monospace;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}
+.tree-rank{font:700 9px "JetBrains Mono",monospace;fill:var(--acc);text-anchor:middle}
+.tree-order{margin:4px 0 0;color:var(--mute);font-size:12px;font-weight:700;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -591,7 +601,7 @@ const UNITS=[
  {name:'0. はじめに',ids:['intro']},
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','func']},
  {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','recur','intcalc']},
- {name:'3. データ構造',ids:['stack','list']},
+ {name:'3. データ構造',ids:['stack','queue','tree','list']},
  {name:'4. 情報セキュリティ(問17〜20)',ids:['sec']}
 ];
 
@@ -1136,7 +1146,93 @@ quiz:[
  {q:'空のキューに enqueue(1), enqueue(2), enqueue(3), dequeue(), enqueue(4), dequeue() の順に操作した。2回目の dequeue() で取り出される値は？(キューは先に入れたものが先に出る)',c:['2','1','3','4'],e:'キューは FIFO。1回目の dequeue で 1、2回目で 2 が出る。後から入れた 4 は最後尾に並ぶだけ。'}
 ]});
 
-/* ---------- 15 list ---------- */
+/* ---------- queue: 配列を回して使うFIFO ---------- */
+def({id:'queue',title:'キューと環状バッファ',sub:'先に入れたものから取り出す。配列の端で折り返す',
+pts:['enqueue は末尾に追加、dequeue は先頭から取り出す(FIFO)','head は次に取り出す位置、tail は次に入れる位置','tail が配列の最後に来たら先頭へ戻す(環状バッファ)','count = 0 は空、count = N は満杯。満杯では追加できない','count を使うと head と tail が同じでも「空」と「満杯」を区別できる'],
+trap:'配列の左から右へ読む順と、キューから出る順が一致するとは限らない。必ず head から配列の端を越えて折り返す。',
+code:L(`
+大域: 整数型の配列: q ← {未定義, 未定義, 未定義, 未定義}
+定数: N ← 4
+大域: 整数型: head ← 1, tail ← 1, count ← 0
+○enqueue(整数型: x)
+  q[tail] ← x
+  tail ← (tail mod N) + 1
+  count ← count + 1
+○整数型: dequeue()
+  整数型: x ← q[head]
+  head ← (head mod N) + 1
+  count ← count − 1
+  return x
+`),
+run(){const {st,S,steps}=rec();const N=4,q=[null,null,null,null];let head=1,tail=1,count=0,stale=[];
+ const sync=()=>{st.a.q=q.slice();st.p.q={head,tail};st.dim.q=stale.slice()};
+ st.v={head,tail,count};sync();S(0,'容量4の配列 q。head は次に出す位置、tail は次に入れる位置、count は中身の個数。');
+ S(2,'最初は head = tail = 1、count = 0。空なので、ここから enqueue する。');
+ const enqueue=x=>{
+  st.calls=['メイン: enqueue('+x+')'];st.v={head,tail,count};S(3,'enqueue('+x+') を呼ぶ。末尾に追加する。');
+  st.calls.push('enqueue(x='+x+')');st.v={head,tail,count,x};
+  const at=tail;q[at-1]=x;stale=stale.filter(k=>k!==at);sync();st.hl.q=[at];S(4,'q['+at+'] に '+x+' を入れる。黄色の場所が今回の追加先。');
+  tail=tail%N+1;count++;st.v={head,tail,count};sync();S(5,'tail ← ('+at+' mod 4) + 1 = '+tail+'。'+(at===4?'配列の端を越えたので先頭へ戻った。':'次に入れる場所へ進んだ。'));
+  st.v={head,tail,count};S(6,'count を1増やして '+count+'。');st.calls.pop();
+ };
+ const dequeue=()=>{
+  st.calls=['メイン: dequeue()'];st.v={head,tail,count};S(7,'dequeue() を呼ぶ。先頭から取り出す。');
+  st.calls.push('dequeue()');const at=head,x=q[at-1];st.v={head,tail,count,x};st.hl.q=[at];S(8,'head が指す q['+at+'] の '+x+' を取り出す。最後に入れた 7 ではなく、先に入れた値が出る。');
+  stale.push(at);head=head%N+1;st.v={head,tail,count,x};sync();S(9,'head ← ('+at+' mod 4) + 1 = '+head+'。読み終えた箱は薄く表示する(値は配列に残る)。');
+  count--;st.v={head,tail,count,x};S(10,'count を1減らして '+count+'。');
+  st.out=(st.out?st.out+' → ':'')+x;S(11,x+' を取り出した。');st.calls.pop();
+ };
+ enqueue(3);enqueue(7);enqueue(5);dequeue();enqueue(9);dequeue();enqueue(2);enqueue(6);
+ S(-1,'最後は head = tail = 3 でも count = 4。空ではなく満杯。取り出す順は head から 5 → 9 → 2 → 6。配列の端を越えると先頭へ回る。');
+ return steps;},
+quiz:[
+ {q:'空のキューに enqueue(4), enqueue(6), dequeue(), enqueue(8), dequeue() と操作した。2回目に取り出される値は？',c:['6','4','8','未定義'],e:'キューは FIFO。1回目の dequeue で先に入れた 4 が出る。次に出るのは 6。'},
+ {q:'容量4の環状キューで tail = 4 のとき、1つ追加した後の tail は？(tail ← (tail mod 4) + 1)',c:['1','4','0','5'],e:'(4 mod 4) + 1 = 1。配列の最後の次は先頭へ戻る。'}}
+]});
+
+/* ---------- tree: 再帰で二分木をたどる ---------- */
+def({id:'tree',title:'二分木をたどる',sub:'左の部分木 → 自分 → 右の部分木を動きで見る',
+pts:['二分木は、各節が左と右の子を持つ木構造','中間順(通りがけ順)は「左 → 自分 → 右」の順に出力','再帰呼出し中は、親の処理を一時停止して子の処理を行う','子が未定義なら、その場所では何も出力せず戻る'],
+trap:'木の図を見て値を読むだけではない。関数の呼び出し順と、値を出力するタイミングを分けて追う。',
+code:L(`
+○walk(節: node)
+  if (node ≠ 未定義)
+    walk(node.left)
+    node.val を出力
+    walk(node.right)
+  endif
+walk(root)
+`),
+run(){const {st,S,steps}=rec();
+ const nodes={1:{value:8,left:2,right:3},2:{value:3,left:4,right:5},3:{value:10,left:6,right:7},4:{value:1,left:null,right:null},5:{value:6,left:null,right:null},6:{value:9,left:null,right:null},7:{value:14,left:null,right:null}};
+ const viewNodes=Object.entries(nodes).map(([id,node])=>[Number(id),node.value]);let current=null,seen=[],order=[];
+ const sync=()=>{st.tree={nodes:viewNodes,current,seen:seen.slice(),order:order.slice()}};
+ sync();st.calls=['メイン: walk(root)'];S(-1,'root は値 8。左に 3、右に 10 がある二分木を、中間順でたどる。');
+ function walk(id,parent=null){
+  const node=id===null?null:nodes[id],label=node?'walk('+node.value+')':'walk(未定義)';
+  st.calls.push(label);st.v={node:node?node.value:'未定義'};current=id;sync();
+  S(0,node?label+' の中へ。今いる節は '+node.value+'。':'子がない場所で walk(未定義) を呼んだ。');
+  if(!node){S(1,'node ≠ 未定義 は偽。ここでは何も出力せず、呼出し元へ戻る。',{cond:['node ≠ 未定義',false]});st.calls.pop();current=parent;st.v={node:parent?nodes[parent].value:'呼出し元'};sync();return}
+  S(1,'node ≠ 未定義 は真。まず左の部分木へ進む。',{cond:['node ≠ 未定義',true]});
+  S(2,node.value+' の左の子 '+(node.left?nodes[node.left].value:'未定義')+' に walk を呼び出す。');walk(node.left,id);
+  st.calls[st.calls.length-1]='walk('+node.value+')';st.v={node:node.value};current=id;
+  seen.push(id);order.push(node.value);st.out=order.join(' → ');sync();
+  S(3,'左の処理から戻った。自分の値 '+node.value+' を出力。出力順: '+st.out);
+  S(4,node.value+' の右の子 '+(node.right?nodes[node.right].value:'未定義')+' に walk を呼び出す。');walk(node.right,id);
+  st.calls.pop();current=parent;st.v={node:parent?nodes[parent].value:'呼出し元'};sync();
+ }
+ walk(1,null);
+ st.calls=['メイン'];st.v={出力:order.join(' → ')};current=null;sync();
+ S(-1,'完了。中間順は左の部分木を全部見てから自分、最後に右の部分木。出力は '+order.join(' → ')+ '。');
+ return steps;},
+quiz:[
+ {q:'この木を中間順(左→自分→右)でたどったとき、最初に出力される値は？',c:['1','3','8','10'],e:'8から左へ、3からさらに左へ進むと1。左端の節から出力が始まる。'},
+ {q:'値 8 が出力されるタイミングは？',c:['左の部分木を全部たどったあと','最初に出力する','右の部分木をたどったあと','葉だけを出力したあと'],e:'中間順は「左の部分木 → 自分 → 右の部分木」。8は左側(1,3,6)をたどり終わったあとに出力する。'}}
+]});
+
+/* ---------- 16 list ---------- */
+
+
 def({id:'list',title:'連結リスト',sub:'「次はどこ？」をたどって進む',
 pts:['各要素が「次の要素の番号(next)」を持っている','先頭から next をたどると、順番に読める','0(や「未定義」)が来たら終わり','並べ替えずに、next の書き換えだけで挿入・削除ができる'],
 trap:'配列の並び順(1,2,3,4番目)と、リストとしての順番は別物。必ず next をたどる。',
@@ -1167,7 +1263,7 @@ quiz:[
  {q:'同じリストから 20(要素番号4)を取り除きたい。どの代入をすればよい？',c:['next[2] ← next[4]','next[4] ← 0','next[2] ← 0','next[1] ← next[4]'],e:'20 の直前は 10(要素番号2)。10 の次を「20 の次(30)」にすれば、20 を飛ばしてたどるようになる。next[2] ← 0 だとリストが 10 で終わってしまう。'}
 ]});
 
-/* ---------- 16 sec ---------- */
+/* ---------- 17 sec ---------- */
 def({id:'sec',title:'情報セキュリティ4問の取り方',sub:'問17〜20。知識＋「組織としてどう動くか」',
 html:`
 <p>問17〜20の4問は、擬似言語ではなく<b>状況設定つきのセキュリティ問題</b>。長めの事例を読んで「適切な対応はどれか」を選ぶ形が多いです。アルゴリズムより短時間で解ける問題も多いので、<b>ここは確実に取りに行く</b>のが作戦。</p>
@@ -1381,6 +1477,18 @@ const DIAG={
   ar('M128,46 L170,30',CV.amb)+ar('M128,62 L170,80',CV.acc)+
   tx(176,28,'mod 10 → ',{s:12,m:true,a:'start'})+tx(254,29,'8',{s:20,w:900,m:true,a:'start',c:CV.amb})+tx(272,28,'(一の位)',{s:10,a:'start',c:CV.mute})+
   tx(176,86,'÷ 10 の商 → ',{s:12,m:true,a:'start'})+tx(266,87,'472',{s:18,w:900,m:true,a:'start',c:CV.acc}))},
+ queue:{cap:'キューは先頭から取り出し、末尾へ追加。環状キューでは末尾が配列の端に着くと先頭へ戻る',svg:SV(142,
+  tx(170,14,'配列の箱と、論理的な順番は別',{s:11,w:700})+
+  rc(58,32,224,48,CV.bg,CV.mute,10)+[3,7,5,'空'].map((v,i)=>cb(68+i*51,42,String(v),i===0?AMB:ACC)).join('')+
+  [1,2,3,4].map((n,i)=>tx(88+i*51,94,'['+n+']',{s:9,m:true,c:CV.mute})).join('')+
+  ar('M87,112 L87,96',CV.amb)+tx(87,128,'head',{s:10,w:700,m:true,c:CV.amb})+
+  ar('M240,96 L240,112',CV.acc)+tx(240,128,'tail',{s:10,w:700,m:true,c:CV.acc})+
+  tx(170,140,'取り出す順: 3 → 7 → 5',{s:11,w:700}))},
+ tree:{cap:'二分木の中間順は「左の部分木 → 自分 → 右の部分木」。黄色の節が今見ている場所',svg:SV(166,
+  ln('M170,43 L92,68 M170,43 L248,68 M92,91 L50,119 M92,91 L134,119 M248,91 L206,119 M248,91 L290,119',CV.line,2)+
+  cb(170,30,'8',ACC)+cb(92,78,'3')+cb(248,78,'10')+
+  cb(50,132,'1')+cb(134,132,'6')+cb(206,132,'9')+cb(290,132,'14')+
+  tx(170,160,'左 → 自分 → 右',{s:11,w:700,c:CV.acc}))},
  stack:{cap:'後から入れたものが先に出る(LIFO)。積み上げた皿と同じ',svg:SV(140,
   '<path d="M126,30 L126,128 L200,128 L200,30" style="fill:none;stroke:var(--mute);stroke-width:3"/>'+
   cb(144,88,'3')+cb(144,52,'7',AMB)+
@@ -1509,7 +1617,7 @@ zc({id:'ds-stack',cat:'ds',t:'スタック(LIFO)',lesson:'stack',svg:DIAG.stack.
  p:'後から入れたものが先に出る(Last In First Out)。push で積み、pop で取り出す。',an:'積み重ねたお皿。最後に置いた皿から使う。',
  b:['配列 + top(一番上の番号) で実装できる','pop しても値は消えず、top が下がるだけ','用途：関数呼び出しの管理、元に戻す(Undo)、かっこの対応チェック'],
  tip:'操作列から「最後に取り出される値」を問う問題は、スタックの中身を横に書きながら追う。'});
-zc({id:'ds-queue',cat:'ds',t:'キュー(FIFO)',
+zc({id:'ds-queue',cat:'ds',t:'キュー(FIFO)',lesson:'queue',
  svg:SV(116,rc(60,36,220,48,CV.bg,CV.mute,10)+cb(80,46,'3',ACC)+cb(130,46,'7')+cb(180,46,'5')+
   ar('M70,60 L18,60',CV.amb)+tx(36,30,'dequeue',{s:11,w:700,m:true,c:CV.amb})+tx(36,100,'先頭から出す',{s:10,c:CV.amb})+
   ar('M332,60 L262,60',CV.acc)+tx(300,30,'enqueue',{s:11,w:700,m:true,c:CV.acc})+tx(300,100,'末尾に入れる',{s:10,c:CV.acc})+
@@ -1839,7 +1947,7 @@ zc({id:'syn-method',cat:'syn',t:'メソッドとコンストラクタ',
  b:['クラス名と同じ名前の ○クラス名(…) がコンストラクタ','x.add(5) は「x というインスタンスの add を呼ぶ」','メソッドの中のメンバ変数は、呼び出したインスタンス自身のもの','インスタンスが2つあれば、count も2つ別々にある'],
  tip:'表(クラスの説明表)に「コンストラクタ」「メソッド」「メンバ変数」が載っていることが多い。先にその表を読む。'});
 /* ---------- 追加：データ構造・アルゴリズム ---------- */
-zc({id:'ds-bintree',cat:'ds',t:'二分木をクラスで表す(left・right)',
+zc({id:'ds-bintree',cat:'ds',t:'二分木をクラスで表す(left・right)',lesson:'tree',
  svg:SV(150,[[120,14,'8'],[30,92,'3'],[210,92,'10']].map(n=>rc(n[0],n[1],100,32,CV.tile,CV.ink,6)+'<line x1="'+(n[0]+30)+'" y1="'+n[1]+'" x2="'+(n[0]+30)+'" y2="'+(n[1]+32)+'" style="stroke:var(--ink);stroke-width:1.2"/><line x1="'+(n[0]+70)+'" y1="'+n[1]+'" x2="'+(n[0]+70)+'" y2="'+(n[1]+32)+'" style="stroke:var(--ink);stroke-width:1.2"/>'+tx(n[0]+15,n[1]+20,'L',{s:9,c:CV.mute})+tx(n[0]+50,n[1]+21,n[2],{s:14,w:700,m:true})+tx(n[0]+85,n[1]+20,'R',{s:9,c:CV.mute})).join('')+
   ar('M135,46 L80,90',CV.acc)+ar('M205,46 L258,90',CV.acc)+tx(92,66,'left',{s:10,w:700,m:true,c:CV.acc})+tx(246,66,'right',{s:10,w:700,m:true,c:CV.acc})+
   tx(45,142,'未定義',{s:9,c:CV.mute})+tx(115,142,'未定義',{s:9,c:CV.mute})+ln('M45,124 L45,134 M115,124 L115,134',CV.mute,1.2,true)),
@@ -2127,7 +2235,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
 
 
 /* ---- ずかん view ---- */
@@ -2364,6 +2472,15 @@ function renderVis(s,prev,x){
   s.chain.nodes.forEach((nd,i)=>{const cur=s.chain.cur===nd[0],seen=s.chain.seen.includes(nd[0]);
    h+='<div class="node'+(cur?' cur':'')+(seen&&!cur?' seen':'')+'"><span class="ni">['+nd[0]+']</span><b>'+nd[1]+'</b>'+(cur?'<span class="np">p</span>':'')+'</div><span class="link">→</span>';});
   h+='<div class="node end'+(s.chain.cur===null&&s.chain.seen.length?' cur':'')+'"><b>0</b><span class="ni">終わり</span></div></div>';
+ }
+ if(s.tree){
+  const pos={1:[160,24],2:[90,76],3:[230,76],4:[48,132],5:[132,132],6:[188,132],7:[272,132]};
+  const edges=[[1,2],[1,3],[2,4],[2,5],[3,6],[3,7]];
+  const nodeMap=new Map(s.tree.nodes);
+  h+='<div class="vlabel">二分木の中間順（黄色＝今いる節、緑＝出力済み）</div><div class="tree-wrap"><svg class="tree-svg" viewBox="0 0 320 160" role="img" aria-label="二分木を左、自分、右の順にたどる図">';
+  edges.forEach(([a,b])=>{const p=pos[a],q=pos[b];h+='<line class="tree-edge" x1="'+p[0]+'" y1="'+(p[1]+15)+'" x2="'+q[0]+'" y2="'+(q[1]-16)+'"/>'});
+  s.tree.nodes.forEach(([id,value])=>{const p=pos[id],cls=id===s.tree.current?'current':s.tree.seen.includes(id)?'seen':'';const rank=s.tree.order.indexOf(id);h+='<circle class="tree-node '+cls+'" cx="'+p[0]+'" cy="'+p[1]+'" r="16"/><text class="tree-value" x="'+p[0]+'" y="'+p[1]+'">'+esc(value)+'</text>'+(rank>=0?'<text class="tree-rank" x="'+(p[0]+16)+'" y="'+(p[1]+17)+'">'+(rank+1)+'</text>':'')});
+  h+='</svg><p class="tree-order">訪問順: '+(s.tree.order.length?s.tree.order.map(id=>esc(nodeMap.get(id))).join(' → '):'まだ出力していません')+'</p></div>';
  }
  Object.keys(s.a).forEach(name=>{
   const arr=s.a[name],pa=prev&&prev.a[name];
