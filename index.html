@@ -1969,7 +1969,7 @@ function viewKiroku(){
  h+='<div class="card bk"><div class="vlabel">バックアップと引っ越し</div>'+
   '<p>記録は<b>このスマホのブラウザに自動で保存</b>されています(最終保存 '+fmtTime(P.updated)+')。機種変更のときや、ブラウザのデータを消す前は、下のコードを控えておくと元に戻せます。</p>'+
   '<p class="small">※ iPhoneでは「Safariで開いたとき」と「ホーム画面に追加したアプリ」の記録が別々です。片方からコードをコピーして、もう片方で復元すると引き継げます。</p>'+
-  '<div class="bkrow"><button class="btn" id="bkcopy">📋 バックアップコードをコピー</button><button class="btn ghost" id="bkfile">💾 ファイルに保存</button></div>'+
+  '<div class="bkrow"><button class="btn" id="bkcopy">📋 バックアップコードをコピー</button>'+(window.self===window.top?'<button class="btn ghost" id="bkfile">💾 ファイルに保存</button>':'')+'</div>'+
   '<textarea id="bkout" class="bkta" readonly hidden></textarea><div id="bkmsg" class="bkmsg"></div>'+
   '<div class="vlabel" style="margin-top:14px">復元する</div>'+
   '<textarea id="bkin" class="bkta" placeholder="ここにバックアップコード(KB1: から始まる文字)を貼り付け"></textarea>'+
@@ -1980,7 +1980,7 @@ function viewKiroku(){
  document.getElementById('bkcopy').onclick=async()=>{const code=enc(P);const ta=document.getElementById('bkout');ta.value=code;ta.hidden=false;
   try{await navigator.clipboard.writeText(code);msg('bkmsg','コピーしました。メモアプリやLINEの自分宛てなどに貼って保管してください。',true)}
   catch(e){ta.focus();ta.select();msg('bkmsg','自動コピーできませんでした。上の文字を長押しして全部コピーしてください。',false)}};
- document.getElementById('bkfile').onclick=()=>{try{const b=new Blob([JSON.stringify(P)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kamokuB-record-'+dkey()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);msg('bkmsg','ファイルを保存しました(ダウンロード／ファイルアプリを確認)。',true)}catch(e){msg('bkmsg','この環境ではファイル保存ができません。コードのコピーを使ってください。',false)}};
+ if(document.getElementById('bkfile'))document.getElementById('bkfile').onclick=()=>{try{const b=new Blob([JSON.stringify(P)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kamokuB-record-'+dkey()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);msg('bkmsg','ファイルを保存しました(ダウンロード／ファイルアプリを確認)。',true)}catch(e){msg('bkmsg','この環境ではファイル保存ができません。コードのコピーを使ってください。',false)}};
  const restore=(o,id)=>{if(!validP(o))throw new Error('bad');
   document.getElementById(id).innerHTML='<div class="confirm"><p>今の記録を、このバックアップ(完了 '+ORDER.filter(k=>o.done&&o.done[k]).length+'レッスン・結果 '+((o.hist||[]).length)+'件)で置き換えます。よろしいですか？</p><button class="btn" id="rsy2">置き換える</button> <button class="btn ghost" id="rsn2">やめる</button></div>';
   document.getElementById('rsy2').onclick=()=>{P=Object.assign(blankP(),o);save();viewKiroku();window.scrollTo(0,0)};
