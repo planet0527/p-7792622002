@@ -354,6 +354,14 @@ details.card{padding:10px 14px}
 .mrev .mq{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mrev .mt{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--mute)}
 .mrev p{font-size:14px;margin:6px 0}.mca b{color:var(--ok)}
+.tfig{margin-top:12px;border:1.5px solid var(--acc);border-radius:16px;padding:12px 12px 8px;background:var(--card)}
+.tfh{font-size:13px;font-weight:900;color:var(--acc);margin-bottom:6px}
+.tchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tchip{border:1.5px solid var(--line);background:var(--bg);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:700}
+.tchip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.tbody .zfig{margin-bottom:8px}
+.tbody .zpoint{font-size:14.5px}
+.tmore summary{font-size:13px;font-weight:700;color:var(--acc);cursor:pointer;margin:4px 0}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -1778,6 +1786,40 @@ function viewYougo(){
  draw('');document.getElementById('gq').oninput=e=>draw(e.target.value);
 }
 
+/* ---- 解説に出てきた用語を図で ---- */
+const TERM_EXTRA=[['互除法','al-gcd'],['フィボナッチ','al-recur'],['階乗','al-recur'],['逆順','al-string'],['反転','al-string'],['累積','syn-array'],['後入れ先出し','ds-stack'],['先入れ先出し','ds-queue'],['LIFO','ds-stack'],['FIFO','ds-queue'],['リング','ds-queue'],['p.next','syn-class'],['next','ds-list'],['添字','syn-array'],['要素番号','syn-array'],['偶数','syn-arith'],['余り','syn-arith'],['2進','al-radix'],['1 の個数','al-bit'],['最小値','al-select'],['最大値','al-linear'],['暫定','al-linear'],['退避','al-bubble'],['交換','al-bubble'],['整列済み','al-binary'],['selectionSort','al-select'],['bubbleSort','al-bubble'],['binSearch','al-binary'],['findMax','al-linear'],['見つか','al-linear'],['ヒープ','ds-heap'],['回文','al-string'],['比較回数','al-order'],['二重ループ','syn-for'],['前判定','syn-loop'],['後判定','syn-loop'],['優先順位','syn-prec'],['かっこの中','syn-prec'],['ネットワークから切り離','sec-incident'],['再起動','sec-incident'],['真正性','sec-sign'],['改ざん','sec-hash'],['暗号化','sec-crypto'],['秘密鍵','sec-crypto'],['公開鍵','sec-crypto'],['標的型','sec-mail'],['アクセス権','sec-access'],['アカウント','sec-access'],['レインボーテーブル','sec-hash'],['指紋','sec-auth'],['フルバックアップ','sec-backup']];
+const GENERIC=new Set(['変数','代入','配列','型','for','while','if','do〜while','関数','トレース','and','or','not','要素数','木','根','葉','商']);
+let TERM_LIST=null;
+function termList(){if(TERM_LIST)return TERM_LIST;const L=[];
+ GLOSSB.forEach(g=>{const names=[g[0]].concat(g[0].split(/[・\/]/)).concat((g[1]||'').split(/[・：:]/).map(x=>x.trim()).filter(x=>/^[A-Za-z]{3,6}$/.test(x))).map(x=>x.trim()).filter(x=>x.length>=2);
+  [...new Set(names)].forEach(n=>L.push([n,g[3],GENERIC.has(n)?.3:1]))});
+ TERM_EXTRA.forEach(t=>L.push([t[0],t[1],.8]));
+ [['戻り値','syn-func'],['return','syn-func'],['引数','syn-func'],['手続き','syn-func']].forEach(t=>L.push([t[0],t[1],.45]));
+ return TERM_LIST=L.sort((a,b)=>b[0].length-a[0].length)}
+const QFIG={'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
+function termCards(q,lessonId){
+ if(QFIG[q.id])return QFIG[q.id].map(id=>({id}));
+ const text=[q.q,q.e].concat(q.c).join('\n');const code=q.code||'';const score={};const isSec=q.cat==='sec';
+ const strip=(t,src)=>t==='素数'?src.replace(/要素数/g,''):src;
+ termList().forEach(([t,id,w])=>{const ascii=/^[A-Za-z.() ]+$/.test(t);const re=ascii?new RegExp('(^|[^A-Za-z])'+t.replace(/[.()]/g,'\\$&')+'($|[^A-Za-z])',/^[a-z]/.test(t)?'':'i'):null;
+  const zc=Z.find(z=>z.id===id);if(!zc||(zc.cat==='sec')!==isSec)return;
+  const hit=src=>{src=strip(t,src);return re?re.test(src):src.includes(t)};
+  let sc=0;if(hit(text))sc+=w*(1+Math.min(t.length,8)/4);if(code&&hit(code))sc+=w*.5;
+  if(sc>0)score[id]=(score[id]||0)+sc});
+ let ids=Object.keys(score).filter(id=>score[id]>=.9).sort((a,b)=>score[b]-score[a]).slice(0,3);
+ if(!ids.length&&lessonId&&L2Z[lessonId])ids=L2Z[lessonId].slice(0,2);
+ if(!ids.length&&q.cat==='sec')ids=['sec-cia'];
+ if(!ids.length&&q.cat==='algo')ids=['syn-trace'];
+ return ids.filter(id=>Z.find(z=>z.id===id)).map(id=>({id}));
+}
+function termFigHTML(q,lessonId){const list=termCards(q,lessonId);if(!list.length)return '';
+ return '<div class="tfig"><div class="tfh">📚 この問題に出てきた用語を図で確認</div><div class="tchips">'+list.map((x,i)=>'<button class="tchip'+(i===0?' on':'')+'" data-z="'+x.id+'">'+esc(Z.find(z=>z.id===x.id).t)+'</button>').join('')+'</div><div class="tbody">'+tCardBody(list[0].id)+'</div></div>'}
+function tCardBody(id){const c=Z.find(z=>z.id===id);
+ return '<div class="zfig">'+c.svg+'</div><p class="zpoint">'+esc(c.p)+'</p>'+(c.an?'<div class="zan"><span>たとえ</span>'+esc(c.an)+'</div>':'')+
+  '<details class="tmore"><summary>もっと詳しく</summary><ul class="zb">'+c.b.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'+(c.tip?'<div class="trap"><b>⚠ 試験では</b>　'+esc(c.tip)+'</div>':'')+'</details>'}
+document.addEventListener('click',e=>{const b=e.target.closest('.tchip');if(!b)return;const box=b.closest('.tfig');
+ box.querySelectorAll('.tchip').forEach(x=>x.classList.toggle('on',x===b));box.querySelector('.tbody').innerHTML=tCardBody(b.dataset.z)});
+
 /* ================= views ================= */
 let timer=null;
 function stopTimer(){if(timer){clearInterval(timer);timer=null}}
@@ -1984,7 +2026,7 @@ function runQuiz(qs,{title,small,lessonId,back}){
    const k=+b.dataset.k,ok=opts[k].ok;st.res[st.i]=ok;
    app.querySelectorAll('.ch').forEach((x,j)=>{x.disabled=true;if(opts[j].ok)x.classList.add('ok');else if(j===k)x.classList.add('ng')});
    if(ok)P.wrong=P.wrong.filter(x=>x!==q.id);else if(!P.wrong.includes(q.id))P.wrong.push(q.id);save();
-   document.getElementById('exp').innerHTML='<div class="exp"><span class="v '+(ok?'ok':'ng')+'">'+(ok?'正解！':'ざんねん。正解は「'+esc(q.c[0])+'」')+'</span>'+esc(q.e)+(TT[q.id]?'<div class="vlabel" style="margin-top:10px">トレース表</div>'+miniTable(TT[q.id]):'')+'</div>';
+   document.getElementById('exp').innerHTML='<div class="exp"><span class="v '+(ok?'ok':'ng')+'">'+(ok?'正解！':'ざんねん。正解は「'+esc(q.c[0])+'」')+'</span>'+esc(q.e)+(TT[q.id]?'<div class="vlabel" style="margin-top:10px">トレース表</div>'+miniTable(TT[q.id]):'')+'</div>'+termFigHTML(q,lessonId||q.id.split('-')[0]);
    const last=st.i===qs.length-1;
    ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb main" id="qn">'+(last?'結果を見る':'次の問題 →')+'</button></div></div>';
    document.getElementById('qn').onclick=()=>{if(last)finish();else{st.i++;render()}};
@@ -2150,7 +2192,7 @@ function finishMock(M,timeup){
  M.qs.forEach((q,k)=>{const sec=Math.round(M.spent[k]/1000),o=M.opts[k],a=M.ans[k];
   h+='<details class="mrev '+(res[k]?'ok':'ng')+'"><summary><span class="mk">'+(res[k]?'○':'✕')+'</span><span class="mq">問'+(k+1)+'　'+esc(q.q.split('\n')[0]).slice(0,40)+'</span><span class="mt">'+(sec>=300?'⏱':'')+Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')+'</span></summary>'+
    (q.code?'<div class="qcode">'+q.code.split('\n').map(hi).join('\n')+'</div>':'')+
-   '<p class="mya">あなたの答え：'+(a===null?'<b style="color:var(--ng)">未回答</b>':esc(o[a].t))+'</p><p class="mca">正解：<b>'+esc(q.c[0])+'</b></p><p>'+esc(q.e)+'</p>'+(TT[q.id]?miniTable(TT[q.id]):'')+'</details>'});
+   '<p class="mya">あなたの答え：'+(a===null?'<b style="color:var(--ng)">未回答</b>':esc(o[a].t))+'</p><p class="mca">正解：<b>'+esc(q.c[0])+'</b></p><p>'+esc(q.e)+'</p>'+(TT[q.id]?miniTable(TT[q.id]):'')+termFigHTML(q,q.id.split('-')[0])+'</details>'});
  h+='</div>';app.innerHTML=h;window.scrollTo(0,0);
  ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb" style="flex:1" onclick="go(\'review\')">間違えた問題を復習</button><button class="cb main" onclick="go(\'moshi\')">もう一度</button></div></div>';
 }
