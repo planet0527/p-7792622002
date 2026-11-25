@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="description" content="基本情報技術者試験 科目Bの擬似言語を、1行ずつ動く図で学べる無料の非公式学習アプリ">
+<meta name="theme-color" content="#1f6f68">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="科目B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>科目B ゼロから — 基本情報 擬似言語トレース道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee;--card:#fffdf8;--ink:#1f1d1a;--mute:#6f6a60;--line:#e4ddd0;
+  --acc:#1f6f68;--accSoft:#d9ece8;--amb:#e09a2d;--ambSoft:#fbe9c9;
+  --ok:#2f8a4c;--okSoft:#dcf0e1;--ng:#c4473a;--ngSoft:#f7dcd8;
+  --tile:#ffffff;--tileSh:#d6ccb9;--code:#23211d;--codeInk:#ece5d6;--codeCur:#3a3428;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#161513;--card:#1f1e1b;--ink:#eee8db;--mute:#a19b8e;--line:#33302a;
+  --acc:#5cbcb0;--accSoft:#1d3532;--amb:#f0b452;--ambSoft:#3d311b;
+  --ok:#5cc07c;--okSoft:#1c3323;--ng:#e9766a;--ngSoft:#3d211e;
+  --tile:#2a2824;--tileSh:#0b0a09;--code:#100f0d;--codeCur:#2f2a20;
+}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Kaku Gothic New",system-ui,sans-serif;-webkit-text-size-adjust:100%}
+body{line-height:1.7}
+button{font:inherit;color:inherit;cursor:pointer}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.wrap{max-width:980px;margin:0 auto;padding:12px 16px 200px}
+a{color:var(--acc)}
+
+/* ---------- home ---------- */
+.hero{padding:22px 4px 8px}
+.kicker{font-size:12px;letter-spacing:.14em;color:var(--acc);font-weight:700}
+.hero h1{font-size:32px;line-height:1.25;margin:6px 0 8px;font-weight:900;letter-spacing:-.01em}
+.hero p{margin:0;color:var(--mute);font-size:15px}
+.prog{display:flex;align-items:center;gap:12px;margin:18px 0 6px}
+.bar{flex:1;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width .4s}
+.prog b{font-size:13px;color:var(--mute);font-weight:500;white-space:nowrap}
+.btn{border:0;border-radius:14px;padding:13px 18px;font-weight:700;background:var(--acc);color:#fff;font-size:15px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.amb{background:var(--amb);color:#231a08}
+.btn:disabled{opacity:.4;cursor:default}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:22px 0}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center}
+.fact b{display:block;font-size:20px;font-weight:900;line-height:1.2}
+.fact span{font-size:11px;color:var(--mute)}
+@media (max-width:520px){.facts{grid-template-columns:repeat(2,1fr)}}
+.unit{margin:26px 0 8px}
+.unit h2{font-size:13px;letter-spacing:.1em;color:var(--mute);margin:0 0 10px;font-weight:700}
+.list{display:grid;gap:8px}
+.item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;width:100%}
+.item:active{transform:scale(.99)}
+.num{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--bg);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--tileSh)}
+.item.done .num{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 3px 0 color-mix(in srgb,var(--acc) 60%,#000)}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font-size:15px;font-weight:700}
+.item .t small{display:block;color:var(--mute);font-size:12px;line-height:1.4}
+.item .sc{font-size:12px;color:var(--mute);white-space:nowrap}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center}
+.tool b{display:block;font-size:14px}
+.tool small{color:var(--mute);font-size:11px}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 12px}
+.back{border:0;background:var(--card);border:1px solid var(--line);border-radius:10px;width:38px;height:38px;font-size:18px}
+.top .tt{flex:1;min-width:0}
+.top .tt small{display:block;font-size:11px;color:var(--acc);font-weight:700;letter-spacing:.08em}
+.top .tt b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- lesson ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:12px 0}
+.points{margin:0;padding-left:1.2em}
+.points li{margin:2px 0}
+.trap{background:var(--ambSoft);border-radius:12px;padding:10px 12px;font-size:14px;margin-top:10px}
+.trap b{color:var(--amb)}
+.grid2{display:grid;gap:12px}.grid2>div{min-width:0}
+details.card summary{font-weight:700;cursor:pointer;list-style:none}details.card summary::-webkit-details-marker{display:none}details.card summary::after{content:' ＋';color:var(--mute)}details[open].card summary::after{content:' −'}details.card ul{margin-top:8px}
+@media (min-width:860px){.grid2{grid-template-columns:1.05fr 1fr;align-items:start}}
+.codebox{background:var(--code);color:var(--codeInk);border-radius:16px;padding:10px 0;max-height:27vh;overflow:auto;font-family:"JetBrains Mono","Zen Kaku Gothic New",monospace;font-size:13px;line-height:1.75}
+.ln{display:flex;white-space:pre;padding:0 12px 0 0;border-left:3px solid transparent;transition:background .2s}
+.ln .no{width:34px;flex:none;text-align:right;padding-right:10px;color:#6b6457;user-select:none}
+.ln.cur{background:var(--codeCur);border-left-color:var(--amb)}
+.ln.cur .no{color:var(--amb)}
+.k{color:#7cc4f0;font-weight:600}.ty{color:#c9a0f0}.nm{color:#f5c26b}.st{color:#9fd88a}.op{color:#f08f7c;font-weight:700}.cm{color:#7d776b;font-style:italic}.pt{color:#8fd3c7}
+.vis{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:120px}
+.vlabel{font-size:11px;letter-spacing:.12em;color:var(--mute);font-weight:700;margin:2px 0 8px}
+.vars{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.var{display:flex;align-items:stretch;border-radius:10px;overflow:hidden;border:1.5px solid var(--line);box-shadow:0 3px 0 var(--tileSh);background:var(--tile)}
+.var .n{padding:4px 8px;font-size:12px;background:var(--bg);color:var(--mute);font-family:"JetBrains Mono",monospace;display:flex;align-items:center}
+.var .v{padding:4px 10px;font-weight:700;font-family:"JetBrains Mono",monospace;min-width:34px;text-align:center}
+.var.chg{border-color:var(--amb)}
+.var.chg .v{background:var(--ambSoft);animation:pop .4s}
+.arr{margin:6px 0 14px;overflow-x:auto;padding-bottom:4px}
+.arr .nm2{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--mute);margin-bottom:2px}
+.cells{display:flex;gap:6px;width:max-content}
+.col{display:flex;flex-direction:column;align-items:center;gap:3px;width:46px}
+.idx{font-size:10px;color:var(--mute);font-family:"JetBrains Mono",monospace}
+.cell{width:44px;height:44px;border-radius:9px;background:var(--tile);border:1.5px solid var(--line);box-shadow:0 4px 0 var(--tileSh);display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;transition:all .25s}
+.cell.hl{border-color:var(--amb);background:var(--ambSoft);transform:translateY(-3px);box-shadow:0 7px 0 var(--tileSh)}
+.cell.chg{animation:pop .45s}
+.cell.dim{opacity:.28}
+.cell.done{background:var(--accSoft);border-color:var(--acc)}
+.cell.empty{color:var(--mute);font-weight:400}
+.ptr{font-size:11px;font-family:"JetBrains Mono",monospace;color:var(--acc);font-weight:700;min-height:16px;text-align:center;line-height:1.2}
+.ptr:not(:empty)::before{content:"▲";display:block;font-size:8px}
+@keyframes pop{0%{transform:scale(.85)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.calls{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.frame{border:1.5px solid var(--line);border-radius:10px;padding:5px 10px;font-family:"JetBrains Mono",monospace;font-size:12px;background:var(--bg);color:var(--mute)}
+.frame.topf{border-color:var(--acc);color:var(--ink);background:var(--accSoft);font-weight:600}
+.out{font-family:"JetBrains Mono",monospace;font-size:13px;background:var(--bg);border-radius:10px;padding:6px 10px;border:1px dashed var(--line)}
+.msg{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amb);border-radius:12px;padding:7px 12px;font-size:14px;margin:0;min-height:62px;line-height:1.55}
+.msg .sn{display:inline!important;margin-right:8px}
+.msg .sn{font-size:11px;color:var(--mute);font-weight:700;letter-spacing:.08em;display:block}
+.ctrl{position:fixed;left:0;right:0;bottom:0;z-index:6;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.ctrl .in{max-width:980px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.cb{border:1.5px solid var(--line);background:var(--card);border-radius:12px;height:46px;min-width:46px;font-size:17px;font-weight:700}
+.cb.main{flex:1;background:var(--acc);border-color:var(--acc);color:#fff;font-size:15px}
+.cb.amb{flex:1;background:var(--amb);border-color:var(--amb);color:#231a08;font-size:15px}
+.slider{width:100%;accent-color:var(--acc);margin:0}
+.sliderrow{display:none}@media (min-width:700px){.sliderrow{display:block}.codebox{max-height:420px!important}}
+details.card{padding:10px 14px}
+.stepinfo{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin:0 0 4px}
+.prose h3{font-size:16px;margin:18px 0 6px}
+.prose p,.prose li{font-size:15px}
+.prose table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+.prose td,.prose th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.prose th{background:var(--bg);font-weight:700}
+.prose code{font-family:"JetBrains Mono",monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:0 5px;font-size:.92em}
+
+/* ---------- quiz ---------- */
+.qhead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--mute);margin:8px 0}
+.dots{display:flex;gap:5px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--ok)}.dots i.ng{background:var(--ng)}.dots i.now{background:var(--amb)}
+.qtext{font-size:17px;font-weight:700;line-height:1.6;margin:6px 0 10px}
+.qcode{background:var(--code);color:var(--codeInk);border-radius:14px;padding:12px 14px;font-family:"JetBrains Mono","Zen Kaku Gothic New",monospace;font-size:13px;white-space:pre;overflow-x:auto;line-height:1.75;margin:0 0 12px}
+.choices{display:grid;gap:8px}
+.ch{display:flex;gap:12px;align-items:center;text-align:left;width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;box-shadow:0 3px 0 var(--tileSh)}
+.ch .lb{width:28px;height:28px;flex:none;border-radius:8px;background:var(--bg);display:grid;place-items:center;font-weight:700;font-size:14px}
+.ch .tx{font-family:"JetBrains Mono","Zen Kaku Gothic New",monospace;white-space:pre-wrap}
+.ch.ok{border-color:var(--ok);background:var(--okSoft)}
+.ch.ok .lb{background:var(--ok);color:#fff}
+.ch.ng{border-color:var(--ng);background:var(--ngSoft)}
+.ch.ng .lb{background:var(--ng);color:#fff}
+.ch:disabled{cursor:default}
+.exp{margin-top:12px;border-radius:14px;padding:12px 14px;font-size:15px;background:var(--card);border:1px solid var(--line)}
+.exp .v{font-weight:900;font-size:16px;display:block;margin-bottom:4px}
+.exp .v.ok{color:var(--ok)}.exp .v.ng{color:var(--ng)}
+.result{text-align:center;padding:30px 10px}
+.result .big{font-size:56px;font-weight:900;line-height:1;margin:10px 0}
+.result p{color:var(--mute)}
+.empty-note{color:var(--mute);text-align:center;padding:40px 10px}
+
+/* ===== visual layer ===== */
+.cell,.box3{position:relative;box-shadow:none!important;--face:var(--tile);--side:var(--tileSh);--edge:var(--line)}
+.cell::before,.box3::before{content:"";position:absolute;left:-1.5px;top:-8px;width:100%;height:7px;background:var(--face);border:1.5px solid var(--edge);border-bottom:0;transform:skewX(-45deg);transform-origin:bottom left;filter:brightness(1.04)}
+.cell::after,.box3::after{content:"";position:absolute;right:-9px;top:-5px;width:7px;height:100%;background:var(--side);border:1.5px solid var(--edge);border-left:0;transform:skewY(-45deg);transform-origin:top left}
+.cell{width:40px;height:40px;margin:10px 9px 0 0;border-radius:2px}
+.cell.hl{--face:var(--ambSoft);--edge:var(--amb);--side:color-mix(in srgb,var(--amb) 55%,#000);transform:translateY(-6px)}
+.cell.done{--face:var(--accSoft);--edge:var(--acc);--side:color-mix(in srgb,var(--acc) 55%,#000)}
+.cell.dim{opacity:.22}
+.col{width:46px}
+.cells{gap:6px}
+.arcwrap{display:inline-block}
+.arc{display:block}
+.box3{min-width:44px;height:40px;padding:0 8px;display:grid;place-items:center;background:var(--tile);border:1.5px solid var(--line);font-family:"JetBrains Mono",monospace;font-weight:700;font-size:16px;margin:10px 10px 0 0;border-radius:2px}
+.box3.empty{color:var(--mute);font-weight:400}
+.vars{gap:6px 10px;align-items:flex-start}
+.var{flex-direction:column;align-items:flex-start;border:0;box-shadow:none;background:transparent;overflow:visible;position:relative}
+.var .n{background:transparent;padding:0 2px;font-size:12px;font-weight:700;color:var(--ink)}
+.var .old{font-size:11px;color:var(--mute);text-decoration:line-through;height:15px;line-height:15px;font-family:"JetBrains Mono",monospace;padding-left:2px}
+.var.chg .box3{--face:var(--ambSoft);--edge:var(--amb);--side:color-mix(in srgb,var(--amb) 55%,#000);background:var(--ambSoft);border-color:var(--amb);animation:drop .45s}
+.var.chg .v{background:none}
+@keyframes drop{0%{transform:translateY(-14px);opacity:.3}70%{transform:translateY(2px)}100%{transform:none;opacity:1}}
+.cond{display:flex;align-items:center;gap:10px;border-radius:12px;padding:8px 12px;margin-bottom:12px;font-weight:700;animation:pop .35s}
+.cond.t{background:var(--okSoft);color:var(--ok)}.cond.f{background:var(--ngSoft);color:var(--ng)}
+.cond .cl{font-size:11px;letter-spacing:.1em;opacity:.8}
+.cond .ce{flex:1;font-family:"JetBrains Mono",monospace;font-size:17px;color:var(--ink)}
+.cond .cv{font-size:18px;font-weight:900}
+.ctag,.jtag{margin-left:10px;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;align-self:center;line-height:1.6;font-family:"Zen Kaku Gothic New",sans-serif}
+.ctag.t{background:#2f8a4c;color:#fff}.ctag.f{background:#c4473a;color:#fff}
+.jtag{background:#e09a2d;color:#231a08}
+.ln.prev{background:rgba(255,255,255,.04)}
+.ln.prev .no{color:#a89a7a}
+.chain{display:flex;align-items:center;flex-wrap:wrap;gap:18px 4px;margin-bottom:14px;padding-top:16px}
+.node{position:relative;min-width:50px;padding:6px 8px 4px;border:1.5px solid var(--line);border-radius:10px;background:var(--tile);text-align:center;font-family:"JetBrains Mono",monospace;line-height:1.2}
+.node b{display:block;font-size:16px}
+.node .ni{display:block;font-size:10px;color:var(--mute)}
+.node.cur{border-color:var(--amb);background:var(--ambSoft);transform:translateY(-3px)}
+.node.seen{border-color:var(--acc);background:var(--accSoft)}
+.node.end{border-style:dashed;min-width:44px}
+.node .np{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--amb)}
+.link{color:var(--mute);font-weight:700}
+.vstack{display:inline-flex;flex-direction:column;gap:4px;padding:4px 12px 0;border-left:3px solid var(--mute);border-right:3px solid var(--mute);position:relative;margin-left:30px}
+.vrow{display:flex;align-items:center;gap:8px;position:relative}
+.vrow .idx{position:absolute;left:-44px;width:30px;text-align:right}
+.vrow .cell{margin:8px 8px 0 0}
+.ptr2{position:absolute;left:72px;white-space:nowrap;font-size:12px;font-weight:700;color:var(--acc);font-family:"JetBrains Mono",monospace}
+.vbase{height:3px;background:var(--mute);margin:4px -12px 0}
+.ttwrap{max-height:200px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.tt{border-collapse:collapse;width:100%;font-family:"JetBrains Mono",monospace;font-size:12px}
+.tt th{position:sticky;top:0;background:var(--bg);font-weight:700;padding:5px 8px;border-bottom:1px solid var(--line);text-align:center}
+.tt td{padding:3px 8px;border-bottom:1px solid var(--line);text-align:center}
+.tt td.lno{color:var(--mute)}
+.tt td.chg{font-weight:700}
+.tt td.same{color:var(--mute)}
+.tt .dot{opacity:.35}
+.tt tr.now{background:var(--ambSoft)}
+.tt-t{color:var(--ok);font-weight:700}.tt-f{color:var(--ng);font-weight:700}
+.diagcard{padding:10px 12px 6px}
+.diag{width:100%;max-width:560px;height:auto;display:block;margin:0 auto;font-family:"Zen Kaku Gothic New",sans-serif}
+.diagcap{line-height:1.5;text-align:center;font-size:13px;color:var(--mute);margin:2px 0 4px}
+.mini{border-collapse:collapse;margin:8px 0 2px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.mini td,.mini th{border:1px solid var(--line);padding:2px 10px;text-align:center}
+.mini th{background:var(--bg)}
+.mini tr:last-child td{background:var(--ambSoft);font-weight:700}
+
+/* ===== zukan ===== */
+.zbanner{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin:16px 0 0}
+.zbanner button{text-align:left;border:0;border-radius:16px;padding:14px;background:var(--acc);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--acc) 55%,#000)}
+.zbanner button+button{background:var(--amb);color:#231a08;box-shadow:0 4px 0 color-mix(in srgb,var(--amb) 55%,#000)}
+.zbanner b{display:block;font-size:17px;font-weight:900}
+.zbanner span{display:block;font-size:12px;line-height:1.45;opacity:.92;margin-top:2px}
+.zsearch{width:100%;font:inherit;font-size:16px;padding:11px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);margin:6px 0 10px}
+.zchips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:8px}
+.zchip{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:700}
+.zchip small{color:var(--mute);font-weight:500}
+.zchip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}.zchip.on small{color:var(--bg);opacity:.7}
+.ztoc{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.ztoc a{font-size:12px;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 8px}
+.zh{font-size:13px;letter-spacing:.1em;color:var(--mute);margin:24px 0 8px;font-weight:700}
+.zc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin:0 0 14px;scroll-margin-top:70px}
+.zc.flash{animation:flash 1.6s}
+@keyframes flash{0%,40%{box-shadow:0 0 0 4px var(--amb)}100%{box-shadow:0 0 0 0 transparent}}
+.ztop{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ztag{font-size:11px;font-weight:700;border-radius:6px;padding:1px 8px;background:var(--accSoft);color:var(--acc)}
+.zt-sec{background:var(--ngSoft);color:var(--ng)}.zt-al{background:var(--ambSoft);color:var(--amb)}.zt-ts{background:var(--okSoft);color:var(--ok)}.zt-ds{background:var(--accSoft);color:var(--acc)}.zt-syn{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.zlink{border:1.5px solid var(--acc);color:var(--acc);background:transparent;border-radius:99px;font-size:12px;font-weight:700;padding:2px 10px}
+.zc h3{font-size:19px;font-weight:900;margin:6px 0 8px;line-height:1.35}
+.zfig{background:var(--bg);border-radius:14px;padding:10px 6px;margin-bottom:10px}
+.zfig .diag{max-width:460px}
+.zpoint{font-weight:700;font-size:15.5px;margin:0 0 8px;background:linear-gradient(transparent 62%,var(--ambSoft) 62%)}
+.zan{background:var(--bg);border:1.5px dashed var(--line);border-radius:12px;padding:8px 12px;font-size:14px;margin:0 0 8px}
+.zan span{display:inline-block;font-size:11px;font-weight:700;background:var(--acc);color:#fff;border-radius:6px;padding:0 7px;margin-right:6px}
+.zb{margin:0 0 6px;padding-left:1.2em;font-size:14.5px}.zb li{margin:2px 0}
+.glist{display:grid;gap:6px}
+.gi{display:grid;grid-template-columns:1fr auto;gap:0 10px;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:9px 12px}
+.gi b{font-size:15px}.gi small{grid-column:1;color:var(--acc);font-size:11px;font-family:"JetBrains Mono",monospace}
+.gi span{grid-column:1;font-size:13px;color:var(--mute);line-height:1.5}
+.gi i{grid-column:2;grid-row:1/span 3;align-self:center;font-style:normal;font-size:12px;color:var(--acc);font-weight:700}
+.rel{display:flex;flex-wrap:wrap;gap:6px}
+.rel button{border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700}
+
+.welcome{background:var(--card);border:2px solid var(--acc);border-radius:18px;padding:16px;margin:18px 0 0}
+.welcome>b{font-size:17px;font-weight:900}
+.welcome p{margin:2px 0 10px;color:var(--mute);font-size:14px}
+.wopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wopts button{text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 12px;box-shadow:0 3px 0 var(--tileSh)}
+.wopts span{font-size:20px;display:block}
+.wopts b{display:block;font-size:14px}
+.wopts small{display:block;font-size:11.5px;color:var(--mute);line-height:1.45}
+.about p{font-size:14px;margin:0 0 8px}
+.resetrow{margin-top:6px}
+.resetrow .btn{font-size:13px;padding:8px 14px}
+.confirm{margin-top:10px;background:var(--ngSoft);border-radius:12px;padding:10px 12px}
+.confirm p{margin:0 0 8px;font-size:14px}
+.confirm .btn{font-size:13px;padding:8px 14px}
+.top .in{padding-top:calc(10px + env(safe-area-inset-top))}
+.wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="ctrl"></div>
+<script>
+/* ================= utilities ================= */
+const app=document.getElementById('app'), ctrl=document.getElementById('ctrl');
+const L=s=>s.replace(/^\n/,'').replace(/\n\s*$/,'').split('\n');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const KANA=['ア','イ','ウ','エ','オ'];
+let P={done:{},best:{},wrong:[],seen:false};
+try{const s=localStorage.getItem('feb-zero-v1');if(s)P=Object.assign(P,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem('feb-zero-v1',JSON.stringify(P))}catch(e){}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const fmt=v=>v===null||v===undefined?'—':typeof v==='string'?'"'+v+'"':(typeof v==='number'&&v<0?'−'+Math.abs(v):String(v));
+const range=(a,b)=>{const r=[];for(let i=a;i<=b;i++)r.push(i);return r};
+
+/* ---- pseudo-code highlighter ---- */
+const TY=['整数型の配列','実数型の配列','文字列型の配列','整数型','実数型','文字列型','論理型','大域','未定義の値'];
+const KW=['elseif','endif','endwhile','endfor','if','else','while','for','do','return','and','or','not','mod'];
+const RE=new RegExp('("[^"]*")|('+TY.join('|')+')|\\b('+KW.join('|')+')\\b|(←|○|÷|×|−|＋|≤|≥|≠)|(\\d+)|(を|から|まで|ずつ増やす|ずつ減らす|の要素数|の商)','g');
+function hi(line){
+  let c=line,cm='';const k=line.indexOf('//');
+  if(k>=0){c=line.slice(0,k);cm=line.slice(k)}
+  c=esc(c).replace(RE,(m,s,t,kw,op,n,pt)=>s?'<span class="st">'+s+'</span>':t?'<span class="ty">'+t+'</span>':kw?'<span class="k">'+kw+'</span>':op?'<span class="op">'+op+'</span>':n?'<span class="nm">'+n+'</span>':'<span class="pt">'+pt+'</span>');
+  return c+(cm?'<span class="cm">'+esc(cm)+'</span>':'');
+}
+
+/* ---- trace recorder ---- */
+function rec(){
+  const st={v:{},a:{},p:{},dim:{},done:{},hl:{},calls:[],out:null,chain:null,vert:[]};const steps=[];
+  const S=(line,msg,x)=>{steps.push({line,msg,x:x||{},s:JSON.parse(JSON.stringify(st))});st.hl={}};
+  return {st,S,steps};
+}
+
+/* ================= lessons ================= */
+const UNITS=[
+ {name:'0. はじめに',ids:['intro']},
+ {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','func']},
+ {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','recur','intcalc']},
+ {name:'3. データ構造',ids:['stack','list']},
+ {name:'4. 情報セキュリティ(問17〜20)',ids:['sec']}
+];
+
+const LESSONS={};
+function def(o){LESSONS[o.id]=o}
+
+/* ---------- 0 intro ---------- */
+def({id:'intro',title:'科目Bってどんな試験？',sub:'試験の形と、つまずきやすいポイント、このアプリの使い方',
+html:`
+<h3>試験の形</h3>
+<table><tr><th>問題数</th><td>20問(全問必須)</td></tr>
+<tr><th>時間</th><td>100分 → <b>1問あたり約5分</b></td></tr>
+<tr><th>内訳</th><td>問1〜16：アルゴリズムとプログラミング(擬似言語)<br>問17〜20：情報セキュリティ</td></tr>
+<tr><th>合格</th><td>1000点満点中 600点以上(IRT方式なので単純な正答率ではないが、目安は6割強)</td></tr></table>
+<h3>点が取れない典型パターン</h3>
+<ul>
+<li><b>擬似言語の記号が読めない</b>…「←」「mod」「の商」「要素番号は1から」を知らないと、そもそも何をしているか分からない</li>
+<li><b>頭の中だけで追う</b>…変数が3つを超えると人間の脳では無理。途中で値を見失う</li>
+<li><b>定番アルゴリズムを知らない</b>…二分探索やソートを初見で読むと5分では終わらない</li>
+</ul>
+<h3>最重要スキル＝トレース</h3>
+<p>トレースとは、プログラムを<b>1行ずつ実行したつもりで、変数の値を紙に書き出していく</b>こと。科目Bの問題の大半は、これを丁寧にやれば解けます。</p>
+<table><tr><th>行</th><th>n</th><th>total</th></tr>
+<tr><td>n ← 1</td><td>1</td><td>—</td></tr>
+<tr><td>total ← 0</td><td>1</td><td>0</td></tr>
+<tr><td>total ← total + n</td><td>1</td><td>1</td></tr>
+<tr><td>n ← n + 1</td><td>2</td><td>1</td></tr></table>
+<p>こんな表を、値が変わるたびに1行ずつ書き足していくだけ。</p>
+<h3>このアプリの使い方</h3>
+<ol>
+<li>各レッスンの<b>ステップ実行</b>で、コードが1行ずつ動く様子を見る(黄色＝今の行、オレンジ＝値が変わった変数)</li>
+<li>余裕があれば、紙とペンで同じトレースをしてみる</li>
+<li>最後の<b>確認問題</b>で、本番形式の問題を解く</li>
+<li>間違えた問題は自動で「復習」に入る</li>
+</ol>`,
+quiz:[
+ {q:'科目Bの20問のうち、アルゴリズムとプログラミング(擬似言語)の問題は何問？',c:['16問','4問','10問','20問'],e:'問1〜16の16問がアルゴリズムとプログラミング、問17〜20の4問が情報セキュリティ。アルゴリズムが8割なので、ここが読めるかどうかで勝負が決まる。'},
+ {q:'1問あたりにかけられる時間の目安は？',c:['約5分','約1分','約10分','約20分'],e:'100分 ÷ 20問 = 5分。分からない問題で15分粘るより、トレースで確実に取れる問題を拾う方が点になる。'}
+]});
+
+/* ---------- 1 var ---------- */
+def({id:'var',title:'変数と代入「←」',sub:'箱に値を入れる。上書きしたら古い値は消える',
+pts:['「x ← 5」は「x という箱に 5 を入れる」','右辺を先に計算してから、左辺に入れる','「x ← x + 1」は数学の等式ではなく「x を1増やす」','新しい値を入れると、古い値は消える'],
+trap:'「=」は代入ではなく「等しいか？」の比較。代入は必ず「←」。',
+code:L(`
+整数型: x ← 3
+整数型: y ← 5
+x ← x + y
+y ← x − y
+x ← x − y
+`),
+run(){const {st,S,steps}=rec();
+ st.v.x=3;S(0,'整数型の変数 x を用意し、3 を入れる。「←」は「右の値を左の箱に入れる」記号。');
+ st.v.y=5;S(1,'同じように y に 5 を入れる。');
+ st.v.x=8;S(2,'まず右辺 x + y = 3 + 5 = 8 を計算。それを x に入れる。x にあった 3 は上書きされて消える。');
+ st.v.y=3;S(3,'右辺 x − y = 8 − 5 = 3 を y に入れる。');
+ st.v.x=5;S(4,'右辺 x − y = 8 − 3 = 5 を x に入れる。最初 x=3, y=5 だったのが x=5, y=3 に入れ替わった！');
+ return steps;},
+quiz:[
+ {q:'次のプログラムを実行した後の a と b の値は？',code:`整数型: a ← 2
+整数型: b ← 7
+a ← b
+b ← a`,c:['a = 7, b = 7','a = 7, b = 2','a = 2, b = 2','a = 2, b = 7'],e:'3行目で a に 7 が入った瞬間、元の 2 は消える。4行目の b ← a は「今の a＝7」を入れるので b も 7。値を入れ替えたいなら、tmp などの退避用の変数が必要(ソートのレッスンで出てくる)。'},
+ {q:'実行後の n の値は？',code:`整数型: n ← 10
+n ← n × 2
+n ← n − 3
+n ← n mod 4`,c:['1','17','4','0'],e:'10 → 20 → 17。mod は「割った余り」なので 17 mod 4 = 1(17 = 4×4 + 1)。'}
+]});
+
+/* ---------- 2 if ---------- */
+def({id:'if',title:'条件分岐 if',sub:'上から順に条件を見て、最初に真になった所だけ実行',
+pts:['if (条件) が真なら中を実行、偽なら飛ばす','elseif は「前の条件が偽だったときだけ」チェックされる','どれか1つを実行したら、残りは見ずに endif の後へ','else は「どれも偽だったとき」'],
+trap:'score が 95 でも「score ≥ 60」は真だが、先に「score ≥ 80」が真になるので B にはならない。上から順、最初の1つだけ。',
+code:L(`
+整数型: score ← 72
+文字列型: r
+if (score ≥ 80)
+  r ← "A"
+elseif (score ≥ 60)
+  r ← "B"
+else
+  r ← "C"
+endif
+`),
+run(){const {st,S,steps}=rec();
+ st.v.score=72;S(0,'score に 72 を入れる。');
+ st.v.r=null;S(1,'文字列型の r を宣言。まだ何も入っていない(—で表示)。');
+ S(2,'72 ≥ 80 は偽。だから中身(4行目)は実行せず、次の elseif へ。',{cond:['72 ≥ 80',false]});
+ S(4,'72 ≥ 60 は真！ この中を実行する。',{cond:['72 ≥ 60',true]});
+ st.v.r='B';S(5,'r に "B" を入れる。');
+ S(8,'1つ実行したので、残りの else は見ずに endif の後へ抜ける。結果 r = "B"。');
+ return steps;},
+quiz:[
+ {q:'上のレッスンのプログラムで score ← 95 にしたら、r はどうなる？',c:['"A"','"B"','"A" と "B" の両方','"C"'],e:'95 ≥ 80 が真なので "A" を入れて終了。95 ≥ 60 も真だが、elseif は「前の条件が偽のときだけ」見るので実行されない。'},
+ {q:'x ← 9 のとき、実行後の y は？',code:`if (x mod 3 = 0 and x mod 5 = 0)
+  y ← 1
+elseif (x mod 3 = 0)
+  y ← 2
+else
+  y ← 3
+endif`,c:['2','1','3','未定義'],e:'9 mod 3 = 0 は真、9 mod 5 = 4 なので「= 0」は偽。and は両方真のときだけ真なので、1つ目は偽。次の elseif で 9 mod 3 = 0 は真 → y ← 2。'}
+]});
+
+/* ---------- 3 while ---------- */
+def({id:'while',title:'繰返し while',sub:'条件が真の間ずっと回る。終わったときの値に注意',
+pts:['while (条件) の条件を毎回チェック','真なら中を実行して、また条件に戻る','偽になったらループを抜けて endwhile の後へ','do 〜 while (条件) は「先に1回実行してから」条件を見る(最低1回は実行)'],
+trap:'ループが終わったときの変数の値は「条件が偽になった値」。下の例では n は 4 ではなく 5 で終わる。',
+code:L(`
+整数型: n ← 1
+整数型: total ← 0
+while (n ≤ 4)
+  total ← total + n
+  n ← n + 1
+endwhile
+`),
+run(){const {st,S,steps}=rec();let n=1,t=0;
+ st.v.n=1;S(0,'n に 1 を入れる。');
+ st.v.total=0;S(1,'total(合計)を 0 で用意。合計を作るときは 0 から始めるのが定番。');
+ while(true){
+  if(n<=4)S(2,n+' ≤ 4 は真 → ループの中へ。',{cond:[n+' ≤ 4',true]});
+  else{S(2,n+' ≤ 4 は偽 → ループを抜ける。',{cond:[n+' ≤ 4',false]});break}
+  t+=n;st.v.total=t;S(3,'total ← '+(t-n)+' + '+n+' = '+t);
+  n++;st.v.n=n;S(4,'n を1増やして '+n+'。→ while の行に戻って条件をもう一度チェック。');
+ }
+ S(5,'終了。total = 10(1+2+3+4)。n は 4 ではなく 5 になっている点に注意！');
+ return steps;},
+quiz:[
+ {q:'上のレッスンのプログラムが終了したとき、n の値は？',c:['5','4','10','1'],e:'n=4 のとき条件は真で中を実行し、n が 5 になる。そこで 5 ≤ 4 が偽になって終わるので、n は 5。この「1つずれ」は本番でよく狙われる。'},
+ {q:'実行後の c の値は？',code:`整数型: k ← 1
+整数型: c ← 0
+while (k < 20)
+  k ← k × 2
+  c ← c + 1
+endwhile`,c:['5','4','6','16'],e:'k の変化：1→2→4→8→16→32。k が 16 のときはまだ 16 < 20 で真なので、もう1回回って 32 になる。回った回数＝c＝5。'},
+ {q:'実行後の x の値は？(do 〜 while は先に中身を実行し、最後に条件を見る)',code:`整数型: x ← 10
+do
+  x ← x − 4
+while (x > 0)`,c:['−2','2','6','0'],e:'10→6(6>0 真、続ける)→2(2>0 真、続ける)→−2(−2>0 偽、終了)。条件チェックが後ろにあるので、2 のときもう1回実行される。'}
+]});
+
+/* ---------- 4 for ---------- */
+def({id:'for',title:'繰返し for',sub:'「i を 1 から n まで 1 ずつ増やす」を読めるように',
+pts:['for (i を 開始 から 終了 まで 増分 ずつ増やす)','i が終了値を超えたら終わり','「ずつ減らす」なら下に向かって数える','二重ループは「外側1回につき内側が全部回る」'],
+trap:'「2 ずつ増やす」だと i は 1, 3, 5, … と飛ぶ。何回回るかを数える問題が頻出。',
+code:L(`
+整数型: i
+整数型: total ← 0
+for (i を 1 から 9 まで 2 ずつ増やす)
+  total ← total + i
+endfor
+`),
+run(){const {st,S,steps}=rec();let t=0;
+ st.v.i=null;S(0,'ループ用の変数 i を宣言。');
+ st.v.total=0;S(1,'total を 0 で用意。');
+ for(let i=1;i<=9;i+=2){st.v.i=i;
+  S(2,i===1?'i に 1 を入れてスタート。1 ≤ 9 なので中へ。':'i を 2 増やして '+i+'。'+i+' ≤ 9 なので中へ。',{cond:[i+' ≤ 9',true]});
+  t+=i;st.v.total=t;S(3,'total ← '+(t-i)+' + '+i+' = '+t);
+ }
+ S(2,'次の i は 11。9 を超えるので繰返し終了。',{cond:['11 ≤ 9',false]});
+ S(4,'total = 25(1+3+5+7+9)。中身は5回実行された。');
+ return steps;},
+quiz:[
+ {q:'次のループの中身は何回実行される？',code:`for (i を 10 から 1 まで 3 ずつ減らす)
+  count ← count + 1
+endfor`,c:['4回','3回','10回','9回'],e:'i は 10, 7, 4, 1 と変化(次は −2 で 1 を下回るので終了)。4回。'},
+ {q:'c ← 0 から始めたとき、実行後の c は？',code:`for (i を 1 から 3 まで 1 ずつ増やす)
+  for (j を 1 から i まで 1 ずつ増やす)
+    c ← c + 1
+  endfor
+endfor`,c:['6','3','9','7'],e:'内側の終了値が i なので、i=1 のとき1回、i=2 のとき2回、i=3 のとき3回。合計 1+2+3 = 6。'}
+]});
+
+/* ---------- 5 array ---------- */
+def({id:'array',title:'配列 — 要素番号は1から',sub:'番号付きの箱の列。科目Bでいちばん出てくる道具',
+pts:['{5, 8, 2, 9} のように書いて作る','a[2] は「2番目の要素」','科目Bでは要素番号は 1 から始まる(問題文で断りがない限り)','「aの要素数」で個数が分かる'],
+trap:'PythonやCの癖で a[0] から数えると全部ずれる。a[2] は 8(2番目)であって 2(3番目)ではない。',
+code:L(`
+整数型の配列: a ← {5, 8, 2, 9}
+整数型: x
+x ← a[2]
+a[3] ← a[1] + a[4]
+a[1] ← aの要素数
+`),
+run(){const {st,S,steps}=rec();
+ st.a.a=[5,8,2,9];S(0,'4つの箱が並んだ配列 a を作る。上の小さい数字が要素番号(1〜4)。');
+ st.v.x=null;S(1,'変数 x を宣言。');
+ st.hl.a=[2];st.v.x=8;S(2,'a[2] は「2番目」の 8。これを x に入れる。');
+ st.hl.a=[1,4,3];st.a.a=[5,8,14,9];S(3,'右辺 a[1] + a[4] = 5 + 9 = 14 を計算して、3番目の箱に入れる。2 は上書きされて消える。');
+ st.hl.a=[1];st.a.a=[4,8,14,9];S(4,'aの要素数 は 4。それを a[1] に入れる。');
+ return steps;},
+quiz:[
+ {q:'a ← {3, 1, 4, 1, 5} のとき、a[a[2]] の値は？',c:['3','1','4','5'],e:'内側から計算する。a[2] = 1 なので、a[a[2]] = a[1] = 3。配列の番号に配列の値を使う書き方は本番でも出る。'},
+ {q:'実行後の配列 b は？',code:`整数型の配列: b ← {2, 4, 6, 8}
+整数型: i
+for (i を 1 から bの要素数 − 1 まで 1 ずつ増やす)
+  b[i + 1] ← b[i + 1] + b[i]
+endfor`,c:['{2, 6, 12, 20}','{2, 6, 10, 14}','{6, 10, 14, 8}','{2, 4, 6, 20}'],e:'i=1：b[2] ← 4+2 = 6。i=2：b[3] ← 6+6 = 12(更新後の b[2]=6 を使う！)。i=3：b[4] ← 8+12 = 20。前の結果を使って累積していく「累積和」。'}
+]});
+
+/* ---------- 6 func ---------- */
+def({id:'func',title:'関数と手続き',sub:'○で始まる部品。呼び出すと中に入り、return で戻る',
+pts:['○整数型: f(整数型: n) … 整数を返す「関数」','○f(整数型: n) のように型が無いもの … 値を返さない「手続き」','呼び出すと、引数の値が中の変数(n など)にコピーされる','return で値を返して、呼び出した所に戻る'],
+trap:'関数の中で呼び出しが入れ子になったら、「どこで待っているか」を見失わないように、呼び出しの積み重なり(右の箱)を書き出す。',
+code:L(`
+○整数型: twice(整数型: n)
+  return n × 2
+
+○整数型: calc(整数型: x)
+  整数型: y ← twice(x)
+  return twice(y) + 1
+
+// 呼出し: 整数型: ans ← calc(3)
+`),
+run(){const {st,S,steps}=rec();
+ st.calls=['メイン: ans ← calc(3)'];S(7,'メイン処理から calc(3) を呼ぶ。');
+ st.calls.push('calc(x=3)');st.v={x:3};S(3,'calc の中へ。引数の 3 が x に入る。');
+ S(4,'y ← twice(x)。右辺を計算するため、twice(3) を呼ぶ。calc はここで一時停止。');
+ st.calls.push('twice(n=3)');st.v={n:3};S(0,'twice の中へ。n に 3 が入る。');
+ S(1,'n × 2 = 6 を return。twice は終わり、呼んだ所に戻る。');
+ st.calls.pop();st.v={x:3,y:6};S(4,'戻り値 6 が y に入る。');
+ S(5,'twice(y) = twice(6) を呼ぶ。');
+ st.calls.push('twice(n=6)');st.v={n:6};S(0,'twice の中へ。n に 6 が入る。');
+ S(1,'6 × 2 = 12 を return。');
+ st.calls.pop();st.v={x:3,y:6};S(5,'戻ってきた 12 に 1 を足して 13 を return。');
+ st.calls.pop();st.v={ans:13};S(7,'メインに戻り、ans に 13 が入る。');
+ return steps;},
+quiz:[
+ {q:'f(3, 8) + f(9, 4) の値は？',code:`○整数型: f(整数型: a, 整数型: b)
+  if (a > b)
+    return a − b
+  endif
+  return b − a`,c:['10','0','5','−10'],e:'f(3, 8)：3 > 8 は偽 → 8 − 3 = 5。f(9, 4)：9 > 4 は真 → 9 − 4 = 5 を返してすぐ終了。5 + 5 = 10。この f は「差の絶対値」を求める関数。'},
+ {q:'「○printAll(整数型の配列: a)」という宣言について正しいものは？',c:['値を返さない手続きである','整数を返す関数である','配列を返す関数である','引数を受け取らない'],e:'○の直後に「整数型:」のような戻り値の型が無いので、値を返さない「手続き」。引数は整数型の配列 a を受け取る。'}
+]});
+
+/* ---------- 7 max ---------- */
+def({id:'max',title:'合計・最大値',sub:'全アルゴリズムの基本形。暫定チャンピオン方式',
+pts:['最大値：先頭を「暫定の最大」にして、2番目から順に比べる','より大きいのが来たら入れ替える','合計：0 から始めて、全部足していく','不等号の向きを変えると最小値になる'],
+trap:'穴埋めで「max ← a[i]」と「a[i] ← max」を入れ替えた選択肢がよく出る。代入の向きに注意。',
+code:L(`
+○整数型: findMax(整数型の配列: a)
+  整数型: max ← a[1]
+  整数型: i
+  for (i を 2 から aの要素数 まで 1 ずつ増やす)
+    if (a[i] > max)
+      max ← a[i]
+    endif
+  endfor
+  return max
+`),
+run(){const {st,S,steps}=rec();const a=[4,7,2,9,5];let max;
+ st.a.a=a.slice();S(0,'a = {4, 7, 2, 9, 5} で呼び出す。最大値 9 を見つけたい。');
+ max=a[0];st.v.max=max;st.hl.a=[1];S(1,'とりあえず先頭の 4 を「暫定の最大値」にする。');
+ st.v.i=null;S(2,'i を宣言。');
+ for(let i=2;i<=5;i++){st.v.i=i;st.p.a={i};
+  S(3,'i = '+i+'。'+i+'番目を調べる。');
+  const t=a[i-1]>max;st.hl.a=[i];S(4,'a['+i+'] = '+a[i-1]+' > max = '+max+' は'+(t?'真！':'偽。'),{cond:[a[i-1]+' > '+max,t]});
+  if(t){max=a[i-1];st.v.max=max;st.hl.a=[i];S(5,'max を '+max+' に更新。新チャンピオン。')}
+ }
+ st.p.a={};S(8,'全部調べ終わった。return 9。');
+ return steps;},
+quiz:[
+ {q:'上の findMax の「a[i] > max」を「a[i] < max」に変えると、何を返す関数になる？',c:['最小値','最大値','先頭の値','合計'],e:'「今の暫定値より小さいのが来たら更新」になるので、最後に残るのは最小値。変数名は max のままでも中身は最小値。名前に惑わされず、処理を読む。'},
+ {q:'配列の合計を返す関数。[ ア ] に入るものは？',code:`○整数型: sum(整数型の配列: a)
+  整数型: s ← 0
+  整数型: i
+  for (i を 1 から aの要素数 まで 1 ずつ増やす)
+    [ ア ]
+  endfor
+  return s`,c:['s ← s + a[i]','s ← a[i]','s ← s + i','a[i] ← s + a[i]'],e:'s に今までの合計が入っているので、そこに a[i] を足して s に戻す。「s ← s + i」は番号(1,2,3…)を足してしまう、よくある引っかけ。'}
+]});
+
+/* ---------- 8 linear ---------- */
+def({id:'linear',title:'線形探索',sub:'先頭から1つずつ見ていく、いちばん素直な探し方',
+pts:['1番目から順に「探している値か？」を調べる','見つかったらその番号を return(そこで終了)','最後まで無ければ −1 などを返す','最悪、要素数ぶん比較する'],
+trap:'同じ値が2つあるときは「最初に見つかった方」が返る。return した瞬間に関数は終わる。',
+code:L(`
+○整数型: search(整数型の配列: a, 整数型: target)
+  整数型: i
+  for (i を 1 から aの要素数 まで 1 ずつ増やす)
+    if (a[i] = target)
+      return i
+    endif
+  endfor
+  return −1
+`),
+run(){const {st,S,steps}=rec();const a=[6,3,8,1,7];
+ st.a.a=a.slice();st.v.target=8;S(0,'a = {6, 3, 8, 1, 7} から 8 を探す。');
+ st.v.i=null;S(1,'i を宣言。');
+ for(let i=1;i<=5;i++){st.v.i=i;st.p.a={i};S(2,'i = '+i);
+  st.hl.a=[i];const t=a[i-1]===8;S(3,'a['+i+'] = '+a[i-1]+' は 8 と等しい？ → '+(t?'等しい！':'違う。次へ。'),{cond:[a[i-1]+' = 8',t]});
+  if(t){st.hl.a=[i];S(4,'見つかった。return '+i+'。ここで関数は即終了(残りは見ない)。');break}
+ }
+ return steps;},
+quiz:[
+ {q:'同じ配列 a = {6, 3, 8, 1, 7} で target = 5 のとき、「a[i] = target」の比較は何回行われる？',c:['5回','4回','1回','6回'],e:'5 はどこにも無いので、i = 1〜5 の全部で比較して、最後に −1 を返す。見つからないときが最悪ケース。'},
+ {q:'a = {2, 5, 2, 5} で target = 5 のとき、search の戻り値は？',c:['2','4','1','−1'],e:'i = 2 で a[2] = 5 が見つかった時点で return 2。4番目の 5 までは見に行かない。'}
+]});
+
+/* ---------- 9 binary ---------- */
+def({id:'binary',title:'二分探索',sub:'真ん中を見て、半分を捨てる。整列済みが前提',
+pts:['配列が小さい順に並んでいることが前提','low〜high が「まだ探す範囲」','真ん中 mid を見て、目的の値より小さければ右半分、大きければ左半分を残す','1回で範囲が半分になるので、とても速い'],
+trap:'「(low + high) ÷ 2 の商」は小数を切り捨てた整数。(5 + 8) ÷ 2 の商 = 6。low ← mid + 1 の「+1」を忘れた選択肢に注意。',
+code:L(`
+○整数型: binSearch(整数型の配列: a, 整数型: target)
+  整数型: low ← 1
+  整数型: high ← aの要素数
+  整数型: mid
+  while (low ≤ high)
+    mid ← (low + high) ÷ 2 の商
+    if (a[mid] = target)
+      return mid
+    elseif (a[mid] < target)
+      low ← mid + 1
+    else
+      high ← mid − 1
+    endif
+  endwhile
+  return −1
+`),
+run(){const {st,S,steps}=rec();const a=[2,5,8,12,16,23,38,45],t=38,n=8;
+ const dim=(lo,hi)=>range(1,n).filter(k=>k<lo||k>hi);
+ st.a.a=a.slice();st.v.target=t;S(0,'整列済みの a から 38 を探す。');
+ let low=1,high=n,mid=null;st.v.low=low;st.p.a={low};S(1,'low = 1(探す範囲の左端)。');
+ st.v.high=high;st.p.a={low,high};S(2,'high = 8(右端)。今は全体が探す範囲。');
+ st.v.mid=null;S(3,'mid を宣言。');
+ while(true){
+  if(low<=high)S(4,low+' ≤ '+high+' は真 → まだ探す範囲が残っている。',{cond:[low+' ≤ '+high,true]});
+  else{S(4,'偽 → 範囲が無くなった。',{cond:[low+' ≤ '+high,false]});break}
+  mid=Math.floor((low+high)/2);st.v.mid=mid;st.p.a={low,mid,high};st.hl.a=[mid];
+  S(5,'('+low+' + '+high+') ÷ 2 = '+((low+high)/2)+' → 商は '+mid+'。真ん中は '+mid+' 番目。');
+  st.hl.a=[mid];const eq=a[mid-1]===t;S(6,'a['+mid+'] = '+a[mid-1]+' は 38？ → '+(eq?'等しい！':'違う。'),{cond:[a[mid-1]+' = 38',eq]});
+  if(eq){st.hl.a=[mid];S(7,'見つかった！ return '+mid+'。たった3回の比較で発見。');break}
+  st.hl.a=[mid];
+  if(a[mid-1]<t){S(8,a[mid-1]+' < 38 は真 → 38 はもっと右にある。',{cond:[a[mid-1]+' < 38',true]});
+   low=mid+1;st.v.low=low;st.p.a={low,high};st.dim.a=dim(low,high);S(9,'low ← '+mid+' + 1 = '+low+'。'+mid+'番目より左は全部捨てる。');}
+  else{S(8,'偽。',{cond:[a[mid-1]+' < 38',false]});S(10,'else へ → 38 はもっと左。');
+   high=mid-1;st.v.high=high;st.p.a={low,high};st.dim.a=dim(low,high);S(11,'high ← '+high);}
+ }
+ return steps;},
+quiz:[
+ {q:'同じ配列 {2, 5, 8, 12, 16, 23, 38, 45} で target = 5 のとき、while の繰返しは何回目で見つかる？',c:['2回目','1回目','3回目','4回目'],e:'1回目：mid = (1+8)÷2 の商 = 4、a[4] = 12 > 5 なので high = 3。2回目：mid = (1+3)÷2 = 2、a[2] = 5 → 発見。'},
+ {q:'要素数 1000 の整列済み配列を二分探索するとき、比較の回数は最大でおよそ何回？',c:['10回','100回','500回','1000回'],e:'1回ごとに範囲が半分：1000→500→250→125→63→32→16→8→4→2→1 で約10回。2¹⁰ = 1024 と覚えておくと便利。線形探索だと最大1000回。'},
+ {q:'二分探索が正しく動くための前提条件は？',c:['配列が整列(昇順)されている','配列の要素数が偶数である','同じ値が含まれていない','target が必ず配列にある'],e:'「真ん中より小さいなら右にある」と判断できるのは、小さい順に並んでいるから。並んでいない配列では正しく探せない。'}
+]});
+
+/* ---------- 10 bubble ---------- */
+def({id:'bubble',title:'バブルソート',sub:'隣どうしを比べて、逆なら交換',
+pts:['隣り合う2つを比べ、左が大きければ交換','1周すると、最大値が右端に確定する','確定した部分は次から比べない(内側ループの終わりが i − 1)','交換は tmp に退避してから3行で行う'],
+trap:'「外側ループ1回目が終わったときの配列は？」という途中経過の問題が定番。最後まで回さず、聞かれた所で止めること。',
+code:L(`
+○bubbleSort(整数型の配列: a)
+  整数型: i, j, tmp
+  for (i を aの要素数 から 2 まで 1 ずつ減らす)
+    for (j を 1 から i − 1 まで 1 ずつ増やす)
+      if (a[j] > a[j + 1])
+        tmp ← a[j]
+        a[j] ← a[j + 1]
+        a[j + 1] ← tmp
+      endif
+    endfor
+  endfor
+`),
+run(){const {st,S,steps}=rec();const a=[5,3,4,1],n=4;
+ st.a.a=a.slice();S(0,'a = {5, 3, 4, 1} を小さい順に並べ替える。');
+ st.v.i=null;st.v.j=null;st.v.tmp=null;S(1,'i, j, tmp を宣言。');
+ for(let i=n;i>=2;i--){st.v.i=i;st.p.a={};
+  S(2,'i = '+i+'。a[1]〜a['+i+'] の中の最大値を a['+i+'] に運ぶ周。');
+  for(let j=1;j<=i-1;j++){st.v.j=j;st.p.a={j:j,'j+1':j+1};
+   S(3,'j = '+j);
+   st.hl.a=[j,j+1];const sw=a[j-1]>a[j];
+   S(4,'a['+j+'] = '+a[j-1]+' > a['+(j+1)+'] = '+a[j]+' は'+(sw?'真 → 逆順なので交換する。':'偽 → 正しい順なのでそのまま。'),{cond:[a[j-1]+' > '+a[j],sw],arc:['a',j,j+1,'比較']});
+   if(sw){const tmp=a[j-1];st.v.tmp=tmp;st.hl.a=[j];S(5,'まず a['+j+'] の '+tmp+' を tmp に退避(いきなり上書きすると消えるため)。');
+    a[j-1]=a[j];st.a.a=a.slice();st.hl.a=[j];S(6,'a['+j+'] に a['+(j+1)+'] の '+a[j]+' を入れる。');
+    a[j]=tmp;st.a.a=a.slice();st.hl.a=[j+1];S(7,'a['+(j+1)+'] に tmp の '+tmp+' を入れる。交換完了。',{arc:['a',j,j+1,'交換']});}
+  }
+  st.p.a={};st.done.a=range(i,n);S(9,'内側ループ終了。a['+i+'] = '+a[i-1]+' が確定(緑)。今の配列：{'+a.join(', ')+'}');
+ }
+ st.done.a=range(1,n);S(10,'完成！ {1, 3, 4, 5}');
+ return steps;},
+quiz:[
+ {q:'a = {4, 2, 3, 1} に bubbleSort を実行したとき、外側ループの1回目(i = 4)が終わった時点の配列は？',c:['{2, 3, 1, 4}','{1, 2, 3, 4}','{2, 4, 3, 1}','{2, 1, 3, 4}'],e:'j=1：4>2 交換 → {2,4,3,1}。j=2：4>3 交換 → {2,3,4,1}。j=3：4>1 交換 → {2,3,1,4}。最大の 4 が右端に運ばれた。'},
+ {q:'要素数 5 の配列で、「a[j] > a[j + 1]」の比較は全部で何回行われる？',c:['10回','5回','20回','25回'],e:'i=5 で4回、i=4 で3回、i=3 で2回、i=2 で1回。4+3+2+1 = 10回。交換があってもなくても比較回数は同じ。'}
+]});
+
+/* ---------- 11 select ---------- */
+def({id:'select',title:'選択ソート',sub:'残りの中から最小を探して、先頭と交換',
+pts:['i 番目以降から最小値の位置 minIdx を探す(最小値探しの応用)','見つけた最小値を a[i] と交換','これで左から1つずつ確定していく','交換は1周につき1回だけ'],
+trap:'minIdx は「最小値そのもの」ではなく「最小値の番号」。a[minIdx] と minIdx を混同しないこと。',
+code:L(`
+○selectionSort(整数型の配列: a)
+  整数型: i, j, minIdx, tmp
+  for (i を 1 から aの要素数 − 1 まで 1 ずつ増やす)
+    minIdx ← i
+    for (j を i + 1 から aの要素数 まで 1 ずつ増やす)
+      if (a[j] < a[minIdx])
+        minIdx ← j
+      endif
+    endfor
+    tmp ← a[i]
+    a[i] ← a[minIdx]
+    a[minIdx] ← tmp
+  endfor
+`),
+run(){const {st,S,steps}=rec();const a=[6,2,8,1],n=4;
+ st.a.a=a.slice();S(0,'a = {6, 2, 8, 1} を小さい順に並べ替える。');
+ st.v.i=null;st.v.j=null;st.v.minIdx=null;st.v.tmp=null;S(1,'変数を宣言。');
+ for(let i=1;i<=n-1;i++){st.v.i=i;st.v.j=null;st.p.a={i};
+  S(2,'i = '+i+'。'+i+'番目に入るべき値(残りの最小)を探す。');
+  let m=i;st.v.minIdx=m;st.p.a={'i,min':i};S(3,'とりあえず minIdx = '+i+'(a['+i+'] = '+a[i-1]+' を暫定の最小に)。');
+  for(let j=i+1;j<=n;j++){st.v.j=j;const pp={};pp[i]=pp[i]||[];
+   const lab={};lab.i=i;lab.min=m;lab.j=j;st.p.a=lab;S(4,'j = '+j);
+   st.hl.a=[j,m];const t=a[j-1]<a[m-1];S(5,'a['+j+'] = '+a[j-1]+' < a['+m+'] = '+a[m-1]+' は'+(t?'真！':'偽。'),{cond:[a[j-1]+' < '+a[m-1],t],arc:['a',m,j,'比較']});
+   if(t){m=j;st.v.minIdx=m;st.p.a={i:i,min:m,j:j};st.hl.a=[m];S(6,'minIdx ← '+j+'。最小の位置を更新。')}
+  }
+  st.p.a={i:i,min:m};
+  const tmp=a[i-1];st.v.tmp=tmp;st.hl.a=[i];S(9,'tmp に a['+i+'] = '+tmp+' を退避。');
+  a[i-1]=a[m-1];st.a.a=a.slice();st.hl.a=[i];S(10,'a['+i+'] に最小値 a['+m+'] = '+a[m-1]+' を入れる。');
+  a[m-1]=tmp;st.a.a=a.slice();st.hl.a=[m];st.done.a=range(1,i);S(11,'a['+m+'] に tmp を入れて交換完了。'+i+'番目まで確定：{'+a.join(', ')+'}',i!==m?{arc:['a',i,m,'交換']}:{});
+ }
+ st.p.a={};st.done.a=range(1,n);S(12,'完成！ {1, 2, 6, 8}');
+ return steps;},
+quiz:[
+ {q:'a = {5, 1, 4, 2, 3} に selectionSort を実行したとき、外側ループの i = 2 の処理が終わった時点の配列は？',c:['{1, 2, 4, 5, 3}','{1, 2, 3, 4, 5}','{1, 5, 4, 2, 3}','{1, 2, 5, 4, 3}'],e:'i=1：最小 1(2番目)と a[1] を交換 → {1,5,4,2,3}。i=2：2番目以降 {5,4,2,3} の最小 2(4番目)と a[2] を交換 → {1,2,4,5,3}。'},
+ {q:'選択ソートで、外側ループ1回あたりに行われる交換(9〜11行目)は何回？',c:['1回','0回','最大で要素数−1回','比較と同じ回数'],e:'内側ループでは最小値の「位置」を探すだけで、交換は外側ループの最後に1回だけ。バブルソートは比較のたびに交換が起こりうる点が違う。'}
+]});
+
+/* ---------- 12 recur ---------- */
+def({id:'recur',title:'再帰',sub:'関数が自分自身を呼ぶ。積み重なって、戻ってくる',
+pts:['関数の中で自分自身を呼ぶのが再帰','必ず「止まる条件」(if (n ≤ 1) return 1 など)がある','呼ぶたびに箱が積み重なり、止まる条件に着いたら、上から順に戻ってくる','fact(4) = 4 × 3 × 2 × 1 = 24'],
+trap:'頭の中だけで追うと必ず迷子になる。「f(4) = 4 × f(3)」「f(3) = 3 × f(2)」…と紙に縦に書いて、下から値を埋めるのがコツ。',
+code:L(`
+○整数型: fact(整数型: n)
+  if (n ≤ 1)
+    return 1
+  endif
+  return n × fact(n − 1)
+`),
+run(){const {st,S,steps}=rec();
+ st.calls=['メイン: fact(4)'];S(-1,'fact(4) を呼び出す。4 の階乗(4×3×2×1)を求める関数。');
+ function f(n){
+  st.calls.push('fact(n='+n+')');st.v={n};S(0,'fact('+n+') の中へ。n = '+n+'。');
+  if(n<=1){S(1,n+' ≤ 1 は真 → 止まる条件に到達！',{cond:[n+' ≤ 1',true]});S(2,'return 1。ここから戻り始める。');st.calls.pop();return 1}
+  S(1,n+' ≤ 1 は偽。',{cond:[n+' ≤ 1',false]});
+  st.calls[st.calls.length-1]='fact(n='+n+') … '+n+' × fact('+(n-1)+') の結果待ち';
+  S(4,n+' × fact('+(n-1)+') を計算したい。まず fact('+(n-1)+') を呼ぶ。この fact('+n+') は途中で待機。');
+  const r=f(n-1);
+  st.calls[st.calls.length-1]='fact(n='+n+')';st.v={n};
+  S(4,'fact('+(n-1)+') から '+r+' が返ってきた → '+n+' × '+r+' = '+(n*r)+' を return。');
+  st.calls.pop();return n*r;
+ }
+ const r=f(4);st.v={'fact(4)':r};S(-1,'メインに戻ってきた。fact(4) = 24。');
+ return steps;},
+quiz:[
+ {q:'f(5) の値は？',code:`○整数型: f(整数型: n)
+  if (n = 0)
+    return 0
+  endif
+  return n + f(n − 1)`,c:['15','5','10','120'],e:'f(5) = 5 + f(4) = 5 + 4 + f(3) = … = 5+4+3+2+1+0 = 15。掛け算ではなく足し算なので 120 ではない。'},
+ {q:'g(5) の値は？',code:`○整数型: g(整数型: n)
+  if (n < 2)
+    return n
+  endif
+  return g(n − 1) + g(n − 2)`,c:['5','3','8','13'],e:'小さい方から作るとラク。g(0)=0, g(1)=1, g(2)=1+0=1, g(3)=1+1=2, g(4)=2+1=3, g(5)=3+2=5。フィボナッチ数列。'}
+]});
+
+/* ---------- 13 int ---------- */
+def({id:'intcalc',title:'mod と ÷ の商',sub:'数の各桁を取り出す定番テクニック',
+pts:['n mod 10 で「一の位」が取れる(4728 mod 10 = 8)','n ÷ 10 の商 で「一の位を消せる」(4728 → 472)','これを繰り返すと、下の桁から1つずつ取り出せる','10 を 2 にすると2進数の各桁になる'],
+trap:'「÷」の後に「の商」とあれば小数点以下を切り捨て。7 ÷ 2 の商 = 3。',
+code:L(`
+○整数型: digitSum(整数型: n)
+  整数型: s ← 0
+  while (n > 0)
+    s ← s + (n mod 10)
+    n ← n ÷ 10 の商
+  endwhile
+  return s
+`),
+run(){const {st,S,steps}=rec();let n=4728,s=0;
+ st.v.n=n;S(0,'digitSum(4728)。各桁の和 4+7+2+8 を求める。');
+ st.v.s=0;S(1,'s = 0 からスタート。');
+ while(true){
+  if(n>0)S(2,n+' > 0 は真。',{cond:[n+' > 0',true]});else{S(2,'0 > 0 は偽 → 終了。',{cond:['0 > 0',false]});break}
+  const d=n%10;s+=d;st.v.s=s;S(3,n+' mod 10 = '+d+'(一の位)。s ← '+(s-d)+' + '+d+' = '+s);
+  n=Math.floor(n/10);st.v.n=n;S(4,'n ÷ 10 の商 = '+n+'。一の位が消えた。');
+ }
+ S(6,'return 21。');
+ return steps;},
+quiz:[
+ {q:'n ← 13、c ← 0 で実行したとき、実行後の c は？',code:`while (n > 0)
+  c ← c + (n mod 2)
+  n ← n ÷ 2 の商
+endwhile`,c:['3','2','4','13'],e:'13→6→3→1→0 と変化し、そのときの n mod 2 は 1, 0, 1, 1。合計 3。13 を2進数にすると 1101 なので「1 の個数」を数えている。'},
+ {q:'a ← 48, b ← 18 で実行したとき、return される値は？',code:`while (b ≠ 0)
+  r ← a mod b
+  a ← b
+  b ← r
+endwhile
+return a`,c:['6','2','3','18'],e:'(48,18)→r=12→(18,12)→r=6→(12,6)→r=0→(6,0) で終了、a = 6。最大公約数を求める「ユークリッドの互除法」。'}
+]});
+
+/* ---------- 14 stack ---------- */
+def({id:'stack',title:'スタック',sub:'後から入れたものが先に出る(LIFO)',
+pts:['push で上に積み、pop で一番上を取り出す','後入れ先出し＝LIFO(Last In First Out)','配列＋「top(一番上の番号)」で作れる','キューは逆で、先に入れたものが先に出る(FIFO)'],
+trap:'pop しても配列から値が消えるわけではなく、top が下がるだけ。「残っているが範囲外」の値に惑わされない。',
+code:L(`
+大域: 整数型の配列: st  // 4つ分の箱。最初は空
+大域: 整数型: top ← 0
+
+○push(整数型: x)
+  top ← top + 1
+  st[top] ← x
+
+○整数型: pop()
+  整数型: x ← st[top]
+  top ← top − 1
+  return x
+
+// 実行: push(3) → push(7) → pop() → push(5)
+`),
+run(){const {st,S,steps}=rec();const arr=[null,null,null,null];let top=0;
+ const sync=()=>{st.a.st=arr.slice();st.p.st=top?{top}:{};st.dim.st=range(top+1,4)};
+ st.vert=['st'];sync();S(0,'4つ分の配列 st をスタックとして使う。下が1番、上に積んでいく。');
+ st.v.top=0;S(1,'top は「一番上の要素番号」。0 は「空っぽ」の意味。');
+ S(12,'これから push(3) → push(7) → pop() → push(5) を順に実行する。');
+ const push=x=>{st.calls=['push('+x+')'];st.v={top,x};S(3,'push('+x+') を呼ぶ。');
+  top++;st.v.top=top;sync();S(4,'top を1増やして '+top+'。');
+  arr[top-1]=x;sync();st.hl.st=[top];S(5,'st['+top+'] に '+x+' を積む。');st.calls=[];st.v={top}};
+ const pop=()=>{st.calls=['pop()'];S(7,'pop() を呼ぶ。');
+  const x=arr[top-1];st.v={top,x};st.hl.st=[top];S(8,'一番上 st['+top+'] = '+x+' を x に取り出す。');
+  top--;st.v.top=top;sync();S(9,'top を減らして '+top+'。st['+(top+1)+'] の '+x+' は配列に残っているが、もうスタックの外(薄い表示)。');
+  st.out=(st.out?st.out+' ':'')+x;S(10,x+' を返す。最後に入れた 7 が最初に出た(LIFO)。');st.calls=[];st.v={top}};
+ push(3);push(7);pop();push(5);
+ S(12,'最後の push(5) で、薄くなっていた 7 は 5 で上書きされた。スタックの中身は下から 3, 5。');
+ return steps;},
+quiz:[
+ {q:'空のスタックに push(1), push(2), pop(), push(3), push(4), pop(), pop() の順に操作した。最後の pop() で取り出される値は？',c:['3','4','1','2'],e:'[1]→[1,2]→pop で 2→[1]→[1,3]→[1,3,4]→pop で 4→pop で 3。最後に取り出されるのは 3。'},
+ {q:'空のキューに enqueue(1), enqueue(2), enqueue(3), dequeue(), enqueue(4), dequeue() の順に操作した。2回目の dequeue() で取り出される値は？(キューは先に入れたものが先に出る)',c:['2','1','3','4'],e:'キューは FIFO。1回目の dequeue で 1、2回目で 2 が出る。後から入れた 4 は最後尾に並ぶだけ。'}
+]});
+
+/* ---------- 15 list ---------- */
+def({id:'list',title:'連結リスト',sub:'「次はどこ？」をたどって進む',
+pts:['各要素が「次の要素の番号(next)」を持っている','先頭から next をたどると、順番に読める','0(や「未定義」)が来たら終わり','並べ替えずに、next の書き換えだけで挿入・削除ができる'],
+trap:'配列の並び順(1,2,3,4番目)と、リストとしての順番は別物。必ず next をたどる。',
+code:L(`
+整数型の配列: val  ← {30, 10, 40, 20}
+整数型の配列: next ← {3, 4, 0, 1}
+整数型: p ← 2   // 先頭は要素番号 2
+while (p ≠ 0)
+  val[p] を出力する
+  p ← next[p]
+endwhile
+`),
+run(){const {st,S,steps}=rec();const val=[30,10,40,20],nx=[3,4,0,1];let p=2;
+ st.chain={nodes:[[2,10],[4,20],[1,30],[3,40]],cur:null,seen:[]};st.a.val=val.slice();S(0,'値を入れた配列 val。この並び順はリストの順番ではない。');
+ st.a.next=nx.slice();S(1,'next[k] は「k番目の次は何番目か」。0 は「次は無い(終わり)」。');
+ st.v.p=p;st.chain.cur=p;st.p.val={p};st.p.next={p};S(2,'p = 2 から始める(先頭は2番目)。');
+ const out=[];
+ while(true){
+  if(p!==0)S(3,'p = '+p+' ≠ 0 は真。',{cond:[p+' ≠ 0',true]});else{S(3,'p = 0 なので終了。',{cond:['0 ≠ 0',false]});break}
+  out.push(val[p-1]);st.chain.seen.push(p);st.out=out.join(' → ');st.hl.val=[p];S(4,'val['+p+'] = '+val[p-1]+' を出力。');
+  st.hl.next=[p];const old=p,q=nx[p-1];p=q;st.v.p=p;st.chain.cur=p||null;st.p.val=p?{p}:{};st.p.next=p?{p}:{};
+  S(5,'p ← next['+old+'] = '+q+'。'+(q?q+'番目へジャンプ。':'0 なのでもう次は無い。'));
+ }
+ S(6,'出力は 10 → 20 → 30 → 40。配列の順番(30,10,40,20)とは違う順でたどれた。');
+ return steps;},
+quiz:[
+ {q:'上のリスト(10 → 20 → 30 → 40)で、20(要素番号4)の後ろに、要素番号5に入れた新しい値 25 をつなぎたい。正しい手順は？',c:['next[5] ← next[4] の後に next[4] ← 5','next[4] ← 5 の後に next[5] ← next[4]','next[5] ← 4 の後に next[4] ← 5','next[4] ← 5 だけでよい'],e:'先に「25 の次 ＝ 20 の元の次(30)」をつないでおき、その後で「20 の次 ＝ 25」に書き換える。順番を逆にすると next[4] が 5 に上書きされて、30 への道が消える。'},
+ {q:'同じリストから 20(要素番号4)を取り除きたい。どの代入をすればよい？',c:['next[2] ← next[4]','next[4] ← 0','next[2] ← 0','next[1] ← next[4]'],e:'20 の直前は 10(要素番号2)。10 の次を「20 の次(30)」にすれば、20 を飛ばしてたどるようになる。next[2] ← 0 だとリストが 10 で終わってしまう。'}
+]});
+
+/* ---------- 16 sec ---------- */
+def({id:'sec',title:'情報セキュリティ4問の取り方',sub:'問17〜20。知識＋「組織としてどう動くか」',
+html:`
+<p>問17〜20の4問は、擬似言語ではなく<b>状況設定つきのセキュリティ問題</b>。長めの事例を読んで「適切な対応はどれか」を選ぶ形が多いです。アルゴリズムより短時間で解ける問題も多いので、<b>ここは確実に取りに行く</b>のが作戦。</p>
+<h3>頻出テーマ</h3>
+<ul>
+<li>マルウェア感染時の初動、インシデント報告</li>
+<li>標的型攻撃メール・フィッシング</li>
+<li>パスワード管理、多要素認証、アクセス権(最小権限)</li>
+<li>暗号化、ディジタル署名、証明書</li>
+<li>バックアップ、ログ管理、委託先管理</li>
+</ul>
+<h3>解き方のコツ</h3>
+<ul>
+<li><b>「自分だけで判断して済ませる」選択肢は×</b>になりやすい(報告・エスカレーションが基本)</li>
+<li><b>証拠を消す行動は×</b>(勝手に再起動・初期化・ログ削除)</li>
+<li>権限は<b>業務に必要な最小限</b>が正解になりやすい</li>
+<li>問題文の「〜社の規程では」「〜の方針として」という条件を必ず拾う。一般論より問題文の条件が優先</li>
+</ul>`,
+quiz:[
+ {q:'社員のPCがマルウェアに感染した疑いがある。最初に行うべき対応として、最も適切なものは？',c:['PCをネットワークから切り離し、情報システム部門に報告する','PCの電源を切って再起動し、様子を見る','自分でウイルス対策ソフトを実行し、駆除できたら報告は不要とする','同僚にメールで知らせ、念のためファイルを共有フォルダに退避する'],e:'まず被害拡大を防ぐためにネットワークから切り離し、決められた窓口に報告する。再起動はメモリ上の証拠が消えるおそれがあり、自己判断での処理や、感染したかもしれないファイルを共有する行為は不適切。'},
+ {q:'ディジタル署名によって確認できることとして、正しいものは？',c:['送信者が本人であることと、内容が改ざんされていないこと','内容を第三者に読まれないこと','メールが確実に相手に届いたこと','添付ファイルがウイルスに感染していないこと'],e:'ディジタル署名は「誰が作ったか(真正性)」と「途中で書き換えられていないか(完全性)」を確認する仕組み。内容を秘密にするのは暗号化の役割。'},
+ {q:'取引先を名乗るメールに「請求書を確認してください」とZIPファイルが添付されていた。普段とやり取りの様子が違う。最も適切な対応は？',c:['添付を開かず、情報システム部門に報告し、取引先には既知の連絡先で別途確認する','メールに返信して、本当に取引先か確認する','ファイルを開いて、中身が請求書なら問題ない','念のため、メールを削除して誰にも言わない'],e:'標的型攻撃メールの疑い。メールへの返信では攻撃者に届くだけ。開かずに報告し、確認は電話など既に知っている正規の連絡手段で行う。黙って削除すると、同じメールを受けた他の社員への注意喚起ができない。'},
+ {q:'部署の共有フォルダのアクセス権の設定方針として、最も適切なものは？',c:['業務上必要な利用者に、必要な操作の権限だけを与える','全社員に読み書きの権限を与え、運用ルールで制限する','管理を簡単にするため、全員を管理者権限にする','パスワードを全員で共有して、1つのアカウントで使う'],e:'「最小権限の原則」。必要な人に必要な分だけ。アカウント共有は、誰が何をしたかを追跡できなくなるので不適切。'}
+]});
+
+/* ---------- extra drill ---------- */
+const DRILL=[
+ {q:'実行後の配列 a は？',code:`整数型の配列: a ← {1, 2, 3, 4, 5}
+整数型: i, tmp
+for (i を 1 から 2 まで 1 ずつ増やす)
+  tmp ← a[i]
+  a[i] ← a[6 − i]
+  a[6 − i] ← tmp
+endfor`,c:['{5, 4, 3, 2, 1}','{5, 2, 3, 4, 1}','{1, 2, 3, 4, 5}','{5, 4, 3, 4, 5}'],e:'i=1：a[1] と a[5] を交換 → {5,2,3,4,1}。i=2：a[2] と a[4] を交換 → {5,4,3,2,1}。真ん中の a[3] はそのまま。配列の反転。'},
+ {q:'実行後の c は？',code:`整数型の配列: a ← {3, 8, 1, 8, 5, 8}
+整数型: c ← 0
+整数型: i
+for (i を 1 から aの要素数 まで 1 ずつ増やす)
+  if (a[i] = 8)
+    c ← c + 1
+  endif
+endfor`,c:['3','2','8','6'],e:'8 は2番目、4番目、6番目の3か所。条件に合う個数を数える「カウント」の基本形。'},
+ {q:'実行後の a の値は？',code:`整数型: a ← 0
+整数型: b ← 1
+整数型: t, i
+for (i を 1 から 5 まで 1 ずつ増やす)
+  t ← a + b
+  a ← b
+  b ← t
+endfor`,c:['5','3','8','13'],e:'(a,b) の変化：(0,1)→(1,1)→(1,2)→(2,3)→(3,5)→(5,8)。a = 5。表を書いてトレースすれば一発。'},
+ {q:'x ← 5、y ← 3 のとき、次の式の値は？\nnot (x > 4 and y > 4)',c:['真','偽'],e:'x > 4 は真、y > 4 は偽。真 and 偽 = 偽。not 偽 = 真。かっこの中から計算する。'},
+ {q:'次の式の値は？(演算子の優先順位に注意)\n2 + 3 × 4 mod 5',c:['4','0','2','14'],e:'× と mod は + より先に、左から順に計算。3 × 4 = 12、12 mod 5 = 2、2 + 2 = 4。'},
+ {q:'二次元配列 m ← {{1, 2, 3}, {4, 5, 6}} のとき、m[2, 1] の値は？',c:['4','2','5','1'],e:'m[行, 列]。2行目 {4, 5, 6} の1列目なので 4。要素番号はどちらも1から。'},
+ {q:'s ← 0 で実行したとき、実行後の s は？',code:`for (i を 1 から 10 まで 1 ずつ増やす)
+  if (i mod 3 = 0)
+    s ← s + i
+  endif
+endfor`,c:['18','3','30','55'],e:'i mod 3 = 0 になるのは 3, 6, 9 のとき。3 + 6 + 9 = 18。'},
+ {q:'次の関数を f(3) で呼んだとき、出力される順番は？',code:`○f(整数型: n)
+  if (n = 0)
+    return
+  endif
+  f(n − 1)
+  n を出力する`,c:['1 2 3','3 2 1','0 1 2 3','3'],e:'f(3) は先に f(2) を呼び、f(2) は f(1) を、f(1) は f(0) を呼ぶ。f(0) は何もせず戻り、そこから f(1) が 1 を出力 → f(2) が 2 → f(3) が 3。出力が再帰呼び出しの「後」にあるので、戻りながら出力される。'}
+];
+
+/* ---- question bank ---- */
+const BANK={};
+Object.values(LESSONS).forEach(l=>(l.quiz||[]).forEach((q,i)=>{q.id=l.id+'-'+i;q.from=l.title;BANK[q.id]=q}));
+DRILL.forEach((q,i)=>{q.id='d-'+i;q.from='実戦ドリル';BANK[q.id]=q});
+const ORDER=UNITS.flatMap(u=>u.ids);
+const TT={
+'var-1':[['行','n'],['1',10],['2',20],['3',17],['4',1]],
+'while-1':[['k','c'],[1,0],[2,1],[4,2],[8,3],[16,4],[32,5]],
+'while-2':[['x','x > 0 ?'],[10,'(最初)'],[6,'真'],[2,'真'],['−2','偽 → 終了']],
+'for-1':[['i','j の範囲','c'],[1,'1',1],[2,'1〜2',3],[3,'1〜3',6]],
+'array-1':[['i','b'],['—','{2, 4, 6, 8}'],[1,'{2, 6, 6, 8}'],[2,'{2, 6, 12, 8}'],[3,'{2, 6, 12, 20}']],
+'binary-0':[['回','low','high','mid','a[mid]'],[1,1,8,4,'12 > 5'],[2,1,3,2,'5 発見']],
+'bubble-0':[['j','比較','配列'],['—','','{4, 2, 3, 1}'],[1,'4>2 交換','{2, 4, 3, 1}'],[2,'4>3 交換','{2, 3, 4, 1}'],[3,'4>1 交換','{2, 3, 1, 4}']],
+'select-0':[['i','最小(位置)','配列'],['—','','{5, 1, 4, 2, 3}'],[1,'1 ([2])','{1, 5, 4, 2, 3}'],[2,'2 ([4])','{1, 2, 4, 5, 3}']],
+'recur-0':[['呼出し','戻り値'],['f(0)',0],['f(1)','1+0 = 1'],['f(2)','2+1 = 3'],['f(3)','3+3 = 6'],['f(4)','4+6 = 10'],['f(5)','5+10 = 15']],
+'recur-1':[['n','g(n)'],[0,0],[1,1],[2,'1+0 = 1'],[3,'1+1 = 2'],[4,'2+1 = 3'],[5,'3+2 = 5']],
+'intcalc-0':[['n','n mod 2','c'],[13,1,1],[6,0,1],[3,1,2],[1,1,3],[0,'(終了)',3]],
+'intcalc-1':[['a','b','r'],[48,18,'—'],[18,12,12],[12,6,6],[6,0,0]],
+'stack-0':[['操作','スタック(下→上)','出た値'],['push(1)','1',''],['push(2)','1 2',''],['pop()','1','2'],['push(3)','1 3',''],['push(4)','1 3 4',''],['pop()','1 3','4'],['pop()','1','3']],
+'d-0':[['i','交換','a'],['—','','{1, 2, 3, 4, 5}'],[1,'a[1]⇄a[5]','{5, 2, 3, 4, 1}'],[2,'a[2]⇄a[4]','{5, 4, 3, 2, 1}']],
+'d-2':[['i','t','a','b'],['—','—',0,1],[1,1,1,1],[2,2,1,2],[3,3,2,3],[4,5,3,5],[5,8,5,8]],
+'d-7':[['呼出し','出力'],['f(3) → f(2) → f(1) → f(0)','(まだ何も出力しない)'],['f(0) 終了 → f(1) に戻る','1'],['f(1) 終了 → f(2) に戻る','2'],['f(2) 終了 → f(3) に戻る','3']]
+};
+function miniTable(t){return '<div style="overflow-x:auto"><table class="mini"><tr>'+t[0].map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr>'+t.slice(1).map(r=>'<tr>'+r.map(c=>'<td>'+esc(fmt2(c))+'</td>').join('')+'</tr>').join('')+'</table></div>'}
+const fmt2=v=>typeof v==='number'&&v<0?'−'+Math.abs(v):String(v);
+
+
+/* ================= concept diagrams ================= */
+const CV={okSoft:'var(--okSoft)',ngSoft:'var(--ngSoft)',acc:'var(--acc)',amb:'var(--amb)',ink:'var(--ink)',mute:'var(--mute)',tile:'var(--tile)',line:'var(--line)',sh:'var(--tileSh)',accS:'var(--accSoft)',ambS:'var(--ambSoft)',ok:'var(--ok)',ng:'var(--ng)',card:'var(--card)',bg:'var(--bg)'};
+function cb(x,y,t,o){o=o||{};const w=o.w||34,d=7,f=o.f||CV.tile,e=o.e||CV.line,sd=o.sd||CV.sh,op=o.op==null?1:o.op;
+ return '<g style="opacity:'+op+'"><polygon points="'+x+','+y+' '+(x+d)+','+(y-d)+' '+(x+w+d)+','+(y-d)+' '+(x+w)+','+y+'" style="fill:'+f+';stroke:'+e+';stroke-width:1.2"/>'+
+ '<polygon points="'+(x+w)+','+y+' '+(x+w+d)+','+(y-d)+' '+(x+w+d)+','+(y+w-d)+' '+(x+w)+','+(y+w)+'" style="fill:'+sd+';stroke:'+e+';stroke-width:1.2"/>'+
+ '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+w+'" style="fill:'+f+';stroke:'+e+';stroke-width:1.5"/>'+
+ '<text x="'+(x+w/2)+'" y="'+(y+w/2+5)+'" text-anchor="middle" style="font-size:'+(o.fs||15)+'px;font-weight:700;fill:'+(o.tc||CV.ink)+';font-family:JetBrains Mono,monospace">'+t+'</text></g>'}
+const AMB={f:CV.ambS,e:CV.amb,sd:'color-mix(in srgb,var(--amb) 55%,#000)'};
+const ACC={f:CV.accS,e:CV.acc,sd:'color-mix(in srgb,var(--acc) 55%,#000)'};
+function tx(x,y,t,o){o=o||{};return '<text x="'+x+'" y="'+y+'" text-anchor="'+(o.a||'middle')+'" style="font-size:'+(o.s||12)+'px;font-weight:'+(o.w||500)+';fill:'+(o.c||CV.ink)+(o.m?';font-family:JetBrains Mono,monospace':'')+'">'+t+'</text>'}
+function ar(d,c,dash){return '<path d="'+d+'" style="fill:none;stroke:'+(c||CV.mute)+';stroke-width:2'+(dash?';stroke-dasharray:4 3':'')+'" marker-end="url(#'+(c===CV.amb?'aha':c===CV.acc?'ahg':'ahm')+')"/>'}
+function bx(x,y,w,h,t,o){o=o||{};return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="8" style="fill:'+(o.f||CV.tile)+';stroke:'+(o.e||CV.line)+';stroke-width:1.5"/>'+tx(x+w/2,y+h/2+4,t,{s:o.s||12,w:700,m:o.m})}
+function dm(cx,cy,w,h,t,o){o=o||{};return '<polygon points="'+(cx-w/2)+','+cy+' '+cx+','+(cy-h/2)+' '+(cx+w/2)+','+cy+' '+cx+','+(cy+h/2)+'" style="fill:'+(o.f||CV.accS)+';stroke:'+(o.e||CV.acc)+';stroke-width:1.5"/>'+tx(cx,cy+4,t,{s:11,w:700,m:true})}
+const SV=(h,body)=>'<svg class="diag" viewBox="0 0 340 '+h+'">'+body+'</svg>';
+const DIAG={
+ var:{cap:'変数は「名前つきの箱」。新しい値を入れると、古い値は消える',svg:SV(122,
+  tx(60,18,'x ← 3',{s:14,w:700,m:true})+tx(22,58,'3',{s:18,w:700,c:CV.amb,m:true})+ar('M30,56 L44,60',CV.amb)+cb(48,48,'3',AMB)+tx(65,104,'箱 x',{s:12,w:700})+
+  ar('M108,66 L142,66')+
+  tx(235,18,'x ← x + y',{s:14,w:700,m:true})+bx(178,28,114,20,'① 3 + 5 = 8 を計算',{s:10,f:CV.bg})+cb(210,62,'8',AMB)+tx(227,116,'② 箱 x に入れる',{s:11,w:700})+
+  tx(292,74,'3',{s:18,w:700,c:CV.mute,m:true})+'<line x1="284" y1="68" x2="300" y2="68" style="stroke:var(--ng);stroke-width:2"/>'+tx(300,94,'古い値は消える',{s:10,c:CV.ng}))},
+ if:{cap:'上から順に判定し、最初に「真」になった所だけ実行する(黄色が実際に通る道)',svg:SV(150,
+  bx(120,4,100,22,'score = 72',{m:true,s:11})+ar('M170,26 L170,32',CV.amb)+
+  dm(170,52,130,36,'score ≥ 80 ?')+ar('M235,52 L270,52 L270,64')+tx(252,46,'真',{s:11,w:700,c:CV.ok})+bx(240,66,70,24,'r ← "A"',{m:true,s:11})+
+  ar('M170,70 L170,88',CV.amb)+tx(182,82,'偽',{s:11,w:700,c:CV.ng})+
+  dm(170,108,130,36,'score ≥ 60 ?',{f:CV.ambS,e:CV.amb})+ar('M235,108 L262,108',CV.amb)+tx(248,102,'真',{s:11,w:700,c:CV.ok})+bx(264,96,70,24,'r ← "B"',{m:true,s:11,f:CV.ambS,e:CV.amb})+
+  ar('M105,108 L78,108')+tx(92,102,'偽',{s:11,w:700,c:CV.ng})+bx(6,96,70,24,'r ← "C"',{m:true,s:11})+
+  tx(170,146,'B を実行したら、残り(else)は見ずに endif の後へ',{s:10,c:CV.mute}))},
+ while:{cap:'条件が「真」の間ずっと回る。「偽」になった瞬間に抜ける',svg:SV(130,
+  dm(110,36,120,40,'n ≤ 4 ?')+ar('M110,56 L110,74',CV.ok)+tx(122,68,'真',{s:11,w:700,c:CV.ok})+
+  bx(60,76,100,28,'中身を実行',{})+ar('M60,90 L26,90 L26,36 L48,36',CV.amb)+tx(16,120,'戻ってもう一度判定',{s:10,a:'start',c:CV.amb})+
+  ar('M170,36 L232,36',CV.ng)+tx(200,28,'偽',{s:11,w:700,c:CV.ng})+bx(234,22,86,28,'抜ける',{f:CV.ngSoft||CV.bg})+
+  tx(277,78,'n = 1,2,3,4 … 真',{s:11,m:true,c:CV.ok})+tx(277,96,'n = 5 … 偽 → 終了',{s:11,m:true,c:CV.ng}))},
+ for:{cap:'i は 1 → 3 → 5 → 7 → 9 と2ずつ跳ぶ。次の 11 は 9 を超えるので終了',svg:SV(104,
+  tx(170,16,'for (i を 1 から 9 まで 2 ずつ増やす)',{s:11,w:700,m:true})+
+  '<line x1="20" y1="72" x2="322" y2="72" style="stroke:var(--line);stroke-width:2"/>'+
+  [1,2,3,4,5,6,7,8,9,10,11].map(k=>{const x=20+(k-1)*29;const on=k%2===1&&k<=9;return '<circle cx="'+x+'" cy="72" r="'+(on?7:3)+'" style="fill:'+(on?CV.acc:k===11?CV.ng:CV.line)+'"/>'+tx(x,94,k,{s:11,m:true,c:on?CV.ink:CV.mute,w:on?700:400})}).join('')+
+  [1,3,5,7].map(k=>{const x1=20+(k-1)*29,x2=x1+58;return ar('M'+(x1+4)+',64 Q'+((x1+x2)/2)+',30 '+(x2-4)+',64',CV.amb)+tx((x1+x2)/2,40,'+2',{s:10,w:700,c:CV.amb})}).join('')+
+  ar('M'+(20+8*29+4)+',64 Q'+(20+9*29)+',36 '+(20+10*29-4)+',64',CV.ng,true)+tx(20+10*29,54,'✕',{s:12,w:700,c:CV.ng}))},
+ array:{cap:'番号つきの箱の列。番号(要素番号)は 1 から数える',svg:SV(122,
+  tx(170,16,'a ← {5, 8, 2, 9}',{s:13,w:700,m:true})+
+  [5,8,2,9].map((v,i)=>tx(60+i*62,40,'['+(i+1)+']',{s:11,m:true,c:i===1?CV.amb:CV.mute,w:i===1?700:400})+cb(43+i*62,56,v,i===1?AMB:{})).join('')+
+  ar('M122,112 L122,98',CV.amb)+tx(150,116,'a[2] = 8',{s:12,w:700,c:CV.amb,m:true,a:'start'})+tx(300,48,'← 0 からではない',{s:10,c:CV.ng}))},
+ func:{cap:'引数を渡して中で計算し、return で結果が戻ってくる',svg:SV(116,
+  bx(8,40,80,34,'calc(3)',{m:true})+tx(48,32,'呼ぶ側',{s:10,c:CV.mute})+
+  ar('M90,48 L138,48',CV.amb)+tx(114,40,'3',{s:13,w:700,c:CV.amb,m:true})+
+  '<rect x="140" y="22" width="110" height="70" rx="12" style="fill:var(--accSoft);stroke:var(--acc);stroke-width:2"/>'+tx(195,46,'twice',{s:14,w:700,m:true})+tx(195,64,'n ← 3',{s:11,m:true,c:CV.mute})+tx(195,82,'return n × 2',{s:11,m:true})+
+  ar('M138,70 L90,70',CV.acc)+tx(114,86,'6',{s:13,w:700,c:CV.acc,m:true})+
+  tx(296,50,'引数 → 中へ',{s:11,c:CV.amb,w:700})+tx(296,70,'戻り値 → 外へ',{s:11,c:CV.acc,w:700}))},
+ max:{cap:'先頭を暫定チャンピオンにして、もっと大きいのが来たら交代',svg:SV(130,
+  [4,7,2,9,5].map((v,i)=>{const x=40+i*56,h=v*9,y=112-h;const win=v===9;return '<rect x="'+x+'" y="'+y+'" width="34" height="'+h+'" rx="4" style="fill:'+(win?CV.ambS:CV.tile)+';stroke:'+(win?CV.amb:CV.line)+';stroke-width:1.5"/>'+tx(x+17,y-6,v,{s:13,w:700,m:true})+tx(x+17,126,'['+(i+1)+']',{s:10,m:true,c:CV.mute})}).join('')+
+  tx(225,14,'👑',{s:16})+tx(8,20,'max: 4 → 7 → 9',{s:11,a:'start',w:700,m:true,c:CV.amb}))},
+ linear:{cap:'先頭から1つずつ「探している値か？」と調べていく',svg:SV(112,
+  tx(170,16,'8 を探す',{s:12,w:700})+
+  [6,3,8,1,7].map((v,i)=>cb(24+i*60,52,v,i===2?AMB:{op:i<2?.4:1})).join('')+
+  [0,1].map(i=>tx(41+i*60,104,'✕',{s:12,w:700,c:CV.ng})).join('')+tx(161,104,'発見!',{s:12,w:700,c:CV.ok})+
+  ar('M40,34 L150,34',CV.amb)+tx(166,40,'🔍',{s:16}))},
+ binary:{cap:'真ん中を見て、ありえない半分を捨てる。1回ごとに範囲が半分',svg:SV(118,
+  [[1,8],[5,8],[7,8]].map((r,row)=>{const y=12+row*36;return range(1,8).map(k=>{const on=k>=r[0]&&k<=r[1];const mid=Math.floor((r[0]+r[1])/2)===k;
+   return '<rect x="'+(20+(k-1)*30)+'" y="'+y+'" width="26" height="24" rx="4" style="fill:'+(mid?CV.ambS:on?CV.tile:CV.bg)+';stroke:'+(mid?CV.amb:on?CV.line:CV.bg)+';stroke-width:1.5;opacity:'+(on?1:.5)+'"/>'+tx(33+(k-1)*30,y+16,[2,5,8,12,16,23,38,45][k-1],{s:10,m:true,c:on?CV.ink:CV.mute})}).join('')+
+   tx(275,y+16,(r[1]-r[0]+1)+'個 → '+(row<2?'半分':'発見'),{s:11,w:700,a:'start',c:row<2?CV.ink:CV.ok})}).join(''))},
+ bubble:{cap:'隣どうしを比べて逆なら交換。大きい値が泡のように右へ浮かぶ',svg:SV(118,
+  '<path d="M110,40 C110,20 51,20 51,40" style="fill:none;stroke:var(--acc);stroke-width:2" marker-end="url(#ahg)" marker-start="url(#ahgs)"/>'+tx(80,14,'5 > 3 なら交換',{s:10,w:700,c:CV.acc})+
+  [5,3,4,1].map((v,i)=>cb(34+i*60,52,v,i<2?AMB:{})).join('')+
+  ar('M40,108 L280,108',CV.amb)+tx(160,102,'大きい値が右端へ運ばれる',{s:11,w:700,c:CV.amb})+
+  '<circle cx="300" cy="30" r="6" style="fill:none;stroke:var(--acc)"/><circle cx="314" cy="18" r="4" style="fill:none;stroke:var(--acc)"/><circle cx="322" cy="40" r="3" style="fill:none;stroke:var(--acc)"/>')},
+ select:{cap:'残りの中から最小値を探し、先頭と交換して確定させていく',svg:SV(118,
+  [6,2,8,1].map((v,i)=>cb(40+i*64,48,v,i===3?AMB:i===0?ACC:{})).join('')+
+  '<path d="M249,38 C249,12 57,12 57,38" style="fill:none;stroke:var(--acc);stroke-width:2" marker-end="url(#ahg)" marker-start="url(#ahgs)"/>'+tx(153,14,'先頭と交換',{s:11,w:700,c:CV.acc})+
+  tx(57,104,'先頭',{s:11,w:700,c:CV.acc})+tx(249,104,'最小',{s:11,w:700,c:CV.amb}))},
+ recur:{cap:'呼ぶたびに下へ積み重なり、止まる条件から上へ値を返していく',svg:SV(150,
+  [4,3,2,1].map((n,i)=>bx(30+i*14,8+i*34,104,26,'fact('+n+')',{m:true,f:i===3?CV.ambS:CV.tile,e:i===3?CV.amb:CV.line})).join('')+
+  [0,1,2].map(i=>ar('M'+(40+i*14)+','+(34+i*34)+' L'+(54+i*14)+','+(42+i*34),CV.mute)).join('')+tx(14,140,'↓ 呼ぶ',{s:11,w:700,a:'start',c:CV.mute})+
+  ['= 4 × 6 = 24','= 3 × 2 = 6','= 2 × 1 = 2','= 1  (止まる)'].map((t,i)=>tx(196,25+i*34,t,{s:12,w:700,m:true,a:'start',c:i===3?CV.amb:CV.acc})).join('')+
+  ar('M326,118 L326,16',CV.acc)+tx(318,140,'↑ 戻る',{s:11,w:700,c:CV.acc}))},
+ intcalc:{cap:'mod 10 で一の位を取り出し、÷10 の商 で一の位を消す',svg:SV(110,
+  '<text x="70" y="64" text-anchor="middle" style="font-size:34px;font-weight:900;font-family:JetBrains Mono,monospace;fill:var(--ink)">472<tspan style="fill:var(--amb)">8</tspan></text>'+
+  ar('M128,46 L170,30',CV.amb)+ar('M128,62 L170,80',CV.acc)+
+  tx(176,28,'mod 10 → ',{s:12,m:true,a:'start'})+tx(254,29,'8',{s:20,w:900,m:true,a:'start',c:CV.amb})+tx(272,28,'(一の位)',{s:10,a:'start',c:CV.mute})+
+  tx(176,86,'÷ 10 の商 → ',{s:12,m:true,a:'start'})+tx(266,87,'472',{s:18,w:900,m:true,a:'start',c:CV.acc}))},
+ stack:{cap:'後から入れたものが先に出る(LIFO)。積み上げた皿と同じ',svg:SV(140,
+  '<path d="M126,30 L126,128 L200,128 L200,30" style="fill:none;stroke:var(--mute);stroke-width:3"/>'+
+  cb(144,88,'3')+cb(144,52,'7',AMB)+
+  ar('M110,8 L148,40',CV.acc)+tx(96,18,'push',{s:12,w:700,c:CV.acc,m:true})+
+  ar('M180,44 L218,8',CV.amb)+tx(236,18,'pop',{s:12,w:700,c:CV.amb,m:true})+
+  tx(270,70,'最後に入れた 7 が',{s:11,w:700})+tx(270,88,'最初に出る',{s:11,w:700})+tx(60,74,'top →',{s:12,w:700,c:CV.acc,m:true}))},
+ list:{cap:'各要素が「次は何番か(next)」を持ち、それをたどって進む',svg:SV(104,
+  tx(34,14,'先頭 = [2]',{s:11,w:700,c:CV.amb})+ar('M34,20 L34,34',CV.amb)+
+  [[2,10],[4,20],[1,30],[3,40]].map((n,i)=>bx(8+i*72,38,54,36,'',{f:i===0?CV.ambS:CV.tile,e:i===0?CV.amb:CV.line})+tx(35+i*72,54,n[1],{s:15,w:700,m:true})+tx(35+i*72,68,'next='+([4,1,3,0][i]),{s:9,m:true,c:CV.mute})+tx(35+i*72,92,'['+n[0]+']',{s:10,m:true,c:CV.mute})+(i<3?ar('M'+(63+i*72)+',56 L'+(78+i*72)+',56'):'')).join('')+
+  ar('M279,56 L298,56')+tx(316,60,'0',{s:14,w:700,m:true,c:CV.ng})+tx(316,78,'終',{s:10,c:CV.ng}))}
+};
+
+/* ================= 図解ずかん ================= */
+function nd(cx,cy,t,o){o=o||{};const r=o.r||15;return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" style="fill:'+(o.f||CV.tile)+';stroke:'+(o.e||CV.ink)+';stroke-width:1.8"/>'+tx(cx,cy+4,t,{s:o.s||12,w:700,m:true,c:o.c})}
+function ln(d,c,w,dash){return '<path d="'+d+'" style="fill:none;stroke:'+(c||CV.mute)+';stroke-width:'+(w||1.8)+(dash?';stroke-dasharray:4 3':'')+'"/>'}
+function rc(x,y,w,h,f,e,r){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(r==null?4:r)+'" style="fill:'+(f||CV.tile)+';stroke:'+(e||CV.line)+';stroke-width:1.5"/>'}
+function cells(x,y,vals,o){o=o||{};const w=o.w||26,h=o.h||24,g=o.g==null?2:o.g;return vals.map((v,i)=>{const st=(o.st&&o.st[i])||'';const f=st==='a'?CV.ambS:st==='g'?CV.accS:st==='d'?CV.bg:st==='ok'?CV.okSoft:st==='ng'?CV.ngSoft:CV.tile;const e=st==='a'?CV.amb:st==='g'?CV.acc:st==='ok'?CV.ok:st==='ng'?CV.ng:CV.line;
+ return rc(x+i*(w+g),y,w,h,f,e,3)+tx(x+i*(w+g)+w/2,y+h/2+4,v,{s:o.s||12,w:700,m:true,c:st==='d'?CV.mute:CV.ink})}).join('')}
+function ttab(x,y,head,rows){const w=30,h=17;let s='';head.forEach((t,c)=>{s+=rc(x+c*w,y,w,h,CV.bg,CV.line,0)+tx(x+c*w+w/2,y+12,t,{s:9,w:700})});
+ rows.forEach((r,i)=>r.forEach((t,c)=>{const last=c===r.length-1;s+=rc(x+c*w,y+(i+1)*h,w,h,last?(t==='真'?CV.okSoft:CV.ngSoft):CV.tile,CV.line,0)+tx(x+c*w+w/2,y+(i+1)*h+12,t,{s:10,w:last?700:500,c:t==='真'?CV.ok:CV.ng})}));return s}
+
+const ZCATS=[['syn','擬似言語の記法'],['ds','データ構造'],['al','アルゴリズム'],['ts','テスト'],['sec','セキュリティ']];
+const Z=[];
+function zc(o){Z.push(o)}
+
+/* ---------- 擬似言語の記法 ---------- */
+zc({id:'syn-var',cat:'syn',t:'変数・代入・型',lesson:'var',
+ svg:SV(122,[['整数型','42','x ← 42'],['実数型','3.14','r ← 3.14'],['文字列型','"ab"','s ← "ab"'],['論理型','true','f ← true']].map((a,i)=>tx(37+i*84,20,a[0],{s:11,w:700,c:CV.acc})+cb(14+i*84,40,a[1],{w:46,fs:a[1].length>3?12:15})+tx(37+i*84,110,a[2],{s:10,m:true,c:CV.mute})).join('')),
+ p:'変数は名前のついた箱。「型」はその箱に入れてよい値の種類。',
+ an:'型＝箱のラベル。「整数専用の箱」に文字は入れられない。',
+ b:['「←」で右辺の値を左辺の箱に入れる(代入)','宣言だけで値を入れていない変数は「未定義の値」','論理型は true(真) / false(偽) の2値','整数型どうしの割り算の結果を整数で使うときは「の商」と書かれる'],
+ tip:'問題文の変数宣言を最初に確認。型から「何を入れる箱か」がわかる。'});
+zc({id:'syn-arith',cat:'syn',t:'mod(余り)と ÷ の商',lesson:'intcalc',
+ svg:SV(128,tx(170,16,'17 個を 5 個ずつ分けると…',{s:12,w:700})+
+  [0,1,2].map(g=>rc(8+g*86,28,78,36,CV.accS,CV.acc,10)+range(0,4).map(k=>'<circle cx="'+(23+g*86+k*12)+'" cy="46" r="4.5" style="fill:var(--acc)"/>').join('')).join('')+
+  '<circle cx="280" cy="46" r="6" style="fill:var(--amb)"/><circle cx="300" cy="46" r="6" style="fill:var(--amb)"/>'+
+  tx(125,84,'5個のまとまりが 3つ → 商 3',{s:11,w:700,c:CV.acc})+tx(290,84,'余り 2',{s:11,w:700,c:CV.amb})+
+  tx(170,114,'17 ÷ 5 の商 = 3　　17 mod 5 = 2',{s:13,w:700,m:true})),
+ p:'mod は割り算の「余り」、「÷ ◯ の商」は割り算の「整数部分」。',
+ an:'17個のアメを5人に配る。1人3個ずつ(商)で、2個余る(余り)。',
+ b:['n mod 2 = 0 なら偶数、1 なら奇数','n mod 10 で一の位、n ÷ 10 の商 で一の位を削る','x mod n の結果は必ず 0 〜 n−1','配列を循環させるとき (i mod n) + 1 がよく使われる'],
+ tip:'「(i mod 5) + 1」のような式は、i に 1, 2, 3… を入れて実際に計算するのが最速。'});
+zc({id:'syn-logic',cat:'syn',t:'論理演算 and / or / not',
+ svg:SV(116,tx(49,12,'A and B',{s:11,w:700,m:true})+ttab(4,18,['A','B','結果'],[['真','真','真'],['真','偽','偽'],['偽','真','偽'],['偽','偽','偽']])+
+  tx(161,12,'A or B',{s:11,w:700,m:true})+ttab(116,18,['A','B','結果'],[['真','真','真'],['真','偽','真'],['偽','真','真'],['偽','偽','偽']])+
+  tx(258,12,'not A',{s:11,w:700,m:true})+ttab(228,18,['A','結果'],[['真','偽'],['偽','真']])+tx(258,112,'',{})),
+ p:'and は「両方とも真」、or は「どちらか一方でも真」、not は真偽をひっくり返す。',
+ an:'and は「雨が降っていない かつ 暇」でやっと外出。or は「どちらか満たせばOK」。',
+ b:['not (A and B) は (not A) or (not B) と同じ(ド・モルガン)','not (A or B) は (not A) and (not B) と同じ','and は or より優先順位が高い'],
+ tip:'while の継続条件を「終了条件」に言い換える問題では、not とド・モルガンを使う。'});
+zc({id:'syn-prec',cat:'syn',t:'演算子の優先順位',
+ svg:SV(140,['not\n単項 −','×  ÷\nmod','＋  −','比較\n= ≠ < >','and','or'].map((t,i)=>{const y=18+i*16;const [a,b]=t.split('\n');return rc(8+i*55,y,51,116-y,i===0?CV.ambS:CV.tile,i===0?CV.amb:CV.line,6)+tx(33+i*55,y+18,a,{s:11,w:700,m:true})+(b?tx(33+i*55,y+32,b,{s:10,m:true,c:CV.mute}):'')}).join('')+
+  tx(8,132,'← 先に計算',{s:11,w:700,a:'start',c:CV.amb})+tx(332,132,'後で計算 →',{s:11,a:'end',c:CV.mute})),
+ p:'高い段から先に計算する。同じ段なら左から順。迷ったらかっこの中が最優先。',
+ b:['2 + 3 × 4 mod 5 → 3×4=12 → 12 mod 5=2 → 2+2=4','a > 0 and b > 0 or c > 0 → (a>0 and b>0) or c>0','not x = 1 のような書き方は、not が x にだけかかる点に注意'],
+ tip:'選択肢の式を自分でかっこ付きに書き直すと、読み間違いが減る。'});
+zc({id:'syn-if',cat:'syn',t:'選択処理 if / elseif / else',lesson:'if',
+ svg:DIAG.if.svg,p:'上から順に条件を調べ、最初に真になった1か所だけを実行する。',
+ an:'エレベーターの行き先ボタン。最初に一致した階で降りたら、もう次の階は見ない。',
+ b:['どれも偽なら else を実行(else が無ければ何もしない)','条件の順番を入れ替えると結果が変わることがある','if の中にさらに if を書く「入れ子」も頻出'],
+ tip:'「範囲が広い条件」が先にあると、後ろの条件は永遠に実行されない…というバグ探し問題が出る。'});
+zc({id:'syn-loop',cat:'syn',t:'前判定 while と 後判定 do〜while',lesson:'while',
+ svg:SV(156,tx(85,14,'while(前判定)',{s:12,w:700,c:CV.acc})+tx(255,14,'do〜while(後判定)',{s:12,w:700,c:CV.amb})+
+  dm(85,44,104,32,'条件?')+ar('M85,60 L85,78',CV.ok)+tx(96,73,'真',{s:10,w:700,c:CV.ok})+bx(45,80,80,26,'処理')+ar('M45,93 L18,93 L18,44 L31,44',CV.acc)+ar('M137,44 L160,44 L160,128',CV.ng)+tx(150,36,'偽',{s:10,w:700,c:CV.ng})+tx(150,142,'終了',{s:11,w:700,c:CV.ng})+
+  bx(215,30,80,26,'処理',{f:CV.ambS,e:CV.amb})+ar('M255,56 L255,72',CV.mute)+dm(255,92,104,32,'条件?',{f:CV.ambS,e:CV.amb})+ar('M307,92 L326,92 L326,43 L297,43',CV.amb)+tx(318,108,'真',{s:10,w:700,c:CV.ok})+ar('M255,108 L255,126',CV.ng)+tx(266,122,'偽',{s:10,w:700,c:CV.ng})+tx(255,142,'終了',{s:11,w:700,c:CV.ng})+
+  tx(85,128,'最初から偽なら0回',{s:10,c:CV.mute})+tx(195,152,'',{})),
+ p:'while は「判定してから処理」、do〜while は「処理してから判定」。後判定は最低1回は実行される。',
+ an:'while は「味見してからおかわり」、do〜while は「まず一口食べてから、おかわりするか考える」。',
+ b:['どちらも条件が真の間くり返す(偽になったら終わる)','ループ終了直後の変数の値は「条件が偽になった値」','無限ループ＝条件がずっと真のまま'],
+ tip:'「ループ本体は何回実行されるか」は、境目の値(最後と最後の1つ手前)で必ず確かめる。'});
+zc({id:'syn-for',cat:'syn',t:'繰返し for',lesson:'for',svg:DIAG.for.svg,
+ p:'for (i を 開始 から 終了 まで 増分 ずつ増やす)。i が終了値を超えた時点で終わる。',
+ b:['回数 =(終了 − 開始)÷ 増分 の商 + 1(ちょうど割り切れる範囲のとき)','「ずつ減らす」なら下がっていき、終了値を下回ったら終わる','二重ループは外側1回につき内側がすべて回る → 回数は掛け算'],
+ tip:'内側の終了値に外側の i が入っている(j を 1 から i まで)ときは 1+2+…+n 回。'});
+zc({id:'syn-array',cat:'syn',t:'配列と要素番号',lesson:'array',svg:DIAG.array.svg,
+ p:'同じ型の値を番号つきで並べたもの。科目Bでは要素番号は1から始まる(断りがない限り)。',
+ an:'下駄箱。番号の札がついていて、a[2] は「2番の下駄箱の中身」。',
+ b:['{1, 2, 3} で作る。空の配列は {}','aの要素数 で個数がわかる','a[i] の i に計算式が入ることも多い(a[i + 1], a[n − i + 1])','「配列の末尾に追加する」という操作が書かれることもある'],
+ tip:'a[n − i + 1] は「後ろから i 番目」。i=1 なら最後、i=n なら先頭。'});
+zc({id:'syn-2d',cat:'syn',t:'二次元配列 m[行, 列]',
+ svg:SV(140,tx(170,14,'m ← {{1, 2, 3}, {4, 5, 6}}',{s:12,w:700,m:true})+
+  [1,2,3].map(c=>tx(113+(c-1)*52,36,c+'列',{s:11,c:CV.mute})).join('')+[1,2].map(r=>tx(64,66+(r-1)*40,r+'行',{s:11,c:CV.mute})).join('')+
+  [[1,2,3],[4,5,6]].map((row,r)=>row.map((v,c)=>rc(90+c*52,44+r*40,46,34,r===1&&c===0?CV.ambS:CV.tile,r===1&&c===0?CV.amb:CV.line,4)+tx(113+c*52,66+r*40,v,{s:15,w:700,m:true})).join('')).join('')+
+  tx(170,134,'m[2, 1] = 4(2行目の1列目)',{s:12,w:700,m:true,c:CV.amb})),
+ p:'表の形のデータ。m[行番号, 列番号] で取り出す。どちらも1から。',
+ an:'映画館の座席。「2列目の1番」のように行と列で場所を決める。',
+ b:['{{…}, {…}} の内側の { } が1行ぶん','行を固定して列を動かすループ＝横に1行読む','二重ループの外側が行、内側が列のことが多い','行列の転置は m[i, j] と m[j, i] を入れ替える'],
+ tip:'m[行, 列] の順番を逆に読むミスが多い。先に「行」と書いて確認する癖をつける。'});
+zc({id:'syn-func',cat:'syn',t:'関数・手続き・引数・戻り値',lesson:'func',svg:DIAG.func.svg,
+ p:'○で始まるのが関数(または手続き)。呼び出すと引数が渡され、return で戻り値が返る。',
+ an:'自動販売機。お金と番号(引数)を入れると、ジュース(戻り値)が出てくる。',
+ b:['○整数型: f(整数型: n) … 整数を返す関数','○f(整数型: n) … 値を返さない手続き','return が実行された瞬間に関数は終わる','引数として渡された値をコピーして使う(呼んだ側の変数は変わらない)'],
+ tip:'関数の中で関数を呼ぶ問題は、呼び出しの積み重なりを縦に書いて追う。'});
+zc({id:'syn-scope',cat:'syn',t:'大域変数と局所変数',
+ svg:SV(156,rc(6,8,328,144,CV.bg,CV.line,12)+tx(20,26,'プログラム全体',{s:11,w:700,a:'start',c:CV.mute})+
+  tx(170,26,'大域: count',{s:11,w:700,m:true,c:CV.amb})+cb(152,34,'3',AMB)+
+  rc(18,80,130,46,CV.tile,CV.acc,8)+tx(83,96,'○f()',{s:11,w:700,m:true,c:CV.acc})+tx(83,116,'局所 x = 1',{s:11,m:true})+
+  rc(192,80,130,46,CV.tile,CV.acc,8)+tx(257,96,'○g()',{s:11,w:700,m:true,c:CV.acc})+tx(257,116,'局所 x = 9',{s:11,m:true})+
+  ar('M110,80 L150,60',CV.amb,true)+ar('M230,80 L192,60',CV.amb,true)+tx(170,144,'局所変数は名前が同じでも別の箱',{s:10,w:700,c:CV.mute})),
+ p:'「大域:」がついた変数はどの関数からでも使える。関数の中で宣言した変数はその関数の中だけ。',
+ an:'大域変数は家族共用の冷蔵庫、局所変数は自分の部屋の小さな冷蔵庫。',
+ b:['関数が終わると局所変数は消える','大域変数は関数が終わっても値が残る(呼ぶたびに増えるカウンタなど)','スタックやキューの実装でよく使われる(top や配列を大域にする)'],
+ tip:'「この関数を2回呼んだ後の値は？」→ 大域変数は前回の値を引き継ぐ点に注意。'});
+zc({id:'syn-class',cat:'syn',t:'クラス・インスタンス・メンバ変数',lesson:'list',
+ svg:SV(150,rc(8,14,110,66,CV.bg,CV.mute,8)+'<rect x="8" y="14" width="110" height="66" rx="8" style="fill:none;stroke:var(--mute);stroke-width:1.5;stroke-dasharray:5 4"/>'+tx(63,32,'クラス ListElement',{s:10,w:700})+tx(63,52,'val',{s:11,m:true,c:CV.mute})+tx(63,68,'next',{s:11,m:true,c:CV.mute})+tx(63,96,'設計図',{s:10,c:CV.mute})+
+  ar('M120,46 L156,46',CV.acc)+tx(138,38,'生成',{s:10,w:700,c:CV.acc})+
+  rc(160,20,76,56,CV.accS,CV.acc,8)+tx(198,40,'val: 10',{s:11,m:true,w:700})+tx(198,62,'next: ─→',{s:11,m:true})+
+  rc(262,20,72,56,CV.accS,CV.acc,8)+tx(298,40,'val: 20',{s:11,m:true,w:700})+tx(298,62,'next: 未定義',{s:9,m:true})+ar('M232,62 L260,50',CV.acc)+
+  tx(184,108,'p',{s:13,w:700,m:true,c:CV.amb})+ar('M190,98 L196,80',CV.amb)+
+  tx(220,126,'p.val → 10',{s:12,w:700,m:true,a:'start',c:CV.amb})+tx(220,144,'p.next.val → 20',{s:12,w:700,m:true,a:'start',c:CV.amb})),
+ p:'クラスは設計図、インスタンスはそれから作った実物。「.」でインスタンスの中身(メンバ変数)を取り出す。',
+ an:'たい焼きの型(クラス)と、焼いたたい焼き(インスタンス)。中身(あんこ)は1個ずつ違う。',
+ b:['ListElement(10) のように呼ぶとインスタンスが生成される','p.next.val は「p の次の要素の val」','変数 p にはインスタンスそのものではなく「どれを指すか」が入っている','連結リストや木の問題でほぼ必ず使われる'],
+ tip:'p.next.next のような連鎖は、矢印の図を描いて1つずつたどる。'});
+zc({id:'syn-trace',cat:'syn',t:'トレース(変数の追跡)',
+ svg:SV(140,rc(6,10,140,120,'var(--code)','var(--code)',10)+[['n ← 1','#ece5d6'],['s ← 0','#ece5d6'],['while (n ≤ 3)','#7cc4f0'],['  s ← s + n','#ece5d6'],['  n ← n + 1','#ece5d6'],['endwhile','#7cc4f0']].map((l,i)=>'<text x="16" y="'+(32+i*18)+'" style="font-size:11px;font-family:JetBrains Mono,monospace;fill:'+l[1]+'">'+esc(l[0])+'</text>').join('')+
+  ar('M150,70 L168,70',CV.amb)+
+  [['n','s'],[1,'—'],[1,0],[1,1],[2,1],[2,3],[3,3],[3,6],[4,6]].map((r,i)=>r.map((v,c)=>rc(174+c*70,8+i*14,70,14,i===0?CV.bg:i===8?CV.ambS:CV.tile,CV.line,0)+tx(209+c*70,19+i*14,v,{s:10,m:true,w:i===0||i===8?700:400})).join('')).join('')),
+ p:'1行ずつ実行したつもりで、変数の値を表に書き足していく。科目Bの最強の武器。',
+ an:'家計簿。お金の出入りがあるたびに1行書く。頭の中で計算しない。',
+ b:['列に変数名、行に「変化したタイミング」を書く','変わった変数だけ書けば速い','ループは「今何周目か」と条件の真偽もメモ','配列は箱を描いて、書き換えたら古い値に斜線'],
+ tip:'1問5分。最初の2〜3周を丁寧に追えば、パターンが見えて残りは予想できることが多い。'});
+
+/* ---------- データ構造 ---------- */
+zc({id:'ds-stack',cat:'ds',t:'スタック(LIFO)',lesson:'stack',svg:DIAG.stack.svg,
+ p:'後から入れたものが先に出る(Last In First Out)。push で積み、pop で取り出す。',an:'積み重ねたお皿。最後に置いた皿から使う。',
+ b:['配列 + top(一番上の番号) で実装できる','pop しても値は消えず、top が下がるだけ','用途：関数呼び出しの管理、元に戻す(Undo)、かっこの対応チェック'],
+ tip:'操作列から「最後に取り出される値」を問う問題は、スタックの中身を横に書きながら追う。'});
+zc({id:'ds-queue',cat:'ds',t:'キュー(FIFO)',
+ svg:SV(116,rc(60,36,220,48,CV.bg,CV.mute,10)+cb(80,46,'3',ACC)+cb(130,46,'7')+cb(180,46,'5')+
+  ar('M70,60 L18,60',CV.amb)+tx(36,30,'dequeue',{s:11,w:700,m:true,c:CV.amb})+tx(36,100,'先頭から出す',{s:10,c:CV.amb})+
+  ar('M332,60 L262,60',CV.acc)+tx(300,30,'enqueue',{s:11,w:700,m:true,c:CV.acc})+tx(300,100,'末尾に入れる',{s:10,c:CV.acc})+
+  tx(170,110,'先に入れたものが先に出る',{s:11,w:700})),
+ p:'先に入れたものが先に出る(First In First Out)。末尾に追加し、先頭から取り出す。',an:'レジの行列。先に並んだ人から会計する。',
+ b:['先頭と末尾の2つの位置を管理する','配列の最後まで行ったら先頭に戻る「環状(リングバッファ)」実装が出る','環状では位置を (i mod 要素数) + 1 で進める','用途：プリンタの印刷待ち、幅優先探索'],
+ tip:'環状キューでは「満杯」と「空」の区別がポイント。要素数を別の変数で数える実装が多い。'});
+zc({id:'ds-list',cat:'ds',t:'単方向連結リスト',lesson:'list',svg:DIAG.list.svg,
+ p:'各要素が「次の要素」への参照(next)を持ち、それをたどって並びを表す。',an:'宝探しの手紙。「次は○○を見よ」と書いてある紙を順にたどる。',
+ b:['先頭を指す変数(head や listHead)から出発','next が未定義(または 0)なら終わり','並びを変えるのに要素を動かす必要がない(next の書き換えだけ)','その代わり「5番目」に直接行けない(先頭から順にたどる)'],
+ tip:'配列の格納順とリストの順番は別物。必ず next をたどって並べ直してから考える。'});
+zc({id:'ds-listop',cat:'ds',t:'リストの挿入と削除',lesson:'list',
+ svg:SV(156,tx(8,16,'挿入：A と B の間に N',{s:11,w:700,a:'start'})+
+  nd(40,48,'A')+nd(170,48,'B')+ln('M56,48 L152,48',CV.mute,1.5,true)+tx(104,40,'✕',{s:12,w:700,c:CV.ng})+nd(104,84,'N',{f:CV.ambS,e:CV.amb})+ar('M52,58 L90,76',CV.amb)+ar('M118,76 L156,58',CV.amb)+
+  tx(220,46,'① N.next ← A.next',{s:11,m:true,w:700,a:'start',c:CV.amb})+tx(220,66,'② A.next ← N',{s:11,m:true,w:700,a:'start',c:CV.amb})+tx(220,84,'(順番が逆だと B を見失う)',{s:9,a:'start',c:CV.ng})+
+  tx(8,114,'削除：B を取り除く',{s:11,w:700,a:'start'})+nd(40,138,'A')+nd(110,138,'B',{f:CV.bg,e:CV.mute,c:CV.mute})+nd(180,138,'C')+ln('M56,138 L94,138 M126,138 L164,138',CV.mute,1.5,true)+
+  '<path d="M48,124 C70,104 150,104 170,124" style="fill:none;stroke:var(--amb);stroke-width:2" marker-end="url(#aha)"/>'+tx(220,142,'A.next ← B.next',{s:11,m:true,w:700,a:'start',c:CV.amb})),
+ p:'挿入も削除も「next のつなぎ替え」だけ。つなぎ替える順番が大事。',an:'電車の連結作業。先に新しい車両を後ろとつないでから、前の車両とつなぐ。',
+ b:['挿入：新しい要素の next を先に設定してから、前の要素の next を書き換える','削除：消したい要素の「1つ前」の next を、消したい要素の next にする','先頭の挿入・削除は head の書き換えになる(特別扱い)'],
+ tip:'穴埋めで「prev.next ← curr.next」と「curr.next ← prev.next」を入れ替えた選択肢に注意。'});
+zc({id:'ds-dlist',cat:'ds',t:'双方向連結リスト',
+ svg:SV(100,[['A',40],['B',150],['C',260]].map(n=>rc(n[1]-30,30,60,34,CV.tile,CV.ink,8)+tx(n[1],52,n[0],{s:14,w:700,m:true})).join('')+
+  ar('M72,40 L118,40',CV.acc)+ar('M182,40 L228,40',CV.acc)+ar('M118,56 L72,56',CV.amb)+ar('M228,56 L182,56',CV.amb)+
+  tx(95,30,'next',{s:10,m:true,c:CV.acc})+tx(205,30,'next',{s:10,m:true,c:CV.acc})+tx(95,76,'prev',{s:10,m:true,c:CV.amb})+tx(205,76,'prev',{s:10,m:true,c:CV.amb})+
+  tx(170,96,'前にも後ろにもたどれる',{s:11,w:700})),
+ p:'next(次)に加えて prev(前)も持つリスト。前後どちらにもたどれる。',
+ b:['挿入・削除では next と prev の両方(最大4か所)を書き換える','末尾から逆順にたどる処理ができる','先頭の prev と末尾の next は未定義'],
+ tip:'書き換えの数が多いので、図を描いて矢印を1本ずつ消しながら確認する。'});
+zc({id:'ds-tree',cat:'ds',t:'木構造の用語',
+ svg:SV(160,ln('M170,24 L100,74 M170,24 L240,74 M100,74 L60,124 M100,74 L140,124 M240,74 L280,124')+
+  nd(170,24,'A',{f:CV.ambS,e:CV.amb})+nd(100,74,'B')+nd(240,74,'C')+nd(60,124,'D',{f:CV.accS,e:CV.acc})+nd(140,124,'E',{f:CV.accS,e:CV.acc})+nd(280,124,'F',{f:CV.accS,e:CV.acc})+
+  tx(205,20,'根(ルート)',{s:11,w:700,a:'start',c:CV.amb})+tx(170,154,'葉(子を持たない節)',{s:11,w:700,c:CV.acc})+
+  tx(4,28,'深さ0',{s:10,a:'start',c:CV.mute})+tx(4,78,'深さ1',{s:10,a:'start',c:CV.mute})+tx(4,128,'深さ2',{s:10,a:'start',c:CV.mute})),
+ p:'1つの根から枝分かれしていく構造。上下を「親・子」、末端を「葉」と呼ぶ。',an:'家系図を逆さにしたもの。いちばん上がご先祖様(根)。',
+ b:['節(ノード)と枝(エッジ)からなる','子が最大2つの木 = 二分木','完全二分木は配列で表せる(子は 2i と 2i+1)','部分木：ある節から下の部分だけを木とみなしたもの'],
+ tip:'木の問題は再帰で書かれることが多い。「左の部分木で同じことをする」と読む。'});
+zc({id:'ds-bst',cat:'ds',t:'二分探索木',
+ svg:SV(150,ln('M170,22 L100,66 M170,22 L240,66 M100,66 L60,112 M100,66 L140,112 M240,66 L200,112 M240,66 L280,112')+
+  ln('M170,22 L240,66 L200,112',CV.amb,3.5)+
+  [[170,22,50,1],[100,66,30],[240,66,70,1],[60,112,20],[140,112,40],[200,112,60,1],[280,112,80]].map(n=>nd(n[0],n[1],n[2],n[3]?{f:CV.ambS,e:CV.amb}:{})).join('')+
+  tx(12,140,'60 を探す：50 より大 → 右、70 より小 → 左 → 発見',{s:10,w:700,a:'start',c:CV.amb})+tx(12,20,'左 < 親 < 右',{s:12,w:700,a:'start',c:CV.acc,m:true})),
+ p:'どの節でも「左の子孫 < 自分 < 右の子孫」になっている二分木。探索が速い。',an:'数当てゲーム。「もっと大きい」「もっと小さい」で候補を半分にしていく。',
+ b:['探索：小さければ左、大きければ右へ進むだけ','中間順(左→自分→右)で走査すると昇順に並ぶ','偏った木(一直線)になると遅くなる'],
+ tip:'「値を挿入した後の木の形」を問う問題は、根から比べて空いている所に置く。'});
+zc({id:'ds-heap',cat:'ds',t:'ヒープ',
+ svg:SV(150,ln('M90,22 L50,62 M90,22 L130,62 M50,62 L28,102 M50,62 L72,102 M130,62 L112,102')+
+  [[90,22,1,1],[50,62,3,2],[130,62,2,3],[28,102,7,4],[72,102,4,5],[112,102,5,6]].map(n=>nd(n[0],n[1],n[2],{r:14,f:n[3]===2?CV.ambS:n[3]>=4&&n[3]<=5?CV.accS:CV.tile,e:n[3]===2?CV.amb:n[3]>=4&&n[3]<=5?CV.acc:CV.ink})+tx(n[0]+15,n[1]-10,'['+n[3]+']',{s:8,m:true,c:CV.mute})).join('')+
+  tx(90,134,'親 ≤ 子(最小ヒープ)',{s:11,w:700})+
+  tx(258,26,'配列で表すと',{s:11,w:700})+cells(186,36,[1,3,2,7,4,5],{w:22,st:['','a','','g','g','']})+[1,2,3,4,5,6].map(k=>tx(197+(k-1)*24,72,k,{s:9,m:true,c:CV.mute})).join('')+
+  tx(258,98,'i の子 → 2i と 2i+1',{s:11,w:700,m:true,c:CV.acc})+tx(258,118,'i の親 → i ÷ 2 の商',{s:11,w:700,m:true,c:CV.amb})+tx(258,138,'[2]の子は[4]と[5]',{s:10,c:CV.mute})),
+ p:'親が子以下(または以上)になっている完全二分木。根が常に最小(最大)値。',an:'会社の組織図で「上司は必ず部下より年上」のルールがある状態。',
+ b:['配列で表せる：要素 i の子は 2i と 2i+1、親は i ÷ 2 の商','追加：末尾に置いて、親より小さい間は親と交換(上へ)','取り出し：根を取り、末尾を根に移して、子と交換しながら下へ','ヒープソートの土台'],
+ tip:'ヒープの問題はほぼ「添字 2i, 2i+1, i÷2」の計算。図と配列を並べて書く。'});
+zc({id:'ds-graph',cat:'ds',t:'グラフと隣接行列',
+ svg:SV(142,ln('M40,30 L130,30 M40,30 L40,100 M130,30 L130,100 M40,100 L130,100 M130,30 L40,100')+nd(40,30,'A')+nd(130,30,'B')+nd(40,100,'C')+nd(130,100,'D')+
+  ['','A','B','C','D'].map((h,i)=>i?tx(189+i*28,22,h,{s:11,w:700,m:true})+tx(192,22+i*22,h,{s:11,w:700,m:true}):'').join('')+
+  [[0,1,1,0],[1,0,1,1],[1,1,0,1],[0,1,1,0]].map((r,i)=>r.map((v,j)=>rc(204+j*28,30+i*22,26,20,v?CV.accS:CV.tile,v?CV.acc:CV.line,2)+tx(217+j*28,44+i*22,v,{s:11,w:700,m:true,c:v?CV.acc:CV.mute})).join('')).join('')+
+  tx(260,134,'つながっていれば 1',{s:10,c:CV.mute})),
+ p:'点(ノード)と線(エッジ)でつながりを表す。隣接行列は「i と j がつながっていれば1」の二次元配列。',an:'路線図。駅が点、線路が線。',
+ b:['向きのないグラフでは行列が対角線で対称','向きのある(有向)グラフでは m[i, j] は i → j','重み付きグラフでは 1 の代わりに距離などを入れる','最短経路(ダイクストラ法)の問題で使われる'],
+ tip:'隣接行列を読むときは「行 → 列 の向き」をまず確認。'});
+zc({id:'ds-hash',cat:'ds',t:'ハッシュ表',
+ svg:SV(140,[[10,24],[15,64],[22,104]].map(k=>bx(8,k[1]-14,44,26,k[0],{m:true})+ar('M54,'+k[1]+' L104,70',CV.mute)).join('')+
+  rc(106,50,74,40,CV.accS,CV.acc,8)+tx(143,68,'キー mod 7',{s:10,w:700,m:true})+tx(143,82,'ハッシュ関数',{s:9,c:CV.mute})+
+  range(0,6).map(i=>rc(236,8+i*18,40,17,i===1?CV.ngSoft:i===3?CV.accS:CV.tile,i===1?CV.ng:i===3?CV.acc:CV.line,0)+tx(226,21+i*18,i,{s:10,m:true,c:CV.mute})+(i===3?tx(256,21+i*18,'10',{s:10,w:700,m:true}):'')+(i===1?tx(256,21+i*18,'15',{s:10,w:700,m:true})+tx(300,21+i*18,'← 22',{s:10,w:700,m:true,c:CV.ng}):'')).join('')+
+  ar('M182,66 L232,30',CV.acc)+ar('M182,74 L232,62',CV.acc)+tx(296,130,'衝突(シノニム)',{s:10,w:700,c:CV.ng})),
+ p:'キーを計算(ハッシュ関数)して格納場所を直接決める。探索が一瞬で終わる。',an:'名字の頭文字で決まる靴箱。「さ行」の人は「さ」の段を見ればよい。',
+ b:['探索の計算量はほぼ O(1)','違うキーが同じ場所になる＝衝突(シノニム)','衝突したら次の空きを探す、またはリストでつなぐ','ハッシュ関数には mod がよく使われる'],
+ tip:'「(キー mod 7) + 1 番目に入れる」など、+1 の有無を問題文で必ず確認(配列は1から)。'});
+
+/* ---------- アルゴリズム ---------- */
+zc({id:'al-linear',cat:'al',t:'線形探索',lesson:'linear',svg:DIAG.linear.svg,
+ p:'先頭から順に1つずつ比べていく。並んでいなくても使えるが、遅い。',
+ b:['計算量 O(n)。最悪で要素数ぶん比較','見つかったらそこで終了(return)','見つからなければ −1 などを返す'],
+ tip:'比較回数を数える問題は「見つかったとき」と「見つからないとき」で数が違う。'});
+zc({id:'al-sentinel',cat:'al',t:'番兵法',
+ svg:SV(116,tx(170,14,'5 を探す',{s:12,w:700})+cells(20,30,[6,3,8,1,7],{w:40,h:36,g:6,s:15})+
+  '<rect x="250" y="30" width="40" height="36" rx="3" style="fill:var(--ambSoft);stroke:var(--amb);stroke-width:2;stroke-dasharray:4 3"/>'+tx(270,53,'5',{s:15,w:700,m:true,c:CV.amb})+
+  tx(270,84,'番兵',{s:11,w:700,c:CV.amb})+[1,2,3,4,5,6].map(k=>tx(40+(k-1)*46,24,'['+k+']',{s:9,m:true,c:CV.mute})).join('')+
+  tx(170,108,'最後に必ず見つかる → 「末尾まで来たか」の判定が不要',{s:10,w:700})),
+ p:'配列の末尾に探したい値を置いておく。必ずどこかで見つかるので、ループの条件が1つ減る。',an:'迷子にならないよう、ゴールにも目印を立てておく作戦。',
+ b:['見つかった位置が番兵の位置なら「本当は無かった」','ループの条件が a[i] ≠ x だけになり、高速化できる','配列に1つ余分な場所が必要'],
+ tip:'「見つかった番号 = 要素数 + 1 なら未発見」という判定を穴埋めで問われる。'});
+zc({id:'al-binary',cat:'al',t:'二分探索',lesson:'binary',svg:DIAG.binary.svg,
+ p:'整列済みの配列で、真ん中と比べて半分ずつ範囲を狭める。',an:'辞書を真ん中で開いて「もっと前」「もっと後ろ」と絞る。',
+ b:['前提：データが整列済み','計算量 O(log n)。1024個でも約10回','mid ← (low + high) ÷ 2 の商','low ← mid + 1 / high ← mid − 1 の ±1 を忘れると無限ループ'],
+ tip:'比較回数の問題：要素数 n のとき最大 約 log₂n 回。2¹⁰ = 1024 を覚えておく。'});
+zc({id:'al-bubble',cat:'al',t:'バブルソート',lesson:'bubble',svg:DIAG.bubble.svg,
+ p:'隣どうしを比べて逆なら交換。1周ごとに最大値が右端に確定する。',
+ b:['計算量 O(n²)','比較回数 = n(n−1)/2 回(n=5 なら 10 回)','交換がなかったら終了、という改良版もある'],
+ tip:'「1周目が終わった時点の配列」を問われたら、最大値が右端にあるはず。そこで検算できる。'});
+zc({id:'al-select',cat:'al',t:'選択ソート',lesson:'select',svg:DIAG.select.svg,
+ p:'残りの中から最小値を探し、先頭と交換。左から1つずつ確定していく。',
+ b:['計算量 O(n²)','交換は1周につき1回だけ','内側ループは「最小値の位置探し」(最小値探索そのもの)'],
+ tip:'変数 minIdx(位置)と a[minIdx](値)を取り違えないこと。'});
+zc({id:'al-insert',cat:'al',t:'挿入ソート',
+ svg:SV(130,cells(20,62,[2],{w:38,h:34,s:15,st:['g']})+'<rect x="64" y="62" width="38" height="34" rx="3" style="fill:none;stroke:var(--amb);stroke-width:2;stroke-dasharray:4 3"/>'+cells(108,62,[5,8],{w:38,h:34,g:6,s:15,st:['g','g']})+
+  tx(127,56,'→',{s:14,w:900,c:CV.acc})+tx(171,56,'→',{s:14,w:900,c:CV.acc})+
+  cb(66,6,'4',AMB)+ar('M83,44 L83,58',CV.amb)+tx(116,20,'ここに差し込む',{s:11,w:700,a:'start',c:CV.amb})+
+  cells(222,62,[9,1],{w:38,h:34,g:6,s:15})+tx(264,52,'未整列',{s:11,w:700,c:CV.mute})+
+  tx(110,118,'整列済み：5 と 8 を1つ右へずらして空きを作る',{s:10,w:700,c:CV.acc})),
+ p:'整列済みの部分に、次の1枚を正しい位置へ差し込んでいく。',an:'トランプの手札を並べるときのやり方。1枚引いて、入るべき場所に差し込む。',
+ b:['計算量 O(n²)。ただしほぼ整列済みのデータなら速い','差し込む位置を探しながら、大きい値を1つずつ右へずらす','ずらすときは後ろから a[j+1] ← a[j]'],
+ tip:'「ずらす」処理の向き(後ろから)を間違えると値が上書きで消える。'});
+zc({id:'al-quick',cat:'al',t:'クイックソート',
+ svg:SV(140,cells(68,10,[5,3,8,1,9,2,7],{w:26,g:4,st:['a','','','','','','']})+tx(81,48,'基準値',{s:10,w:700,c:CV.amb})+
+  ar('M120,40 L80,74',CV.acc)+ar('M220,40 L260,74',CV.acc)+
+  cells(30,78,[3,1,2],{w:26,g:4,st:['g','g','g']})+tx(73,118,'5 より小さい',{s:10,w:700,c:CV.acc})+
+  cells(155,78,[5],{w:26,st:['a']})+
+  cells(222,78,[8,9,7],{w:26,g:4,st:['g','g','g']})+tx(265,118,'5 より大きい',{s:10,w:700,c:CV.acc})+
+  tx(170,136,'左右それぞれで同じことを再帰でくり返す',{s:10,c:CV.mute})),
+ p:'基準値(ピボット)より小さいグループと大きいグループに分け、それぞれを再帰で整列する。',an:'クラスを「背が160cmより低い人・高い人」に分けて、さらに各グループで同じことをする。',
+ b:['平均 O(n log n) で高速。最悪(偏ったとき)は O(n²)','分割統治法の代表例','再帰呼び出しの範囲(左端・右端)の引数に注目'],
+ tip:'再帰の引数が (左端, 基準の位置 − 1) と (基準の位置 + 1, 右端) になっているかを確認。'});
+zc({id:'al-merge',cat:'al',t:'マージソート',
+ svg:SV(182,cells(110,6,[5,2,4,1],{w:26,g:4})+ar('M140,32 L110,40',CV.mute)+ar('M200,32 L230,40',CV.mute)+
+  cells(80,42,[5,2],{w:26,g:4})+cells(204,42,[4,1],{w:26,g:4})+
+  cells(60,78,[5],{w:26})+cells(110,78,[2],{w:26})+cells(194,78,[4],{w:26})+cells(244,78,[1],{w:26})+
+  cells(80,114,[2,5],{w:26,g:4,st:['g','g']})+cells(204,114,[1,4],{w:26,g:4,st:['g','g']})+
+  ar('M106,140 L128,150',CV.acc)+ar('M234,140 L212,150',CV.acc)+cells(110,152,[1,2,4,5],{w:26,g:4,st:['a','a','a','a']})+
+  tx(20,64,'分ける',{s:11,w:700,a:'start',c:CV.mute})+tx(20,134,'併合',{s:11,w:700,a:'start',c:CV.acc})),
+ p:'半分ずつに分けてバラバラにし、小さい順に取り出しながら合わせ(併合し)ていく。',an:'2つの整列済みの山から、上のカードを比べて小さい方を取っていくと全体が整列する。',
+ b:['常に O(n log n) で安定','併合の部分：2つの列の先頭を比べ、小さい方を出す','併合用の作業領域(別の配列)が必要'],
+ tip:'併合のループは「どちらかの列が空になったら、残りを全部コピー」という処理がセット。'});
+zc({id:'al-order',cat:'al',t:'計算量(オーダー記法)',
+ svg:SV(150,ln('M30,10 L30,130 L330,130',CV.ink,1.5)+tx(330,146,'データ数 n',{s:10,a:'end',c:CV.mute})+tx(34,16,'時間',{s:10,a:'start',c:CV.mute})+
+  ln('M30,126 C120,58 250,48 320,44',CV.acc,2.5)+ln('M30,126 C150,122 250,118 320,116',CV.ok,2.5)+ln('M30,130 L240,14',CV.mute,2.5)+ln('M30,130 C100,128 130,70 160,12',CV.ng,2.5)+
+  tx(168,14,'O(n²)',{s:11,w:700,m:true,a:'start',c:CV.ng})+tx(246,20,'O(n)',{s:11,w:700,m:true,a:'start',c:CV.mute})+tx(262,40,'O(log n)',{s:11,w:700,m:true,a:'start',c:CV.acc})+tx(262,110,'O(1)',{s:11,w:700,m:true,a:'start',c:CV.ok})),
+ p:'データ数 n が増えたとき、処理時間がどう増えるかの目安。',an:'n が2倍になったとき：O(n) は2倍、O(n²) は4倍、O(log n) は+1回だけ。',
+ b:['O(1)：ハッシュ表の探索','O(log n)：二分探索','O(n)：線形探索、合計・最大値','O(n log n)：マージソート、クイックソート(平均)','O(n²)：バブル・選択・挿入ソート、二重ループ'],
+ tip:'二重ループで内側が n 回なら O(n²)。ループが半分ずつ減るなら O(log n)。'});
+zc({id:'al-recur',cat:'al',t:'再帰',lesson:'recur',svg:DIAG.recur.svg,
+ p:'関数の中で自分自身を呼び出す。必ず「止まる条件(基底条件)」がある。',an:'合わせ鏡。ただし必ずどこかで終わる仕掛けがある。',
+ b:['呼ぶたびに引数が小さくなり、止まる条件に近づく','戻るときに計算が進む(値は下から上へ返る)','出力が再帰呼び出しの前か後かで、出力の順番が逆になる'],
+ tip:'f(5) を聞かれたら、f(0), f(1), f(2)… と小さい方から表を作って積み上げる。'});
+zc({id:'al-gcd',cat:'al',t:'ユークリッドの互除法(最大公約数)',lesson:'intcalc',
+ svg:SV(110,[['48','18'],['18','12'],['12','6'],['6','0']].map((p,i)=>rc(8+i*84,26,70,30,i===3?CV.ambS:CV.tile,i===3?CV.amb:CV.line,8)+tx(43+i*84,46,'('+p[0]+', '+p[1]+')',{s:12,w:700,m:true})+(i<3?ar('M'+(80+i*84)+',41 L'+(90+i*84)+',41',CV.acc)+tx(85+i*84,74,(i===0?'48 mod 18':i===1?'18 mod 12':'12 mod 6')+' = '+['12','6','0'][i],{s:9,m:true,c:CV.acc}):'')).join('')+
+  tx(296,96,'答え 6',{s:13,w:900,c:CV.amb})+tx(10,16,'(a, b) → (b, a mod b) を b が 0 になるまで',{s:11,w:700,a:'start'})),
+ p:'(a, b) を (b, a mod b) に置き換え続け、b が 0 になったときの a が最大公約数。',
+ b:['割り算の余りを使うので計算が速い','最小公倍数 = a × b ÷ 最大公約数','r ← a mod b, a ← b, b ← r の3行がセット'],
+ tip:'代入の順番(r を先に計算してから a, b をずらす)がずれた選択肢がよく出る。'});
+zc({id:'al-prime',cat:'al',t:'素数判定とエラトステネスのふるい',
+ svg:SV(126,range(2,31).map((n,i)=>{const pr=[2,3,5,7,11,13,17,19,23,29,31].includes(n);const x=10+(i%10)*32,y=10+Math.floor(i/10)*34;
+  return rc(x,y,28,28,pr?CV.accS:CV.bg,pr?CV.acc:CV.line,4)+tx(x+14,y+18,n,{s:11,w:pr?700:400,m:true,c:pr?CV.ink:CV.mute})+(pr?'':ln('M'+(x+5)+','+(y+23)+' L'+(x+23)+','+(y+5),CV.ng,1.2))}).join('')+
+  tx(170,122,'2, 3, 5 の倍数を順に消すと、残りが素数',{s:10,w:700})),
+ p:'素数は「1と自分以外で割り切れない数」。小さい素数の倍数を順に消していくと素数だけ残る。',
+ b:['n が素数か調べるには 2 〜 √n で割ってみれば十分','ふるい：論理型の配列を用意し、倍数の位置を false にしていく','倍数を消すループは「k × 2, k × 3, …」または「k ずつ増やす」'],
+ tip:'「n mod k = 0 なら素数ではない」が判定の核心。ループの範囲(2から)に注意。'});
+zc({id:'al-radix',cat:'al',t:'基数変換(10進 → 2進)',
+ svg:SV(140,[['2 )13','1'],['2 )6','0'],['2 )3','1'],['2 )1','1'],['   0','']].map((r,i)=>tx(70,22+i*22,r[0],{s:14,w:700,m:true,a:'end'})+(r[1]!==''?tx(96,22+i*22,'余り '+r[1],{s:12,w:700,m:true,a:'start',c:CV.amb}):'')).join('')+
+  ar('M168,94 L168,18',CV.amb)+tx(178,58,'下から読む',{s:11,w:700,a:'start',c:CV.amb})+
+  cells(214,72,[1,1,0,1],{w:26,h:28,g:4,s:15,st:['a','a','a','a']})+[8,4,2,1].map((w,i)=>tx(227+i*30,118,w,{s:10,m:true,c:CV.mute})).join('')+tx(272,134,'8+4+1 = 13',{s:11,w:700,m:true})),
+ p:'2で割り続けて、余りを下から読むと2進数になる。',
+ b:['余り = n mod 2、次の n = n ÷ 2 の商','逆に2進→10進は、各桁 × 重み(1, 2, 4, 8…)の合計','16進数は4ビットずつまとめたもの(1101 = D)'],
+ tip:'プログラムでは余りが「下の桁から」出てくるので、配列の後ろから詰めるか、最後に逆順にする。'});
+zc({id:'al-bit',cat:'al',t:'ビット演算とマスク',
+ svg:SV(140,tx(6,26,'A',{s:12,w:700,m:true,a:'start'})+cells(60,10,[1,0,1,1,0,1,1,0],{w:28,h:24,g:3})+
+  tx(6,56,'マスク',{s:11,w:700,a:'start'})+cells(60,40,[0,0,0,0,1,1,1,1],{w:28,h:24,g:3,st:['d','d','d','d','g','g','g','g']})+
+  tx(6,90,'AND',{s:12,w:700,m:true,a:'start',c:CV.amb})+ln('M60,72 L306,72',CV.ink,1.5)+cells(60,76,[0,0,0,0,0,1,1,0],{w:28,h:24,g:3,st:['','','','','a','a','a','a']})+
+  tx(170,122,'1 の所だけ取り出す(下位4ビットを抜き出す)',{s:10,w:700})+tx(170,138,'左シフト1回 = ×2、右シフト1回 = ÷2',{s:10,c:CV.mute})),
+ p:'AND は「両方1なら1」。マスクの1の位置のビットだけを取り出せる。',an:'型紙を当てて、穴のあいた所だけ色を塗る。',
+ b:['AND：取り出す(1の位置だけ残る)','OR：特定のビットを1にする','XOR：特定のビットを反転する／同じなら0','論理シフト：ビットを左右にずらす(左1回で×2)'],
+ tip:'「x AND 1 が 1 なら奇数」のような使い方も出る(最下位ビット = 偶奇)。'});
+zc({id:'al-string',cat:'al',t:'文字列処理(回文判定など)',
+ svg:SV(118,tx(170,14,'"LEVEL" を前後から比べる',{s:12,w:700})+cells(70,46,['L','E','V','E','L'],{w:36,h:34,g:6,s:16,st:['a','g','','g','a']})+
+  [1,2,3,4,5].map(k=>tx(88+(k-1)*42,104,'['+k+']',{s:10,m:true,c:CV.mute})).join('')+
+  '<path d="M88,42 C88,18 256,18 256,42" style="fill:none;stroke:var(--amb);stroke-width:2"/><path d="M130,42 C130,28 214,28 214,42" style="fill:none;stroke:var(--acc);stroke-width:2"/>'+
+  tx(300,64,'i と',{s:10,a:'start',c:CV.mute})+tx(300,78,'n−i+1',{s:10,a:'start',m:true,c:CV.mute})),
+ p:'文字列は「文字の配列」として扱う。前から i 番目と後ろから i 番目を比べるのが定番。',
+ b:['文字列の長さ＝要素数','後ろから i 番目は n − i + 1 番目','比べるのは前半だけ(i を 1 から n ÷ 2 の商 まで)でよい','文字列の連結、部分文字列の取り出し、文字の出現回数の数え上げも頻出'],
+ tip:'「n ÷ 2 の商 まで」で、奇数長の真ん中の文字は自分自身と比べなくてよい点を確認。'});
+zc({id:'al-treewalk',cat:'al',t:'木の走査(先行・中間・後行)',
+ svg:SV(150,ln('M70,24 L36,70 M70,24 L104,70 M36,70 L18,114 M36,70 L54,114')+nd(70,24,'A')+nd(36,70,'B')+nd(104,70,'C')+nd(18,114,'D')+nd(54,114,'E')+
+  [['先行順','自分 → 左 → 右','A B D E C'],['中間順','左 → 自分 → 右','D B E A C'],['後行順','左 → 右 → 自分','D E B C A']].map((r,i)=>tx(140,30+i*40,r[0],{s:12,w:700,a:'start',c:CV.acc})+tx(196,30+i*40,r[1],{s:10,a:'start',c:CV.mute})+tx(140,48+i*40,r[2],{s:13,w:700,m:true,a:'start',c:CV.amb})).join('')),
+ p:'木のすべての節を訪ねる順番は3種類。「自分」をいつ処理するかで決まる。',an:'自分の番を「最初」にするか「真ん中」にするか「最後」にするかの違いだけ。',
+ b:['どれも再帰で書ける(左の部分木 → 右の部分木)','二分探索木を中間順でたどると昇順になる','数式の木を後行順でたどると逆ポーランド記法'],
+ tip:'再帰関数の中で「出力」が再帰呼び出しの前・間・後のどこにあるかで、3種類のどれかがわかる。'});
+zc({id:'al-bfsdfs',cat:'al',t:'幅優先探索と深さ優先探索',
+ svg:SV(140,[0,1].map(t=>{const ox=t?172:0,ord=t?[1,2,5,3,4,6,7]:[1,2,3,4,5,6,7];const P=[[80,22],[40,64],[120,64],[20,108],[60,108],[100,108],[140,108]];
+  return ln(['M80,22 L40,64','M80,22 L120,64','M40,64 L20,108','M40,64 L60,108','M120,64 L100,108','M120,64 L140,108'].map(d=>d.replace(/(\d+),(\d+)/g,(m,a,b)=>(+a+ox)+','+b)).join(' '))+P.map((p,i)=>nd(p[0]+ox,p[1],ord[i],{r:12,f:t?CV.ambS:CV.accS,e:t?CV.amb:CV.acc,s:11})).join('')+tx(80+ox,136,t?'深さ優先(奥まで行ってから戻る)':'幅優先(近い段から順に)',{s:10,w:700,c:t?CV.amb:CV.acc})}).join('')),
+ p:'幅優先は近い所から一段ずつ、深さ優先は行けるところまで奥へ進んでから戻る。',an:'幅優先は「1階の部屋を全部見てから2階へ」、深さ優先は「1つの通路を突き当たりまで進む」。',
+ b:['幅優先はキューを使う','深さ優先はスタック(または再帰)を使う','最短手数を求めるなら幅優先'],
+ tip:'「キューに入れる → 取り出す → 隣をキューに入れる」の流れが見えたら幅優先。'});
+
+/* ---------- テスト ---------- */
+zc({id:'ts-coverage',cat:'ts',t:'命令網羅・判定網羅・条件網羅',
+ svg:SV(150,dm(80,40,120,36,'A>0 and B>0 ?')+ar('M80,58 L80,82',CV.ok)+tx(92,74,'真',{s:10,w:700,c:CV.ok})+bx(40,84,80,26,'処理X')+ar('M80,110 L80,134')+
+  ar('M140,40 L156,40 L156,128 L86,128',CV.ng)+tx(166,90,'偽',{s:10,w:700,c:CV.ng})+
+  tx(192,30,'命令網羅',{s:12,w:700,a:'start',c:CV.acc})+tx(192,46,'全部の命令を1回 → 真の1通り',{s:10,a:'start'})+
+  tx(192,72,'判定(分岐)網羅',{s:12,w:700,a:'start',c:CV.acc})+tx(192,88,'真と偽の両方 → 2通り',{s:10,a:'start'})+
+  tx(192,114,'条件網羅',{s:12,w:700,a:'start',c:CV.acc})+tx(192,130,'A>0, B>0 それぞれの真偽',{s:10,a:'start'})),
+ p:'ホワイトボックステストで「どこまで通したか」の基準。命令網羅 < 判定網羅 の順に厳しい。',
+ b:['命令網羅：すべての命令を少なくとも1回実行','判定(分岐)網羅：すべての分岐で真と偽の両方を通す','条件網羅：判定の中の各条件(A>0 など)について真と偽を両方試す','複数条件網羅：条件の組合せをすべて試す(最も厳しい)'],
+ tip:'「最低何通りのテストデータが必要か」は、図に真・偽の道を書いて数える。'});
+zc({id:'ts-boundary',cat:'ts',t:'同値分割と境界値分析',
+ svg:SV(116,tx(170,14,'有効な入力：0 〜 100 点',{s:12,w:700})+
+  rc(20,42,60,20,CV.ngSoft,CV.ng,4)+rc(84,42,172,20,CV.okSoft,CV.ok,4)+rc(260,42,60,20,CV.ngSoft,CV.ng,4)+
+  tx(50,57,'無効',{s:10,w:700,c:CV.ng})+tx(170,57,'有効',{s:10,w:700,c:CV.ok})+tx(290,57,'無効',{s:10,w:700,c:CV.ng})+
+  [[-1,74],[0,92],[100,250],[101,268]].map(p=>'<circle cx="'+p[1]+'" cy="80" r="6" style="fill:var(--amb)"/>'+tx(p[1],100,fmt2(p[0]),{s:11,w:700,m:true,c:CV.amb})).join('')+tx(170,112,'境界の両側を必ずテスト',{s:10,w:700,c:CV.amb})),
+ p:'入力を「同じ扱いになるグループ」に分けて代表値を選ぶ(同値分割)。間違いが起きやすい境目を重点的に試す(境界値分析)。',an:'「20歳以上はお酒OK」なら、19歳と20歳を必ず試す。',
+ b:['同値分割：有効グループ・無効グループから1つずつ代表を選ぶ','境界値分析：境目のちょうど上下(−1, 0, 100, 101)','ブラックボックステスト(中身を見ずに入出力で試す)の手法'],
+ tip:'プログラムの「<」と「≤」の取り違え(境界のバグ)を見つける問題と相性が良い。'});
+
+/* ---------- セキュリティ ---------- */
+zc({id:'sec-cia',cat:'sec',t:'情報セキュリティの3要素(CIA)',lesson:'sec',
+ svg:SV(150,'<polygon points="170,22 60,128 280,128" style="fill:var(--accSoft);stroke:var(--acc);stroke-width:2"/>'+
+  nd(170,22,'C',{r:16,f:CV.ambS,e:CV.amb})+nd(60,128,'I',{r:16,f:CV.ambS,e:CV.amb})+nd(280,128,'A',{r:16,f:CV.ambS,e:CV.amb})+
+  tx(196,18,'機密性',{s:12,w:700,a:'start'})+tx(196,34,'許可された人だけが見られる',{s:9,a:'start',c:CV.mute})+
+  tx(60,104,'完全性',{s:12,w:700})+tx(70,146,'改ざんされていない',{s:9,c:CV.mute})+
+  tx(280,104,'可用性',{s:12,w:700})+tx(270,146,'使いたいときに使える',{s:9,c:CV.mute})+tx(170,96,'3つのバランス',{s:11,w:700,c:CV.acc})),
+ p:'機密性(Confidentiality)・完全性(Integrity)・可用性(Availability)の3つを守ること。',
+ b:['機密性の対策：暗号化、アクセス制御','完全性の対策：ディジタル署名、ハッシュ値、変更履歴','可用性の対策：バックアップ、冗長化、DoS対策','追加の要素：真正性・責任追跡性・否認防止・信頼性'],
+ tip:'「サーバが止まって使えない」は可用性、「勝手に書き換えられた」は完全性、「情報が漏れた」は機密性。'});
+zc({id:'sec-crypto',cat:'sec',t:'共通鍵暗号と公開鍵暗号',
+ svg:SV(160,tx(8,16,'共通鍵暗号',{s:12,w:700,a:'start',c:CV.acc})+bx(8,26,60,28,'送信者')+bx(140,26,60,28,'暗号文',{f:CV.ambS,e:CV.amb})+bx(272,26,60,28,'受信者')+ar('M70,40 L136,40')+ar('M202,40 L268,40')+
+  tx(103,66,'🔑 同じ鍵で暗号化',{s:9,c:CV.acc})+tx(236,66,'🔑 同じ鍵で復号',{s:9,c:CV.acc})+
+  tx(8,94,'公開鍵暗号',{s:12,w:700,a:'start',c:CV.amb})+bx(8,104,60,28,'送信者')+bx(140,104,60,28,'暗号文',{f:CV.ambS,e:CV.amb})+bx(272,104,60,28,'受信者')+ar('M70,118 L136,118')+ar('M202,118 L268,118')+
+  tx(103,146,'受信者の公開鍵',{s:9,w:700,c:CV.amb})+tx(236,146,'受信者の秘密鍵',{s:9,w:700,c:CV.amb})),
+ p:'共通鍵暗号は同じ鍵で暗号化・復号。公開鍵暗号は「受信者の公開鍵」で暗号化し、「受信者の秘密鍵」で復号する。',an:'公開鍵は誰でも閉められる南京錠、秘密鍵はそれを開けられる唯一の鍵。',
+ b:['共通鍵：処理が速い。鍵を安全に渡すのが難しい(人数分の鍵が必要)','公開鍵：鍵の受け渡しが楽。処理は遅い','実際は「共通鍵を公開鍵で送る」組合せ(ハイブリッド方式、TLSなど)'],
+ tip:'暗号化で使うのは「受信者の」公開鍵。送信者の鍵ではない点がよく問われる。'});
+zc({id:'sec-hash',cat:'sec',t:'ハッシュ関数',
+ svg:SV(124,bx(8,20,90,28,'"apple"',{m:true})+ar('M100,34 L130,34')+rc(132,18,76,32,CV.accS,CV.acc,8)+tx(170,38,'ハッシュ関数',{s:10,w:700})+ar('M210,34 L238,34')+bx(240,20,92,28,'3a7b…9f',{m:true,f:CV.ambS,e:CV.amb})+
+  bx(8,70,90,28,'"applf"',{m:true})+ar('M100,84 L130,84')+rc(132,68,76,32,CV.accS,CV.acc,8)+tx(170,88,'ハッシュ関数',{s:10,w:700})+ar('M210,84 L238,84')+bx(240,70,92,28,'e01c…42',{m:true,f:CV.ambS,e:CV.amb})+
+  tx(332,116,'1文字違うだけで全く別の値',{s:9,w:700,c:CV.amb,a:'end'})+tx(60,116,'値から元には戻せない',{s:9,w:700,c:CV.ng})),
+ p:'どんな長さのデータからも決まった長さの値(ハッシュ値)を作る。元に戻せず、少しの違いで値が大きく変わる。',an:'データの指紋。指紋から本人の顔は作れないが、本人かどうかは確かめられる。',
+ b:['改ざん検知：ハッシュ値が一致すれば内容は同じ','パスワードはハッシュ値で保存する(漏れても元がわからない)','ソルト：パスワードにランダムな値を足してからハッシュ化','代表例 SHA-256'],
+ tip:'ハッシュは「暗号化」ではない(復号できない)。選択肢の言い回しに注意。'});
+zc({id:'sec-sign',cat:'sec',t:'ディジタル署名',
+ svg:SV(160,tx(60,14,'送信者',{s:12,w:700,c:CV.acc})+tx(270,14,'受信者',{s:12,w:700,c:CV.acc})+
+  bx(14,24,92,26,'文書')+ar('M60,50 L60,62')+bx(14,64,92,26,'ハッシュ値')+ar('M60,90 L60,102')+bx(14,104,92,30,'署名',{f:CV.ambS,e:CV.amb})+tx(60,148,'送信者の秘密鍵で作る',{s:9,w:700,c:CV.amb})+
+  ar('M108,37 L222,37')+ar('M108,119 L222,119')+tx(165,30,'文書',{s:9,c:CV.mute})+tx(165,112,'署名',{s:9,c:CV.mute})+
+  bx(224,24,108,26,'文書 → ハッシュ値')+bx(224,104,108,30,'署名 → ハッシュ値',{f:CV.ambS,e:CV.amb})+tx(278,148,'送信者の公開鍵で戻す',{s:9,w:700,c:CV.amb})+
+  tx(278,78,'2つが一致?',{s:12,w:700,c:CV.ok})+tx(278,94,'→ 本人 & 改ざんなし',{s:9,w:700,c:CV.ok})),
+ p:'送信者の秘密鍵で署名を作り、受信者は送信者の公開鍵で検証する。本人が作ったこと・改ざんされていないことを確認できる。',an:'実印の押された書類。印鑑証明(公開鍵)で本物か確かめられる。',
+ b:['確認できる：真正性(本人か)・完全性(改ざんなし)・否認防止','確認できない：内容の秘匿(読まれないこと)','公開鍵が本人のものであることは、認証局(CA)の電子証明書で保証する'],
+ tip:'暗号化は「受信者の公開鍵」、署名は「送信者の秘密鍵」。この2つの対比が最頻出。'});
+zc({id:'sec-auth',cat:'sec',t:'認証の3要素と多要素認証',
+ svg:SV(130,[['知識','パスワード','暗証番号',60],['所持','スマホ','ICカード',170],['生体','指紋','顔',280]].map(a=>'<circle cx="'+a[3]+'" cy="56" r="44" style="fill:var(--accSoft);stroke:var(--acc);stroke-width:2;opacity:.9"/>'+tx(a[3],46,a[0],{s:14,w:900,c:CV.acc})+tx(a[3],66,a[1],{s:10})+tx(a[3],80,a[2],{s:10})).join('')+
+  tx(170,120,'違う要素を2つ以上 → 多要素認証',{s:11,w:700,c:CV.amb})),
+ p:'本人確認の方法は「知っているもの・持っているもの・体の特徴」の3種類。違う種類を組み合わせるのが多要素認証。',
+ b:['パスワード＋秘密の質問は、どちらも「知識」なので多要素ではない(2段階ではある)','パスワード＋スマホに届くコード → 知識＋所持で多要素','生体認証は本人拒否率と他人受入率のバランスがある'],
+ tip:'「多要素認証になっている組合せはどれか」で、同じ要素どうしの選択肢がワナ。'});
+zc({id:'sec-pass',cat:'sec',t:'パスワードへの攻撃',
+ svg:SV(126,bx(8,20,96,30,'サイトA',{})+tx(64,66,'漏えい',{s:10,w:700,c:CV.ng,a:'start'})+ar('M56,52 L56,74',CV.ng)+bx(8,76,96,30,'ID・PW の一覧',{f:CV.ngSoft,e:CV.ng})+
+  ar('M106,90 L170,90',CV.ng)+tx(138,82,'使い回し',{s:9,w:700,c:CV.ng})+bx(172,76,72,30,'サイトB')+bx(256,76,76,30,'サイトC')+ar('M244,90 L254,90',CV.ng)+
+  tx(250,30,'リスト型攻撃',{s:13,w:700,c:CV.ng})+tx(250,48,'同じパスワードで突破される',{s:9,c:CV.mute})),
+ p:'パスワードを総当たりで試す攻撃や、他所で漏れたパスワードを使い回して試す攻撃がある。',
+ b:['総当たり(ブルートフォース)攻撃：全組合せを試す → 長く複雑に、試行回数制限','辞書攻撃：よく使われる単語を試す','パスワードリスト攻撃：使い回しを狙う → サイトごとに変える','パスワードスプレー：よくあるパスワード1つで多数のIDを試す'],
+ tip:'対策の選択肢は「攻撃の種類に合っているか」で選ぶ。ロックアウトは総当たりには効くがリスト型には効きにくい。'});
+zc({id:'sec-sqli',cat:'sec',t:'SQLインジェクション',
+ svg:SV(140,tx(8,16,'入力欄',{s:11,w:700,a:'start'})+bx(8,24,150,28,"' OR '1'='1",{m:true,f:CV.ngSoft,e:CV.ng})+ar('M160,38 L186,38',CV.ng)+
+  rc(188,14,144,56,'var(--code)','var(--code)',8)+'<text x="196" y="34" style="font-size:9px;font-family:JetBrains Mono,monospace;fill:#ece5d6">SELECT * FROM 会員</text><text x="196" y="50" style="font-size:9px;font-family:JetBrains Mono,monospace;fill:#ece5d6">WHERE id = \'\' <tspan style="fill:#f08f7c">OR \'1\'=\'1\'</tspan></text><text x="196" y="64" style="font-size:9px;fill:#f08f7c">→ 常に真で全件</text>'+
+  tx(170,94,'入力が「命令の一部」として実行されてしまう',{s:11,w:700,c:CV.ng})+
+  tx(170,118,'対策：プレースホルダ(バインド機構)で',{s:11,w:700,c:CV.ok})+tx(170,134,'入力を「ただの値」として扱う',{s:11,w:700,c:CV.ok})),
+ p:'入力欄に SQL の一部を入れて、データベースに想定外の命令を実行させる攻撃。',an:'「お名前をどうぞ」と言われて「山田、それと金庫を開けて」と答えたら金庫が開いてしまうようなもの。',
+ b:['対策の本命：プレースホルダ(バインド機構)','入力値のエスケープ処理も有効','WAF で攻撃パターンを遮断(補助的な対策)','データベースのアカウントに必要最小限の権限だけ与える'],
+ tip:'「入力値の長さ制限」「暗号化」は根本対策ではない。プレースホルダが正解になりやすい。'});
+zc({id:'sec-xss',cat:'sec',t:'クロスサイトスクリプティング(XSS)',
+ svg:SV(130,bx(8,16,80,30,'攻撃者',{f:CV.ngSoft,e:CV.ng})+ar('M90,31 L126,31',CV.ng)+tx(108,22,'罠',{s:9,c:CV.ng})+
+  bx(128,16,90,30,'掲示板サイト')+ar('M220,31 L252,31',CV.ng)+bx(254,16,78,30,'閲覧者')+
+  rc(232,62,100,30,CV.ngSoft,CV.ng,8)+tx(282,81,'ブラウザで実行',{s:10,w:700,c:CV.ng})+ar('M282,48 L282,60',CV.ng)+tx(282,108,'Cookie が盗まれる',{s:10,w:700,c:CV.ng})+
+  tx(8,74,'<script> を書き込む',{s:10,m:true,a:'start',c:CV.ng})+tx(8,104,'対策：出力時のエスケープ',{s:11,w:700,a:'start',c:CV.ok})+tx(8,122,'< を &lt; に置き換える',{s:10,m:true,a:'start',c:CV.ok})),
+ p:'Webページにスクリプトを埋め込み、そのページを見た人のブラウザで実行させる攻撃。',
+ b:['被害：Cookie(セッション情報)の盗難、偽の入力画面の表示','対策：出力するときに特殊文字をエスケープ(サニタイジング)','Cookie に HttpOnly 属性を付けてスクリプトから読めなくする'],
+ tip:'SQLインジェクション → データベースへの攻撃、XSS → 閲覧者のブラウザへの攻撃。'});
+zc({id:'sec-mail',cat:'sec',t:'標的型攻撃メール・フィッシング',
+ svg:SV(130,rc(8,10,170,90,CV.tile,CV.line,10)+tx(18,30,'差出人：取引先(を装う)',{s:10,a:'start'})+tx(18,48,'件名：請求書の確認',{s:10,a:'start',w:700})+rc(18,58,70,22,CV.ngSoft,CV.ng,4)+tx(53,73,'📎 .zip',{s:10,w:700,c:CV.ng})+tx(96,73,'🔗 URL',{s:10,w:700,a:'start',c:CV.ng})+tx(18,94,'急かす・普段と違う',{s:9,a:'start',c:CV.mute})+
+  tx(200,24,'✕ 開く・返信する',{s:11,w:700,a:'start',c:CV.ng})+tx(200,52,'○ 開かずに報告',{s:11,w:700,a:'start',c:CV.ok})+tx(200,78,'○ 既知の連絡先に',{s:11,w:700,a:'start',c:CV.ok})+tx(214,94,'別の手段で確認',{s:11,w:700,a:'start',c:CV.ok})+
+  tx(170,122,'訓練：標的型メール攻撃訓練で社員の対応を確認',{s:9,c:CV.mute})),
+ p:'特定の組織を狙い、取引先などを装ったメールで添付ファイルを開かせたり偽サイトに誘導したりする。',
+ b:['フィッシング：本物そっくりの偽サイトでID・パスワードを入力させる','ビジネスメール詐欺(BEC)：経営者や取引先を装い送金させる','対策：メールの返信ではなく、既知の電話番号などで確認','怪しいメールは削除せず情報システム部門に報告(他の社員への注意喚起)'],
+ tip:'「メールに返信して確認」はワナ。返信先は攻撃者。'});
+zc({id:'sec-malware',cat:'sec',t:'マルウェアとランサムウェア',
+ svg:SV(124,[0,1,2,3].map(i=>rc(14+i*42,20,34,42,CV.tile,CV.line,4)+tx(31+i*42,52,'🔒',{s:16})).join('')+tx(94,80,'ファイルが暗号化される',{s:10,w:700,c:CV.ng})+
+  rc(196,16,136,50,CV.ngSoft,CV.ng,8)+tx(264,38,'元に戻したければ',{s:10,w:700,c:CV.ng})+tx(264,54,'身代金を払え',{s:10,w:700,c:CV.ng})+
+  tx(170,104,'対策：ネットワークから切り離したバックアップ',{s:11,w:700,c:CV.ok})+tx(170,120,'(バックアップごと暗号化されないように)',{s:9,c:CV.mute})),
+ p:'悪意のあるソフトウェアの総称がマルウェア。ランサムウェアはファイルを暗号化して身代金を要求する。',
+ b:['ウイルス(他に寄生)、ワーム(自分で増殖)、トロイの木馬(役立つふり)','ボット：外部から遠隔操作される','対策：OS・ソフトの更新、ウイルス対策ソフト、オフラインのバックアップ','感染したら：ネットワークから切り離し、報告(電源を切る・再起動は証拠が消えるおそれ)'],
+ tip:'バックアップの選択肢は「ネットワークから切り離して保管」があるものが正解になりやすい。'});
+zc({id:'sec-incident',cat:'sec',t:'インシデント対応の流れ',lesson:'sec',
+ svg:SV(110,['検知','初動\n隔離','報告','調査','復旧','再発\n防止'].map((t,i)=>{const x=6+i*55;const [a,b]=t.split('\n');return '<polygon points="'+x+',30 '+(x+46)+',30 '+(x+56)+',52 '+(x+46)+',74 '+x+',74 '+(x+10)+',52" style="fill:'+(i===1||i===2?CV.ambS:CV.accS)+';stroke:'+(i===1||i===2?CV.amb:CV.acc)+';stroke-width:1.5"/>'+tx(x+29,b?48:57,a,{s:11,w:700})+(b?tx(x+29,64,b,{s:11,w:700}):'')}).join('')+
+  tx(170,98,'まず被害を広げない → 決められた窓口へ報告',{s:11,w:700,c:CV.amb})),
+ p:'セキュリティ事故が起きたら、被害拡大の防止と報告を最優先し、その後に調査・復旧・再発防止を行う。',
+ b:['初動：ネットワークから切り離す(LANケーブルを抜く、Wi-Fiを切る)','報告：自分で判断せず、決められた窓口(CSIRT など)へ','証拠保全：ログやメモリを消さない(勝手に再起動・初期化しない)','再発防止：原因を分析して対策を実施'],
+ tip:'選択肢に「自分で駆除して報告しない」「同僚に転送して確認してもらう」があれば×。'});
+zc({id:'sec-network',cat:'sec',t:'ファイアウォール・DMZ・WAF・VPN',
+ svg:SV(172,rc(6,40,58,60,CV.bg,CV.mute,20)+tx(35,74,'インター',{s:9,w:700})+tx(35,86,'ネット',{s:9,w:700})+
+  rc(72,30,14,80,CV.ngSoft,CV.ng,2)+tx(79,124,'FW',{s:10,w:700,c:CV.ng,m:true})+
+  rc(94,20,108,100,CV.ambS,CV.amb,10)+tx(148,36,'DMZ',{s:12,w:700,c:CV.amb,m:true})+bx(104,46,88,24,'Webサーバ',{s:10})+bx(104,80,88,24,'メールサーバ',{s:10})+rc(98,46,8,24,CV.accS,CV.acc,2)+tx(102,40,'',{})+
+  rc(210,30,14,80,CV.ngSoft,CV.ng,2)+tx(217,124,'FW',{s:10,w:700,c:CV.ng,m:true})+
+  rc(232,20,100,100,CV.accS,CV.acc,10)+tx(282,36,'社内LAN',{s:12,w:700,c:CV.acc})+bx(244,50,76,24,'社内PC',{s:10})+bx(244,82,76,24,'DB',{s:10})+
+  ln('M30,150 C120,164 240,162 282,122',CV.acc,2,true)+tx(8,154,'在宅',{s:10,w:700,a:'start'})+tx(170,146,'VPN(暗号化したトンネル)',{s:10,w:700,c:CV.acc})+tx(84,60,'WAF',{s:8,w:700,c:CV.acc,m:true,a:'end'})),
+ p:'ファイアウォールで通信を制限し、外部に公開するサーバは DMZ に置いて社内LANと分ける。',an:'DMZ は会社の受付ロビー。お客さんは入れるが、奥の事務所(社内LAN)には入れない。',
+ b:['ファイアウォール：許可した通信だけ通す(IPアドレス・ポート番号で判断)','DMZ：外部公開サーバ用の区画。侵入されても社内LANまで届きにくい','WAF：Webアプリへの攻撃(SQLインジェクション、XSS)を中身を見て遮断','VPN：インターネット上に暗号化した専用の通り道を作る'],
+ tip:'「Webサーバをどこに置くか」→ DMZ。「社内DBをどこに置くか」→ 社内LAN。'});
+zc({id:'sec-access',cat:'sec',t:'アクセス制御と最小権限',
+ svg:SV(140,['','顧客DB','給与DB','設定'].map((h,i)=>i?tx(70+i*66,20,h,{s:11,w:700}):'').join('')+
+  [['営業A','読書','✕','✕'],['経理B','読','読書','✕'],['管理者','読書','読書','変更']].map((r,i)=>tx(40,48+i*30,r[0],{s:11,w:700})+r.slice(1).map((v,j)=>rc(106+j*66,32+i*30,60,24,v==='✕'?CV.bg:CV.accS,v==='✕'?CV.line:CV.acc,4)+tx(136+j*66,48+i*30,v,{s:11,w:700,c:v==='✕'?CV.mute:CV.ink})).join('')).join('')+
+  tx(170,134,'業務に必要な人に、必要な分だけ',{s:11,w:700,c:CV.amb})),
+ p:'誰が何にどこまでアクセスできるかを決める。原則は「必要最小限の権限」。',
+ b:['最小権限の原則：業務に必要な権限だけを与える','職務分掌：申請と承認を別の人にする','異動・退職したらすぐにアカウントを無効化','アカウントの共有は禁止(誰が何をしたか追えなくなる)','アクセスログを取り、定期的に確認する'],
+ tip:'「管理を楽にするため全員に管理者権限」「共用アカウント」は必ず×。'});
+zc({id:'sec-backup',cat:'sec',t:'バックアップ(フル・差分・増分)',
+ svg:SV(150,['日','月','火','水'].map((d,i)=>tx(90+i*62,18,d,{s:11,w:700})).join('')+
+  tx(8,44,'差分',{s:12,w:700,a:'start',c:CV.acc})+rc(66,30,48,22,CV.ambS,CV.amb,3)+tx(90,45,'フル',{s:10,w:700})+[1,2,3].map(i=>rc(128+(i-1)*62,30,14+i*14,22,CV.accS,CV.acc,3)).join('')+
+  tx(8,88,'増分',{s:12,w:700,a:'start',c:CV.amb})+rc(66,74,48,22,CV.ambS,CV.amb,3)+tx(90,89,'フル',{s:10,w:700})+[1,2,3].map(i=>rc(128+(i-1)*62,74,18,22,CV.accS,CV.acc,3)).join('')+
+  tx(8,122,'差分の復元 = フル + 最新の差分1つ',{s:10,w:700,a:'start',c:CV.acc})+tx(8,140,'増分の復元 = フル + すべての増分を順に',{s:10,w:700,a:'start',c:CV.amb})),
+ p:'フルは全部、差分は「前回のフル以降」の変更、増分は「前回のバックアップ以降」の変更を保存する。',
+ b:['差分：日がたつほど1回の量が増えるが、復元は2つで済む','増分：毎回の量は少ないが、復元に全部の増分が必要','ランサムウェア対策：ネットワークから切り離した場所に保管','定期的に「本当に復元できるか」をテストする'],
+ tip:'「水曜に障害、復元に必要なものは？」→ 差分ならフル＋水曜の差分、増分ならフル＋月火水の増分。'});
+
+/* ---------- 用語辞典 ---------- */
+const GLOSSB=[
+ ['代入','←','右辺の値を左辺の変数に入れること','syn-var'],
+ ['変数','','値を入れておく名前つきの箱','syn-var'],
+ ['型','整数型・実数型・文字列型・論理型','変数に入れられる値の種類','syn-var'],
+ ['未定義の値','','まだ何も入っていない状態','syn-var'],
+ ['mod','','割り算の余り(17 mod 5 = 2)','syn-arith'],
+ ['商','÷ ◯ の商','割り算の整数部分(17 ÷ 5 の商 = 3)','syn-arith'],
+ ['and','論理積','両方とも真のときだけ真','syn-logic'],
+ ['or','論理和','どちらか一方でも真なら真','syn-logic'],
+ ['not','否定','真と偽を反転','syn-logic'],
+ ['ド・モルガンの法則','','not(A and B) = not A or not B','syn-logic'],
+ ['優先順位','','not → ×÷mod → ＋− → 比較 → and → or','syn-prec'],
+ ['if','選択処理','条件によって実行する処理を変える','syn-if'],
+ ['while','前判定ループ','条件を先に調べてから処理をくり返す','syn-loop'],
+ ['do〜while','後判定ループ','先に1回処理してから条件を調べる','syn-loop'],
+ ['for','','回数や範囲を決めてくり返す','syn-for'],
+ ['配列','','同じ型の値を番号つきで並べたもの','syn-array'],
+ ['要素番号','添字','配列の何番目かを表す番号。科目Bでは1から','syn-array'],
+ ['要素数','','配列の中の値の個数','syn-array'],
+ ['二次元配列','','行と列で表す配列。m[行, 列]','syn-2d'],
+ ['関数','','値を返す部品。○整数型: f(…)','syn-func'],
+ ['手続き','','値を返さない部品。○f(…)','syn-func'],
+ ['引数','ひきすう','関数に渡す値','syn-func'],
+ ['戻り値','返り値','return で返される値','syn-func'],
+ ['大域変数','グローバル変数','どの関数からも使える変数','syn-scope'],
+ ['局所変数','ローカル変数','その関数の中だけで使える変数','syn-scope'],
+ ['クラス','','インスタンスの設計図','syn-class'],
+ ['インスタンス','','クラスから作った実物','syn-class'],
+ ['メンバ変数','','インスタンスが持つ変数。p.next のように「.」で使う','syn-class'],
+ ['トレース','','変数の値を1行ずつ追いかけること','syn-trace'],
+ ['スタック','LIFO：Last In First Out','後入れ先出し','ds-stack'],
+ ['push / pop','','スタックに積む / 取り出す','ds-stack'],
+ ['キュー','FIFO：First In First Out','先入れ先出し','ds-queue'],
+ ['enqueue / dequeue','','キューに入れる / 取り出す','ds-queue'],
+ ['環状キュー','リングバッファ','配列の末尾の次を先頭につなげたキュー','ds-queue'],
+ ['連結リスト','','次の要素への参照でつながったデータ構造','ds-list'],
+ ['ポインタ','参照','どこを指しているかの情報(next など)','ds-list'],
+ ['双方向リスト','','prev と next の両方を持つリスト','ds-dlist'],
+ ['木','ツリー','根から枝分かれする構造','ds-tree'],
+ ['根','ルート','木のいちばん上の節','ds-tree'],
+ ['葉','リーフ','子を持たない節','ds-tree'],
+ ['二分木','','子が最大2つの木','ds-tree'],
+ ['二分探索木','','左 < 親 < 右 が成り立つ二分木','ds-bst'],
+ ['ヒープ','','親 ≤ 子(または ≥)の完全二分木','ds-heap'],
+ ['グラフ','','点(ノード)と線(エッジ)の集まり','ds-graph'],
+ ['隣接行列','','つながりを0と1で表した二次元配列','ds-graph'],
+ ['ハッシュ表','','計算で格納場所を決める表','ds-hash'],
+ ['シノニム','衝突','違うキーが同じ場所になること','ds-hash'],
+ ['線形探索','','先頭から順に探す。O(n)','al-linear'],
+ ['番兵','','末尾に探す値を置いて判定を減らす工夫','al-sentinel'],
+ ['二分探索','','整列済みデータを半分ずつ絞る。O(log n)','al-binary'],
+ ['バブルソート','','隣どうしを交換。O(n²)','al-bubble'],
+ ['選択ソート','','最小を選んで先頭と交換。O(n²)','al-select'],
+ ['挿入ソート','','整列済みの部分に差し込む。O(n²)','al-insert'],
+ ['クイックソート','','基準値で分けて再帰。平均 O(n log n)','al-quick'],
+ ['マージソート','','分けて併合する。O(n log n)','al-merge'],
+ ['ピボット','基準値','クイックソートで分ける基準の値','al-quick'],
+ ['分割統治法','','問題を小さく分けて解き、結果をまとめる考え方','al-quick'],
+ ['計算量','オーダー記法 O(…)','データ数に対する処理時間の増え方','al-order'],
+ ['再帰','','関数が自分自身を呼び出すこと','al-recur'],
+ ['基底条件','','再帰を止める条件','al-recur'],
+ ['最大公約数','GCD：Greatest Common Divisor','両方を割り切る最大の数','al-gcd'],
+ ['ユークリッドの互除法','','余りを使って最大公約数を求める方法','al-gcd'],
+ ['素数','','1と自分以外で割り切れない2以上の数','al-prime'],
+ ['エラトステネスのふるい','','倍数を消して素数を求める方法','al-prime'],
+ ['基数変換','','10進数・2進数・16進数などの変換','al-radix'],
+ ['ビット','bit：binary digit','0か1の1桁','al-bit'],
+ ['マスク','','特定のビットを取り出すための値','al-bit'],
+ ['XOR','eXclusive OR','排他的論理和。違えば1','al-bit'],
+ ['シフト','','ビットを左右にずらす。左1回で×2','al-bit'],
+ ['回文','','前から読んでも後ろから読んでも同じ文字列','al-string'],
+ ['先行順・中間順・後行順','','木の節をたどる3つの順番','al-treewalk'],
+ ['幅優先探索','BFS：Breadth First Search','近い所から順に探す。キューを使う','al-bfsdfs'],
+ ['深さ優先探索','DFS：Depth First Search','奥まで進んでから戻る。スタックを使う','al-bfsdfs'],
+ ['ホワイトボックステスト','','中身(プログラムの構造)を見て行うテスト','ts-coverage'],
+ ['ブラックボックステスト','','入力と出力だけを見て行うテスト','ts-boundary'],
+ ['命令網羅','','すべての命令を1回以上実行する','ts-coverage'],
+ ['判定条件網羅','分岐網羅','すべての分岐の真と偽を通す','ts-coverage'],
+ ['条件網羅','','各条件の真と偽を試す','ts-coverage'],
+ ['同値分割','','入力をグループに分けて代表値でテスト','ts-boundary'],
+ ['境界値分析','','境目の前後の値でテスト','ts-boundary'],
+ ['機密性','Confidentiality','許可された人だけが見られる','sec-cia'],
+ ['完全性','Integrity','改ざんされていない','sec-cia'],
+ ['可用性','Availability','使いたいときに使える','sec-cia'],
+ ['共通鍵暗号','','暗号化と復号に同じ鍵を使う','sec-crypto'],
+ ['公開鍵暗号','','公開鍵で暗号化し、秘密鍵で復号する','sec-crypto'],
+ ['ハッシュ関数','','データから固定長の値を作る。元に戻せない','sec-hash'],
+ ['ソルト','','ハッシュ化の前にパスワードに足すランダムな値','sec-hash'],
+ ['ディジタル署名','','送信者の秘密鍵で作り、本人性と改ざんの有無を確認','sec-sign'],
+ ['CA','Certification Authority','認証局。公開鍵の持ち主を証明する','sec-sign'],
+ ['否認防止','','「送っていない」と言い逃れできないようにする','sec-sign'],
+ ['多要素認証','MFA：Multi-Factor Authentication','知識・所持・生体のうち2つ以上を組み合わせる','sec-auth'],
+ ['ブルートフォース攻撃','総当たり攻撃','すべての組合せを試す','sec-pass'],
+ ['パスワードリスト攻撃','リスト型攻撃','他所で漏れたID・パスワードを試す','sec-pass'],
+ ['SQLインジェクション','','入力でSQLを不正に実行させる攻撃','sec-sqli'],
+ ['プレースホルダ','バインド機構','入力をSQLの値として安全に埋め込む仕組み','sec-sqli'],
+ ['XSS','Cross Site Scripting','閲覧者のブラウザでスクリプトを実行させる攻撃','sec-xss'],
+ ['エスケープ','サニタイジング','特殊文字を無害な文字に置き換える','sec-xss'],
+ ['標的型攻撃','','特定の組織を狙った攻撃','sec-mail'],
+ ['フィッシング','','偽サイトで情報を入力させる詐欺','sec-mail'],
+ ['BEC','Business Email Compromise','ビジネスメール詐欺','sec-mail'],
+ ['マルウェア','','悪意のあるソフトウェアの総称','sec-malware'],
+ ['ランサムウェア','','ファイルを暗号化して身代金を要求する','sec-malware'],
+ ['インシデント','','セキュリティ上の事故・事件','sec-incident'],
+ ['CSIRT','Computer Security Incident Response Team','インシデント対応チーム','sec-incident'],
+ ['ファイアウォール','FW','許可した通信だけを通す仕組み','sec-network'],
+ ['DMZ','DeMilitarized Zone','外部公開サーバを置く緩衝地帯','sec-network'],
+ ['WAF','Web Application Firewall','Webアプリへの攻撃を防ぐ','sec-network'],
+ ['VPN','Virtual Private Network','暗号化した仮想の専用回線','sec-network'],
+ ['最小権限の原則','','必要最小限の権限だけを与える','sec-access'],
+ ['職務分掌','','1人に権限を集中させず仕事を分ける','sec-access'],
+ ['差分バックアップ','','前回のフル以降の変更を保存','sec-backup'],
+ ['増分バックアップ','','前回のバックアップ以降の変更を保存','sec-backup']
+];
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],list:['ds-list','ds-listop','syn-class'],sec:['sec-cia','sec-incident','sec-access']};
+
+
+/* ---- ずかん view ---- */
+let ZF={cat:'all',q:''};
+function zCard(c){const cat=ZCATS.find(k=>k[0]===c.cat)[1];
+ return '<article class="zc" id="zc-'+c.id+'" data-cat="'+c.cat+'"><div class="ztop"><span class="ztag zt-'+c.cat+'">'+cat+'</span>'+(c.lesson?'<button class="zlink" onclick="go(\''+c.lesson+'\')">▶ 動きで見る</button>':'')+'</div><h3>'+esc(c.t)+'</h3><div class="zfig">'+c.svg+'</div>'+
+ '<p class="zpoint">'+esc(c.p)+'</p>'+(c.an?'<div class="zan"><span>たとえ</span>'+esc(c.an)+'</div>':'')+'<ul class="zb">'+c.b.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'+(c.tip?'<div class="trap"><b>⚠ 試験では</b>　'+esc(c.tip)+'</div>':'')+'</article>'}
+function viewZukan(focus){
+ stopTimer();keyHandler=null;ctrl.innerHTML='';
+ if(focus){const c=Z.find(z=>z.id===focus);if(c){ZF.cat='all';ZF.q=''}}
+ let h=topbar('図解ずかん','科目Bの知識を全部、図で')+'<div class="wrap">';
+ h+='<input class="zsearch" id="zq" type="search" placeholder="🔍 用語で探す(例：ヒープ、署名、mod)" value="'+esc(ZF.q)+'">';
+ h+='<div class="zchips">'+[['all','すべて']].concat(ZCATS).map(k=>'<button class="zchip'+(ZF.cat===k[0]?' on':'')+'" data-c="'+k[0]+'">'+k[1]+' <small>'+(k[0]==='all'?Z.length:Z.filter(z=>z.cat===k[0]).length)+'</small></button>').join('')+'</div>';
+ h+='<div class="ztoc" id="ztoc"></div><div id="zlist"></div></div>';
+ app.innerHTML=h;
+ const draw=()=>{const q=ZF.q.trim().toLowerCase();
+  const list=Z.filter(c=>(ZF.cat==='all'||c.cat===ZF.cat)&&(!q||(c.t+c.p+(c.an||'')+c.b.join('')+(c.tip||'')).toLowerCase().includes(q)||GLOSSB.some(g=>g[3]===c.id&&(g[0]+g[1]).toLowerCase().includes(q))));
+  document.getElementById('ztoc').innerHTML=list.length?list.map(c=>'<a href="#z-'+c.id+'" onclick="event.preventDefault();document.getElementById(\'zc-'+c.id+'\').scrollIntoView({behavior:\'smooth\'})">'+esc(c.t)+'</a>').join(''):'';
+  let out='';ZCATS.forEach(k=>{const g=list.filter(c=>c.cat===k[0]);if(g.length)out+='<h2 class="zh">'+k[1]+'</h2>'+g.map(zCard).join('')});
+  document.getElementById('zlist').innerHTML=out||'<div class="empty-note">見つかりませんでした。別の言葉で探してみてください。</div>';};
+ draw();
+ document.getElementById('zq').oninput=e=>{ZF.q=e.target.value;draw()};
+ app.querySelectorAll('.zchip').forEach(b=>b.onclick=()=>{ZF.cat=b.dataset.c;app.querySelectorAll('.zchip').forEach(x=>x.classList.toggle('on',x===b));draw()});
+ if(focus){const el=document.getElementById('zc-'+focus);if(el)setTimeout(()=>{el.scrollIntoView({block:'start'});el.classList.add('flash')},60)}
+}
+function viewYougo(){
+ stopTimer();keyHandler=null;ctrl.innerHTML='';
+ let h=topbar('用語辞典','科目Bの用語 '+GLOSSB.length+'語')+'<div class="wrap"><input class="zsearch" id="gq" type="search" placeholder="🔍 用語・略語で探す"><div id="glist"></div></div>';
+ app.innerHTML=h;
+ const draw=q=>{q=(q||'').trim().toLowerCase();let out='';
+  ZCATS.forEach(k=>{const g=GLOSSB.filter(t=>Z.find(z=>z.id===t[3]).cat===k[0]&&(!q||(t[0]+t[1]+t[2]).toLowerCase().includes(q)));
+   if(g.length)out+='<h2 class="zh">'+k[1]+'</h2><div class="glist">'+g.map(t=>'<button class="gi" onclick="go(\'z-'+t[3]+'\')"><b>'+esc(t[0])+'</b>'+(t[1]?'<small>'+esc(t[1])+'</small>':'')+'<span>'+esc(t[2])+'</span><i>図解 →</i></button>').join('')+'</div>'});
+  document.getElementById('glist').innerHTML=out||'<div class="empty-note">見つかりませんでした。</div>'};
+ draw('');document.getElementById('gq').oninput=e=>draw(e.target.value);
+}
+
+/* ================= views ================= */
+let timer=null;
+function stopTimer(){if(timer){clearInterval(timer);timer=null}}
+function topbar(small,title,back){return '<div class="top"><div class="in"><button class="back" onclick="go(\''+(back||'home')+'\')" aria-label="戻る">←</button><div class="tt"><small>'+small+'</small><b>'+title+'</b></div></div></div>'}
+
+function viewHome(){
+ ctrl.innerHTML='';
+ const done=ORDER.filter(id=>P.done[id]).length;
+ const next=ORDER.find(id=>!P.done[id]);
+ let h='<div class="wrap"><div class="hero"><div class="kicker">基本情報技術者試験 科目B</div><h1>科目B、ゼロから。</h1><p>擬似言語の読み方から、1行ずつ動きを見て覚える。1レッスン5分。</p>';
+ h+=SV(96,[3,1,4,1,5,9].map((v,i)=>tx(38+i*50,16,'['+(i+1)+']',{s:10,m:true,c:i===2?CV.amb:CV.mute})+cb(22+i*50,34,v,i===2?AMB:i<2?ACC:{})).join('')+tx(39+2*50+60,90,'',{})+ar('M139,90 L139,78',CV.amb)+tx(150,92,'i = 3',{s:12,w:700,m:true,a:'start',c:CV.amb})).replace('class="diag"','class="diag" style="margin:14px 0 0;max-width:340px"');
+ h+='<div class="prog"><div class="bar"><i style="width:'+(done/ORDER.length*100)+'%"></i></div><b>'+done+' / '+ORDER.length+' 完了</b></div>';
+ h+='<div class="cta">'+(next?'<button class="btn" onclick="go(\''+next+'\')">'+(done?'続きから：':'はじめる：')+esc(LESSONS[next].title)+' →</button>':'<button class="btn amb" onclick="go(\'drill\')">全部クリア！ ドリルで仕上げ →</button>')+'</div></div>';
+ if(!P.seen&&!done){
+  h+='<div class="welcome"><b>ようこそ！ どこから始めますか？</b><p>レベルに合わせて選んでください。あとから自由に移動できます。</p><div class="wopts">'+
+   '<button data-go="intro"><span>🌱</span><b>まったく初めて</b><small>試験の形と擬似言語の読み方から</small></button>'+
+   '<button data-go="max"><span>📖</span><b>擬似言語は少し読める</b><small>定番アルゴリズムから</small></button>'+
+   '<button data-go="drill"><span>🎯</span><b>力試ししたい</b><small>実戦ドリル10問から</small></button>'+
+   '<button data-go="zukan"><span>📚</span><b>知識を整理したい</b><small>図解ずかんから</small></button></div></div>';
+ }
+ h+='<div class="zbanner"><button onclick="go(\'zukan\')"><b>📚 図解ずかん</b><span>'+Z.length+'枚の図で、記法・データ構造・アルゴリズム・セキュリティを全部まとめ</span></button><button onclick="go(\'yougo\')"><b>🔤 用語辞典</b><span>'+GLOSSB.length+'語。タップで図解へ</span></button></div>';
+ h+='<div class="facts"><div class="fact"><b>20問</b><span>全問必須</span></div><div class="fact"><b>100分</b><span>1問 約5分</span></div><div class="fact"><b>16＋4</b><span>アルゴ＋セキュリティ</span></div><div class="fact"><b>600点</b><span>／1000で合格</span></div></div>';
+ UNITS.forEach(u=>{
+  h+='<div class="unit"><h2>'+u.name+'</h2><div class="list">';
+  u.ids.forEach(id=>{const l=LESSONS[id];const n=ORDER.indexOf(id);const b=P.best[id];
+   h+='<button class="item'+(P.done[id]?' done':'')+'" onclick="go(\''+id+'\')"><span class="num">'+(P.done[id]?'✓':n)+'</span><span class="t"><b>'+esc(l.title)+'</b><small>'+esc(l.sub)+'</small></span>'+(b!=null?'<span class="sc">'+b+'/'+l.quiz.length+'</span>':'')+'</button>';});
+  h+='</div></div>';
+ });
+ const nw=P.wrong.filter(id=>BANK[id]).length;
+ h+='<div class="unit"><h2>練習・まとめ</h2><div class="tools">';
+ h+='<button class="tool" onclick="go(\'drill\')"><b>🎯 実戦ドリル</b><small>全問からランダム10問</small></button>';
+ h+='<button class="tool" onclick="go(\'review\')"><b>🔁 復習</b><small>間違えた問題 '+nw+'問</small></button>';
+ h+='<button class="tool" onclick="go(\'cheat\')"><b>📘 早見表</b><small>擬似言語の記法</small></button>';
+ h+='</div></div>';
+ h+='<div class="unit"><h2>このアプリについて</h2><div class="card about">'+
+  '<p>基本情報技術者試験 科目Bの対策用に作った、<b>非公式</b>の学習アプリです。登録やログインは不要で、だれでも無料で使えます。</p>'+
+  '<p>進み具合(完了したレッスン・間違えた問題)は、<b>この端末のブラウザの中だけ</b>に保存されます。ほかの人に見られたり、送信されたりすることはありません。</p>'+
+  '<p>試験の形式(20問・100分など)は2026年時点の情報です。受験前に必ず<a href="https://www.ipa.go.jp/shiken/kubun/fe.html" target="_blank" rel="noopener">IPAの公式ページ</a>で最新情報を確認してください。問題はすべてこのアプリのオリジナルです。</p>'+
+  '<div class="resetrow"><button class="btn ghost" id="rst">進み具合をリセット</button></div><div id="rstc"></div></div></div>';
+ h+='</div>';
+ app.innerHTML=h;
+ app.querySelectorAll('.wopts button').forEach(b=>b.onclick=()=>{P.seen=true;save();go(b.dataset.go)});
+ document.getElementById('rst').onclick=()=>{document.getElementById('rstc').innerHTML='<div class="confirm"><p>完了マーク・最高点・復習リストをすべて消します。元に戻せません。</p><button class="btn" id="rsy" style="background:var(--ng)">消す</button> <button class="btn ghost" id="rsn">やめる</button></div>';
+  document.getElementById('rsy').onclick=()=>{P={done:{},best:{},wrong:[],seen:false};save();viewHome();window.scrollTo(0,0)};
+  document.getElementById('rsn').onclick=()=>{document.getElementById('rstc').innerHTML=''}};
+}
+
+const STEPCACHE={};
+function viewLesson(id){
+ if(!P.seen){P.seen=true;save()}
+ const l=LESSONS[id];const n=ORDER.indexOf(id);
+ if(!l.run){ // reading lesson
+  app.innerHTML=topbar('LESSON '+n,esc(l.title))+'<div class="wrap"><div class="card prose">'+l.html+'</div>'+(L2Z[id]?'<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>':'')+'</div>';
+  ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb amb" onclick="go(\'quiz-'+id+'\')">確認問題へ('+l.quiz.length+'問) →</button></div></div>';
+  return;
+ }
+ const steps=STEPCACHE[id]||(STEPCACHE[id]=l.run());window._arc=steps.some(t=>t.x&&t.x.arc);
+ let cur=0;
+ let h=topbar('LESSON '+n,esc(l.title))+'<div class="wrap">';
+ if(DIAG[id])h+='<div class="card diagcard">'+DIAG[id].svg+'<p class="diagcap">'+esc(DIAG[id].cap)+'</p></div>';
+ h+='<details class="card"'+(innerWidth>860?' open':'')+'><summary>📌 ポイントとワナ</summary><ul class="points">'+l.pts.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul><div class="trap"><b>⚠ ワナ</b>　'+esc(l.trap)+'</div></details>';
+ h+='<div class="grid2"><div><div class="vlabel">擬似言語</div><div class="codebox" id="code"></div></div><div><div class="vlabel">メモリの中身</div><div class="vis" id="vis"></div><div class="vlabel" style="margin-top:12px">トレース表(紙に書くとこうなる)</div><div class="ttwrap" id="tt"></div></div></div>';
+ if(L2Z[id])h+='<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>';
+ h+='<div class="card" style="text-align:center"><p style="margin:0 0 10px;color:var(--mute);font-size:14px">紙に変数の表を書いて、同じように追えたら合格。</p><button class="btn amb" onclick="go(\'quiz-'+id+'\')">確認問題へ('+l.quiz.length+'問) →</button></div></div>';
+ app.innerHTML=h;
+ ctrl.innerHTML='<div class="ctrl"><div class="in" style="flex-direction:column;gap:6px;align-items:stretch"><div class="sliderrow"><div class="stepinfo"><span id="si"></span><span>←→キーでも操作可</span></div><input type="range" class="slider" id="sl" min="0" max="'+(steps.length-1)+'" value="0"></div><div class="msg" id="msg"></div><div style="display:flex;gap:8px"><button class="cb" id="b0" aria-label="最初へ">⟲</button><button class="cb" id="bp" aria-label="前へ">◀</button><button class="cb" id="bplay" aria-label="自動再生">▶︎▶︎</button><button class="cb main" id="bn">次の行へ ▶</button></div></div></div>';
+ const ttEl=document.getElementById('tt'),codeEl=document.getElementById('code'),visEl=document.getElementById('vis'),msgEl=document.getElementById('msg'),sl=document.getElementById('sl'),si=document.getElementById('si'),bn=document.getElementById('bn'),bplay=document.getElementById('bplay');
+ function draw(){
+  const st=steps[cur],prev=cur>0?steps[cur-1].s:null;
+  const pl=cur>0?steps[cur-1].line:-1;const jump=pl>=0&&st.line>=0&&st.line!==pl+1&&st.line!==pl;
+  codeEl.innerHTML=l.code.map((ln,i)=>'<div class="ln'+(i===st.line?' cur':'')+(i===pl&&i!==st.line?' prev':'')+'"><span class="no">'+(i===st.line?'▶':(i+1))+'</span><span class="tx">'+(hi(ln)||' ')+'</span>'+(i===st.line&&st.x.cond?'<span class="ctag '+(st.x.cond[1]?'t':'f')+'">'+(st.x.cond[1]?'真':'偽')+'</span>':'')+(i===st.line&&jump?'<span class="jtag">'+(st.line<pl?'↑ 戻る':'↓ ジャンプ')+'</span>':'')+'</div>').join('');
+  const c=codeEl.querySelector('.cur');
+  if(c){const top=c.offsetTop-codeEl.clientHeight/2+c.clientHeight/2;codeEl.scrollTo({top:Math.max(0,top),behavior:'smooth'})}
+  visEl.innerHTML=renderVis(st.s,prev,st.x);ttEl.innerHTML=traceTable(steps,cur);const tw=ttEl;tw.scrollTop=tw.scrollHeight;
+  msgEl.innerHTML='<span class="sn">STEP '+(cur+1)+(st.line>=0?' ・ '+(st.line+1)+'行目':'')+'</span>'+esc(st.msg);
+  sl.value=cur;si.textContent=(cur+1)+' / '+steps.length;
+  if(cur===steps.length-1){bn.textContent='確認問題へ →';bn.className='cb amb'}else{bn.textContent='次の行へ ▶';bn.className='cb main'}
+ }
+ const setCur=v=>{const was=cur;cur=Math.max(0,Math.min(steps.length-1,v));draw();
+  if(was===0&&cur===1){const r=codeEl.getBoundingClientRect();if(r.top>90||r.top<40)window.scrollBy({top:r.top-64-22,behavior:'smooth'})}};
+ bn.onclick=()=>{if(cur===steps.length-1){go('quiz-'+id)}else setCur(cur+1)};
+ document.getElementById('bp').onclick=()=>{stopTimer();bplay.textContent='▶︎▶︎';setCur(cur-1)};
+ document.getElementById('b0').onclick=()=>{stopTimer();bplay.textContent='▶︎▶︎';setCur(0)};
+ sl.oninput=()=>{stopTimer();bplay.textContent='▶︎▶︎';setCur(+sl.value)};
+ bplay.onclick=()=>{if(timer){stopTimer();bplay.textContent='▶︎▶︎';return}
+  if(cur===steps.length-1)setCur(0);bplay.textContent='❚❚';
+  timer=setInterval(()=>{if(cur>=steps.length-1){stopTimer();bplay.textContent='▶︎▶︎';return}setCur(cur+1)},1400)};
+ keyHandler=e=>{if(e.key==='ArrowRight'){setCur(cur+1)}else if(e.key==='ArrowLeft'){setCur(cur-1)}};
+ draw();
+}
+let keyHandler=null;
+document.addEventListener('keydown',e=>{if(keyHandler)keyHandler(e)});
+
+function renderVis(s,prev,x){
+ x=x||{};let h='';
+ if(x.cond){const t=x.cond[1];
+  h+='<div class="cond '+(t?'t':'f')+'"><span class="cl">判定</span><span class="ce">'+esc(x.cond[0])+'</span><span class="cv">'+(t?'真 ○':'偽 ✕')+'</span></div>';}
+ if(s.calls&&s.calls.length){
+  h+='<div class="vlabel">呼び出しの積み重なり(上が今いる所)</div><div class="calls">';
+  const cs=s.calls.slice().reverse();
+  cs.forEach((c,i)=>{h+='<div class="frame'+(i===0?' topf':'')+'" style="margin-left:'+((cs.length-1-i)*10)+'px">'+esc(c)+'</div>'});
+  h+='</div>';
+ }
+ const vk=Object.keys(s.v);
+ if(vk.length){
+  h+='<div class="vlabel">変数(箱)</div><div class="vars">';
+  vk.forEach(k=>{const v=s.v[k];const ch=prev&&prev.v&&(k in prev.v)&&JSON.stringify(prev.v[k])!==JSON.stringify(v)&&v!==null;
+   const old=ch?prev.v[k]:undefined;
+   h+='<div class="var'+(ch?' chg':'')+'"><span class="n">'+esc(k)+'</span><div class="box3'+(v===null?' empty':'')+'">'+esc(fmt(v))+'</div>'+(ch&&old!==null?'<span class="old">'+esc(fmt(old))+'</span>':'<span class="old"></span>')+'</div>'});
+  h+='</div>';
+ }
+ if(s.chain){
+  h+='<div class="vlabel">リストのつながり(next をたどった順)</div><div class="chain">';
+  s.chain.nodes.forEach((nd,i)=>{const cur=s.chain.cur===nd[0],seen=s.chain.seen.includes(nd[0]);
+   h+='<div class="node'+(cur?' cur':'')+(seen&&!cur?' seen':'')+'"><span class="ni">['+nd[0]+']</span><b>'+nd[1]+'</b>'+(cur?'<span class="np">p</span>':'')+'</div><span class="link">→</span>';});
+  h+='<div class="node end'+(s.chain.cur===null&&s.chain.seen.length?' cur':'')+'"><b>0</b><span class="ni">終わり</span></div></div>';
+ }
+ Object.keys(s.a).forEach(name=>{
+  const arr=s.a[name],pa=prev&&prev.a[name];
+  const ptr={};const pp=s.p[name]||{};Object.keys(pp).forEach(lb=>{const k=pp[lb];(ptr[k]=ptr[k]||[]).push(lb)});
+  const hl=(s.hl[name]||[]),dim=(s.dim[name]||[]),done=(s.done[name]||[]);
+  const cell=(v,k)=>{const ch=pa&&pa[k-1]!==v;const cls=['cell'];if(hl.includes(k))cls.push('hl');if(ch)cls.push('chg');if(dim.includes(k))cls.push('dim');if(done.includes(k))cls.push('done');if(v===null)cls.push('empty');
+   return '<div class="'+cls.join(' ')+'">'+(v===null?'':esc(fmt(v)))+'</div>'};
+  if(s.vert&&s.vert.includes(name)){
+   h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'(スタック：下から積む)</div><div class="vstack">';
+   for(let k=arr.length;k>=1;k--){h+='<div class="vrow"><span class="idx">['+k+']</span>'+cell(arr[k-1],k)+'<span class="ptr2">'+(ptr[k]?'◀ '+esc(ptr[k].join(',')):'')+'</span></div>'}
+   h+='<div class="vbase"></div></div></div>';return;
+  }
+  let arc='';
+  if(x.arc&&x.arc[0]===name){const i1=Math.min(x.arc[1],x.arc[2]),i2=Math.max(x.arc[1],x.arc[2]);
+   const cx=k=>(k-1)*52+20,x1=cx(i1),x2=cx(i2),sw=x.arc[3]==='交換',hgt=Math.min(30,10+(i2-i1)*6);
+   arc='<svg class="arc" width="'+(arr.length*52)+'" height="34" style="overflow:visible"><path d="M'+x1+',32 C'+x1+','+(32-hgt)+' '+x2+','+(32-hgt)+' '+x2+',32" style="fill:none;stroke:'+(sw?'var(--acc)':'var(--amb)')+';stroke-width:2.5;stroke-dasharray:'+(sw?'0':'5 4')+'" marker-end="url(#ah'+(sw?'g':'a')+')"'+(sw?' marker-start="url(#ah'+(sw?'g':'a')+'s)"':'')+'/><text x="'+((x1+x2)/2)+'" y="'+(28-hgt)+'" text-anchor="middle" style="font-size:11px;font-weight:700;fill:'+(sw?'var(--acc)':'var(--amb)')+'">'+x.arc[3]+'</text></svg>';}
+  h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'</div><div class="arcwrap">'+(arc||'<div style="height:'+(window._arc?34:4)+'px"></div>')+'<div class="cells">';
+  arr.forEach((v,i)=>{const k=i+1;
+   h+='<div class="col"><span class="idx">['+k+']</span>'+cell(v,k)+'<span class="ptr">'+(ptr[k]?esc(ptr[k].join(',')):'')+'</span></div>'});
+  h+='</div></div></div>';
+ });
+ if(s.out!==null&&s.out!==undefined)h+='<div class="vlabel">出力・取り出した値</div><div class="out">'+esc(s.out)+'</div>';
+ return h||'<div style="color:var(--mute)">(まだ何もない)</div>';
+}
+const SVGDEFS='<svg width="0" height="0" style="position:absolute"><defs>'+
+ '<marker id="aha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" style="fill:var(--amb)"/></marker>'+
+ '<marker id="ahg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" style="fill:var(--acc)"/></marker>'+
+ '<marker id="ahgs" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" style="fill:var(--acc)"/></marker>'+
+ '<marker id="ahm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" style="fill:var(--mute)"/></marker>'+
+ '</defs></svg>';
+document.body.insertAdjacentHTML('beforeend',SVGDEFS);
+
+/* ---- trace table ---- */
+function traceTable(steps,cur){
+ const cols=[];steps.forEach(st=>Object.keys(st.s.v).forEach(k=>{if(!cols.includes(k))cols.push(k)}));
+ const hasCond=steps.some(st=>st.x&&st.x.cond);
+ let h='<table class="tt"><thead><tr><th>行</th>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+(hasCond?'<th>判定</th>':'')+'</tr></thead><tbody>';
+ for(let k=0;k<=cur;k++){const st=steps[k],pv=k>0?steps[k-1].s.v:{};
+  const any=cols.some(c=>(c in st.s.v)&&JSON.stringify(st.s.v[c])!==JSON.stringify(pv[c]));
+  if(!any&&!(st.x&&st.x.cond)&&k!==cur)continue;
+  h+='<tr class="'+(k===cur?'now':'')+'"><td class="lno">'+(st.line>=0?st.line+1:'—')+'</td>';
+  cols.forEach(c=>{const has=c in st.s.v,v=st.s.v[c],chg=has&&JSON.stringify(v)!==JSON.stringify(pv[c]);
+   h+='<td class="'+(chg?'chg':'same')+'">'+(has&&(chg||k===cur)?esc(fmt(v)):(has?'<span class="dot">〃</span>':''))+'</td>'});
+  if(hasCond)h+='<td>'+(st.x&&st.x.cond?'<span class="'+(st.x.cond[1]?'tt-t':'tt-f')+'">'+(st.x.cond[1]?'真':'偽')+'</span>':'')+'</td>';
+  h+='</tr>';}
+ return h+'</tbody></table>';
+}
+
+/* ---- quiz engine ---- */
+function runQuiz(qs,{title,small,lessonId,back}){
+ stopTimer();keyHandler=null;
+ if(!qs.length){app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="empty-note">間違えた問題はまだありません 🎉<br>レッスンかドリルを解くと、ここに溜まります。</div></div>';ctrl.innerHTML='';return}
+ const st={i:0,res:[]};
+ function render(){
+  const q=qs[st.i];
+  const opts=shuffle(q.c.map((t,k)=>({t,ok:k===0})));
+  let h=topbar(small,title,back)+'<div class="wrap">';
+  h+='<div class="qhead"><span>問 '+(st.i+1)+' / '+qs.length+(lessonId?'':'　・ '+esc(q.from))+'</span><span class="dots">'+qs.map((_,k)=>'<i class="'+(k<st.i?(st.res[k]?'ok':'ng'):k===st.i?'now':'')+'"></i>').join('')+'</span></div>';
+  h+='<div class="qtext">'+esc(q.q).replace(/\n/g,'<br>')+'</div>';
+  if(q.code)h+='<div class="qcode">'+q.code.split('\n').map(hi).join('\n')+'</div>';
+  h+='<div class="choices">'+opts.map((o,k)=>'<button class="ch" data-k="'+k+'"><span class="lb">'+KANA[k]+'</span><span class="tx">'+esc(o.t)+'</span></button>').join('')+'</div><div id="exp"></div></div>';
+  app.innerHTML=h;ctrl.innerHTML='';window.scrollTo(0,0);
+  app.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{
+   const k=+b.dataset.k,ok=opts[k].ok;st.res[st.i]=ok;
+   app.querySelectorAll('.ch').forEach((x,j)=>{x.disabled=true;if(opts[j].ok)x.classList.add('ok');else if(j===k)x.classList.add('ng')});
+   if(ok)P.wrong=P.wrong.filter(x=>x!==q.id);else if(!P.wrong.includes(q.id))P.wrong.push(q.id);save();
+   document.getElementById('exp').innerHTML='<div class="exp"><span class="v '+(ok?'ok':'ng')+'">'+(ok?'正解！':'ざんねん。正解は「'+esc(q.c[0])+'」')+'</span>'+esc(q.e)+(TT[q.id]?'<div class="vlabel" style="margin-top:10px">トレース表</div>'+miniTable(TT[q.id]):'')+'</div>';
+   const last=st.i===qs.length-1;
+   ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb main" id="qn">'+(last?'結果を見る':'次の問題 →')+'</button></div></div>';
+   document.getElementById('qn').onclick=()=>{if(last)finish();else{st.i++;render()}};
+   document.getElementById('exp').scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+ }
+ function finish(){
+  const sc=st.res.filter(Boolean).length;
+  if(lessonId){P.done[lessonId]=true;P.best[lessonId]=Math.max(P.best[lessonId]||0,sc);save()}
+  const nextId=lessonId?ORDER[ORDER.indexOf(lessonId)+1]:null;
+  const msg=sc===qs.length?'全問正解！ この調子。':sc>=qs.length*0.6?'合格ライン。間違えた問題は「復習」に入っています。':'もう一度ステップ実行を見直すと、つかめるはず。';
+  app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="result"><div class="kicker">RESULT</div><div class="big">'+sc+' / '+qs.length+'</div><p>'+msg+'</p></div></div>';
+  let b='';
+  if(lessonId&&LESSONS[lessonId].run)b+='<button class="cb" style="flex:1" onclick="go(\''+lessonId+'\')">レッスンを見直す</button>';
+  if(nextId)b+='<button class="cb main" onclick="go(\''+nextId+'\')">次へ：'+esc(LESSONS[nextId].title)+' →</button>';
+  else b+='<button class="cb main" onclick="go(\'home\')">ホームへ</button>';
+  ctrl.innerHTML='<div class="ctrl"><div class="in">'+b+'</div></div>';
+ }
+ render();
+}
+
+function viewCheat(){
+ stopTimer();keyHandler=null;ctrl.innerHTML='';
+ const rows=[
+ ['整数型: x ← 5','変数の宣言と代入(実数型・文字列型・論理型もある)'],
+ ['x ← x + 1','右辺を計算してから左辺に入れる'],
+ ['=  ≠  <  ≤  >  ≥','比較。「=」は等しいかの判定であって代入ではない'],
+ ['and  or  not','かつ・または・でない'],
+ ['17 mod 5','余り → 2'],
+ ['17 ÷ 5 の商','割り算の整数部分 → 3'],
+ ['if (条件) … elseif (条件) … else … endif','上から順に、最初に真になった1つだけ実行'],
+ ['while (条件) … endwhile','条件を先にチェック(前判定)。最初から偽なら1回も実行しない'],
+ ['do … while (条件)','先に実行してから条件チェック(後判定)。最低1回は実行'],
+ ['for (i を 1 から n まで 1 ずつ増やす) … endfor','i = 1, 2, …, n で繰り返す'],
+ ['整数型の配列: a ← {1, 2, 3}','配列。要素番号は 1 から'],
+ ['a[i] / aの要素数','i番目の要素 / 要素の個数'],
+ ['{{1, 2}, {3, 4}} と m[i, j]','二次元配列。i行目の j列目'],
+ ['○整数型: f(整数型: n)','整数を返す関数。return 値 で返す'],
+ ['○f(整数型: n)','値を返さない手続き'],
+ ['大域: 整数型: x','大域変数(どの関数からも使える)'],
+ ['未定義の値','何も入っていない状態'],
+ ['p.next','インスタンス p のメンバ変数 next(連結リストで頻出)'],
+ ['// コメント','説明書き。実行されない']];
+ let h=topbar('REFERENCE','擬似言語 早見表')+'<div class="wrap"><div class="card prose"><table><tr><th>書き方</th><th>意味</th></tr>'+rows.map(r=>'<tr><td><code>'+esc(r[0])+'</code></td><td>'+esc(r[1])+'</td></tr>').join('')+'</table>';
+ h+='<h3>演算子の優先順位(高い順)</h3><ol><li><code>not</code>、単項の <code>＋ −</code></li><li><code>× ÷ mod</code></li><li><code>＋ −</code></li><li><code>= ≠ &lt; ≤ &gt; ≥</code></li><li><code>and</code></li><li><code>or</code></li></ol>';
+ h+='<h3>トレースのやり方(本番用)</h3><ol><li>メモ用紙(CBTではメモ用ボードなど)に、変数名を横一列に書く</li><li>1行実行するごとに、値が変わった変数だけ下に書き足す</li><li>配列は箱を描いて、番号(1から)を上に振る</li><li>ループは「今何周目か」と条件の真偽を毎回書く</li><li>関数呼び出しは「どこで待っているか」を矢印で残す</li></ol></div></div>';
+ app.innerHTML=h;
+}
+
+/* ---- router ---- */
+function go(h){if(location.hash==='#'+h)route();else location.hash=h}
+function route(){
+ stopTimer();keyHandler=null;window.scrollTo(0,0);
+ const h=(location.hash||'').slice(1)||'home';
+ if(LESSONS[h])return viewLesson(h);
+ if(h.startsWith('quiz-')&&LESSONS[h.slice(5)]){const id=h.slice(5);const l=LESSONS[id];return runQuiz(l.quiz,{title:l.title,small:'確認問題',lessonId:id,back:id})}
+ if(h==='drill')return runQuiz(shuffle(Object.values(BANK)).slice(0,10),{title:'実戦ドリル',small:'ランダム10問'});
+ if(h==='review')return runQuiz(shuffle(P.wrong.filter(id=>BANK[id]).map(id=>BANK[id])),{title:'復習',small:'間違えた問題'});
+ if(h==='cheat')return viewCheat();
+ if(h==='zukan')return viewZukan();
+ if(h==='yougo')return viewYougo();
+ if(h.startsWith('z-'))return viewZukan(h.slice(2));
+ viewHome();
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+<script>if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
+</body>
+</html>
