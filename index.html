@@ -592,7 +592,7 @@ details.card{border-radius:14px}
 .cells.cmp .cell{width:32px;height:32px;margin-right:7px;font-size:13.5px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
-</style>
+.crypto-flow{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--tile)}.crypto-track{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:5px}.crypto-step{flex:0 0 105px;min-height:76px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);opacity:.55;transition:.2s}.crypto-step.done{opacity:.85;border-color:var(--ok)}.crypto-step.active{opacity:1;transform:translateY(-3px);border:2px solid var(--amb);background:var(--ambSoft)}.crypto-step small,.crypto-step b,.crypto-step span{display:block}.crypto-step small,.crypto-step span{font-size:10px;color:var(--mute)}.crypto-step b{font-size:12px;margin:5px 0}.crypto-arrow{font-weight:800;color:var(--mute)}.crypto-note{margin:6px 0 0;padding:8px;border-radius:8px;background:var(--accSoft);font-size:12px;font-weight:700;line-height:1.5}</style>
 </head>
 <body>
 <div id="app"></div>
@@ -640,7 +640,7 @@ const UNITS=[
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','matrix','func']},
  {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
  {name:'3. データ構造',ids:['stack','queue','list','listc','tree','heap','hash']},
- {name:'4. 情報セキュリティ(問17〜20)',ids:['sec']}
+ {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto']}
 ];
 
 const LESSONS={};
@@ -1671,7 +1671,35 @@ quiz:[
  {q:'部署の共有フォルダのアクセス権の設定方針として、最も適切なものは？',c:['業務上必要な利用者に、必要な操作の権限だけを与える','全社員に読み書きの権限を与え、運用ルールで制限する','管理を簡単にするため、全員を管理者権限にする','パスワードを全員で共有して、1つのアカウントで使う'],e:'「最小権限の原則」。必要な人に必要な分だけ。アカウント共有は、誰が何をしたかを追跡できなくなるので不適切。'}
 ]});
 
+/* ---------- crypto ---------- */
+def({id:'crypto',title:'暗号化とディジタル署名',sub:'公開鍵・秘密鍵の持ち主と役割を動きで確認',
+pts:['暗号化は受信者の公開鍵で行い、受信者の秘密鍵で復号','署名は送信者の秘密鍵で作り、送信者の公開鍵で検証','暗号化は内容を隠す。署名は送信者と改ざんの有無を確認','TLSでは公開鍵暗号で鍵を決め、その後は共通鍵暗号で通信する'],
+trap:'暗号化は受信者、署名は送信者の鍵が基準。鍵の持ち主を問題文で確認する。',
+code:L(\`暗号化: 受信者の公開鍵で暗号化
+暗号化: 受信者の秘密鍵で復号
+署名: 文書のハッシュ値を計算
+署名: 送信者の秘密鍵で署名を作成
+検証: 送信者の公開鍵で署名を確認
+検証: 文書のハッシュ値と照合\`),
+run(){const {st,S,steps}=rec();S(-1,'鍵の持ち主と目的を、暗号化と署名で比べます。');
+ st.flow={mode:'encrypt',step:0};S(0,'送信者が平文を用意。');
+ st.flow.step=1;S(0,'受信者の公開鍵で暗号化する。');
+ st.flow.step=2;S(0,'暗号文を送る。途中で見られても読めない。');
+ st.flow.step=3;S(1,'受信者が自分の秘密鍵で復号する。');
+ st.flow.step=4;S(1,'受信者が平文を読める。送信者本人かは確認できない。');
+ st.flow={mode:'signature',step:0};S(-1,'署名は秘密にする仕組みではなく、本人と改ざんを確かめます。');
+ st.flow.step=0;S(2,'送信者が文書のハッシュ値を計算する。');
+ st.flow.step=1;S(3,'送信者の秘密鍵で署名を作る。');
+ st.flow.step=2;S(3,'文書と署名を受信者へ送る。文書は読めるまま。');
+ st.flow.step=3;S(4,'送信者の公開鍵で署名を検証し、文書のハッシュ値も計算する。');
+ st.flow.step=4;S(5,'値が一致すれば真正性と完全性を確認できる。');return steps;},
+quiz:[
+ {q:'Bさんだけに読める文書を送るとき、暗号化に使う鍵は？',c:['Bさんの公開鍵','Aさんの公開鍵','Aさんの秘密鍵','Bさんの秘密鍵'],e:'受信者Bの公開鍵で暗号化し、Bの秘密鍵で復号する。'},
+ {q:'Aさんから届いた署名を検証する鍵は？',c:['Aさんの公開鍵','Aさんの秘密鍵','受信者の公開鍵','受信者の秘密鍵'],e:'署名は送信者Aの秘密鍵で作り、Aの公開鍵で検証する。'}
+]});
+
 /* ---------- extra drill ---------- */
+
 const DRILL=[
  {q:'実行後の配列 a は？',code:`整数型の配列: a ← {1, 2, 3, 4, 5}
 整数型: i, tmp
@@ -2218,7 +2246,7 @@ zc({id:'sec-cia',cat:'sec',t:'情報セキュリティの3要素(CIA)',lesson:'s
  p:'機密性(Confidentiality)・完全性(Integrity)・可用性(Availability)の3つを守ること。',
  b:['機密性の対策：暗号化、アクセス制御','完全性の対策：ディジタル署名、ハッシュ値、変更履歴','可用性の対策：バックアップ、冗長化、DoS対策','追加の要素：真正性・責任追跡性・否認防止・信頼性'],
  tip:'「サーバが止まって使えない」は可用性、「勝手に書き換えられた」は完全性、「情報が漏れた」は機密性。'});
-zc({id:'sec-crypto',cat:'sec',t:'共通鍵暗号と公開鍵暗号',
+zc({id:'sec-crypto',cat:'sec',t:'共通鍵暗号と公開鍵暗号',lesson:'crypto',
  svg:SV(160,tx(8,16,'共通鍵暗号',{s:12,w:700,a:'start',c:CV.acc})+bx(8,26,60,28,'送信者')+bx(140,26,60,28,'暗号文',{f:CV.ambS,e:CV.amb})+bx(272,26,60,28,'受信者')+ar('M70,40 L136,40')+ar('M202,40 L268,40')+
   tx(103,66,'🔑 同じ鍵で暗号化',{s:9,c:CV.acc})+tx(236,66,'🔑 同じ鍵で復号',{s:9,c:CV.acc})+
   tx(8,94,'公開鍵暗号',{s:12,w:700,a:'start',c:CV.amb})+bx(8,104,60,28,'送信者')+bx(140,104,60,28,'暗号文',{f:CV.ambS,e:CV.amb})+bx(272,104,60,28,'受信者')+ar('M70,118 L136,118')+ar('M202,118 L268,118')+
@@ -2233,7 +2261,7 @@ zc({id:'sec-hash',cat:'sec',t:'ハッシュ関数',
  p:'どんな長さのデータからも決まった長さの値(ハッシュ値)を作る。元に戻せず、少しの違いで値が大きく変わる。',an:'データの指紋。指紋から本人の顔は作れないが、本人かどうかは確かめられる。',
  b:['改ざん検知：ハッシュ値が一致すれば内容は同じ','パスワードはハッシュ値で保存する(漏れても元がわからない)','ソルト：パスワードにランダムな値を足してからハッシュ化','代表例 SHA-256'],
  tip:'ハッシュは「暗号化」ではない(復号できない)。選択肢の言い回しに注意。'});
-zc({id:'sec-sign',cat:'sec',t:'ディジタル署名',
+zc({id:'sec-sign',cat:'sec',t:'ディジタル署名',lesson:'crypto',
  svg:SV(160,tx(60,14,'送信者',{s:12,w:700,c:CV.acc})+tx(270,14,'受信者',{s:12,w:700,c:CV.acc})+
   bx(14,24,92,26,'文書')+ar('M60,50 L60,62')+bx(14,64,92,26,'ハッシュ値')+ar('M60,90 L60,102')+bx(14,104,92,30,'署名',{f:CV.ambS,e:CV.amb})+tx(60,148,'送信者の秘密鍵で作る',{s:9,w:700,c:CV.amb})+
   ar('M108,37 L222,37')+ar('M108,119 L222,119')+tx(165,30,'文書',{s:9,c:CV.mute})+tx(165,112,'署名',{s:9,c:CV.mute})+
@@ -2402,7 +2430,7 @@ zc({id:'sec-mailauth',cat:'sec',t:'メールのなりすまし対策(SPF・DKIM�
  p:'送信元ドメインのなりすましを、受信側がDNSの情報と照合して見抜く仕組み。',
  b:['SPF：送信元メールサーバのIPアドレスをDNSに登録し、受信側が照合する','DKIM：送信側がメールに電子署名し、受信側がDNSの公開鍵で検証する','DMARC：SPF・DKIMに失敗したメールをどう扱うか(隔離・拒否など)の方針を示す','S/MIME：メール本文の暗号化と署名(なりすまし対策とは別の仕組み)'],
  tip:'「IPアドレスで照合」→ SPF、「電子署名で検証」→ DKIM、「失敗したときの扱い」→ DMARC。'});
-zc({id:'sec-tls',cat:'sec',t:'TLS(HTTPS)と電子証明書',
+zc({id:'sec-tls',cat:'sec',t:'TLS(HTTPS)と電子証明書',lesson:'crypto',
  svg:SV(150,bx(6,60,90,34,'ブラウザ',{})+bx(244,60,90,34,'Webサーバ',{})+rc(244,10,90,40,CV.ambS,CV.amb,6)+tx(289,26,'サーバ証明書',{s:10,w:700})+tx(289,42,'認証局の署名つき',{s:8,c:CV.mute})+
   ar('M242,30 L100,64',CV.amb)+tx(150,36,'① 証明書を送る',{s:9,w:700,c:CV.amb})+
   tx(51,112,'② 認証局の公開鍵で',{s:9,w:700,c:CV.acc})+tx(51,124,'本物か確認',{s:9,w:700,c:CV.acc})+
@@ -2622,7 +2650,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash']};
 [['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
 
 
@@ -2884,6 +2912,13 @@ function renderVis(s,prev,x){
   s.graph.edges.forEach(([a,b])=>{const p=pos.get(a),q=pos.get(b),active=s.graph.edge&&((s.graph.edge[0]===a&&s.graph.edge[1]===b)||(s.graph.edge[0]===b&&s.graph.edge[1]===a));h+='<line class="graph-edge'+(active?' active':'')+'" x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'"/>'});
   s.graph.nodes.forEach(([name,x,y])=>{const cls=name===s.graph.current?'current':s.graph.order.includes(name)?'visited':s.graph.discovered.includes(name)?'discovered':'';const rank=s.graph.order.indexOf(name);h+='<circle class="graph-node '+cls+'" cx="'+x+'" cy="'+y+'" r="17"/><text class="graph-value" x="'+x+'" y="'+y+'">'+esc(name)+'</text>'+(rank>=0?'<text class="graph-rank" x="'+(x+16)+'" y="'+(y+18)+'">'+(rank+1)+'</text>':'')});
   h+='</svg><p class="graph-frontier"><b>'+esc(s.graph.frontierLabel)+':</b> ['+s.graph.frontier.map(esc).join(', ')+']</p><p class="graph-order">訪問順: '+(s.graph.order.length?s.graph.order.map(esc).join(' → '):'まだありません')+'</p></div>';
+ }
+ if(s.flow){
+ const enc=s.flow.mode==='encrypt';
+ const items=enc?[['平文','送信者'],['暗号化','受信者の公開鍵'],['暗号文','通信路'],['復号','受信者の秘密鍵'],['平文','受信者']]:[['ハッシュ','文書から計算'],['署名','送信者の秘密鍵'],['送信','文書＋署名'],['検証','送信者の公開鍵'],['照合','真正性・完全性']];
+ h+='<div class="crypto-flow"><b>'+(enc?'🔒 暗号化：内容を秘密にする':'✍️ 署名：本人と改ざんを確かめる')+'</b><div class="crypto-track">';
+ items.forEach((it,i)=>{const cl=i===s.flow.step?'active':i<s.flow.step?'done':'';h+='<div class="crypto-step '+cl+'"><small>STEP '+(i+1)+'</small><b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span></div>'+(i<items.length-1?'<span class="crypto-arrow">→</span>':'')});
+ h+='</div><div class="crypto-note">'+(enc?'受信者の公開鍵で暗号化 → 受信者の秘密鍵で復号。':'送信者の秘密鍵で署名 → 送信者の公開鍵で検証。署名は内容を隠さない。')+'</div></div>';
  }
  Object.keys(s.a).forEach(name=>{
   const arr=s.a[name],pa=prev&&prev.a[name];
