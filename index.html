@@ -5,13 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
-<meta name="description" content="基本情報技術者試験 科目Bの擬似言語を、1行ずつ動く図で学べる無料の非公式学習アプリ">
+<meta name="description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん56枚・用語辞典112語・確認問題つき。登録不要・スマホ対応。">
 <meta name="theme-color" content="#1f6f68">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="科目B ゼロから">
+<meta property="og:title" content="科目B、ゼロから。｜基本情報技術者試験 科目B対策アプリ">
+<meta property="og:description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん56枚・用語辞典112語・確認問題つき。登録不要・スマホ対応。">
+<meta property="og:url" content="https://planet0527.github.io/p-7792622002/">
+<meta property="og:image" content="https://planet0527.github.io/p-7792622002/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="科目B、ゼロから。擬似言語が1行ずつ動く図で、トレースが身につく">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="科目B、ゼロから。｜基本情報技術者試験 科目B対策アプリ">
+<meta name="twitter:description" content="擬似言語のプログラムが1行ずつ動く図で、トレースのやり方が身につく無料の学習アプリ。図解ずかん56枚・用語辞典112語・確認問題つき。登録不要・スマホ対応。">
+<meta name="twitter:image" content="https://planet0527.github.io/p-7792622002/og.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="科目B">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>科目B ゼロから — 基本情報 擬似言語トレース道場</title>
+<title>科目B、ゼロから。｜基本情報技術者試験 科目B対策アプリ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -66,7 +80,7 @@ a{color:var(--acc)}
 .item .t b{display:block;font-size:15px;font-weight:700}
 .item .t small{display:block;color:var(--mute);font-size:12px;line-height:1.4}
 .item .sc{font-size:12px;color:var(--mute);white-space:nowrap}
-.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
 .tool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center}
 .tool b{display:block;font-size:14px}
 .tool small{color:var(--mute);font-size:11px}
@@ -277,6 +291,34 @@ details.card{padding:10px 14px}
 .confirm{margin-top:10px;background:var(--ngSoft);border-radius:12px;padding:10px 12px}
 .confirm p{margin:0 0 8px;font-size:14px}
 .confirm .btn{font-size:13px;padding:8px 14px}
+
+.savest{display:block;width:100%;text-align:left;border:0;background:var(--okSoft);color:var(--ok);font-size:12.5px;font-weight:700;border-radius:10px;padding:6px 10px;margin:2px 0 0}
+.savest.ng{background:var(--ngSoft);color:var(--ng)}
+.warnc{background:var(--ngSoft);color:var(--ng);font-weight:700;font-size:14px}
+.kstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.ks{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.ks b{display:block;font-size:24px;font-weight:900;line-height:1.2}.ks b small{font-size:12px;font-weight:700;color:var(--mute);margin-left:1px}
+.ks span{font-size:11px;color:var(--mute)}
+.strip{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}
+.dd{text-align:center}.dd i{display:block;height:26px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}
+.dd.on i{background:var(--acc);border-color:var(--acc)}.dd.today i{outline:2px solid var(--amb);outline-offset:1px}
+.dd span{font-size:8px;color:var(--mute);display:block;margin-top:2px;white-space:nowrap}
+.lsc{display:grid;gap:4px}
+.lsc button{display:grid;grid-template-columns:1fr 70px 38px;gap:8px;align-items:center;border:0;background:transparent;text-align:left;padding:3px 0;font-size:13px}
+.lsc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lsc i{display:block;height:8px;border-radius:99px;background:var(--line);overflow:hidden}.lsc em{display:block;height:100%;border-radius:99px}
+.lsc b{font-family:"JetBrains Mono",monospace;font-size:12px;text-align:right}
+.hist div{display:grid;grid-template-columns:78px 1fr auto;gap:8px;font-size:13px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.hist .ht{color:var(--mute);font-family:"JetBrains Mono",monospace;font-size:11.5px}
+.hist .hn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist b{font-family:"JetBrains Mono",monospace}.hist b.ok{color:var(--ok)}.hist b.mid{color:var(--amb)}.hist b.ng{color:var(--ng)}
+.muted{color:var(--mute);font-size:14px}
+.bk p{font-size:14px;margin:0 0 8px}.bk p.small{font-size:12.5px;color:var(--mute)}
+.bkrow{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.bkrow .btn{font-size:14px;padding:10px 14px}
+.filebtn{display:inline-flex;align-items:center;cursor:pointer}
+.bkta{width:100%;min-height:74px;font-family:"JetBrains Mono",monospace;font-size:11px;border:1.5px solid var(--line);border-radius:12px;padding:8px;background:var(--bg);color:var(--ink);word-break:break-all;margin:4px 0}
+.bkmsg{font-size:13px;font-weight:700;min-height:0}.bkmsg.ok{color:var(--ok)}.bkmsg.ng{color:var(--ng)}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -290,9 +332,15 @@ const app=document.getElementById('app'), ctrl=document.getElementById('ctrl');
 const L=s=>s.replace(/^\n/,'').replace(/\n\s*$/,'').split('\n');
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const KANA=['ア','イ','ウ','エ','オ'];
-let P={done:{},best:{},wrong:[],seen:false};
-try{const s=localStorage.getItem('feb-zero-v1');if(s)P=Object.assign(P,JSON.parse(s));}catch(e){}
-function save(){try{localStorage.setItem('feb-zero-v1',JSON.stringify(P))}catch(e){}}
+const blankP=()=>({done:{},best:{},wrong:[],seen:false,hist:[],days:{},updated:0});
+let P=blankP();let STORE_OK=true;
+try{const s=localStorage.getItem('feb-zero-v1');if(s)P=Object.assign(blankP(),JSON.parse(s));localStorage.setItem('feb-zero-test','1');localStorage.removeItem('feb-zero-test');}catch(e){STORE_OK=false}
+function save(){P.updated=Date.now();try{localStorage.setItem('feb-zero-v1',JSON.stringify(P));STORE_OK=true}catch(e){STORE_OK=false}}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(x=>{if(!x)navigator.storage.persist()}).catch(()=>{})}catch(e){}
+const dkey=(d)=>{d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function markDay(){P.days[dkey()]=(P.days[dkey()]||0)+1}
+function streak(){let n=0;const d=new Date();if(!P.days[dkey(d)])d.setDate(d.getDate()-1);while(P.days[dkey(d)]){n++;d.setDate(d.getDate()-1)}return n}
+const fmtTime=ts=>{if(!ts)return '—';const d=new Date(ts);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const fmt=v=>v===null||v===undefined?'—':typeof v==='string'?'"'+v+'"':(typeof v==='number'&&v<0?'−'+Math.abs(v):String(v));
 const range=(a,b)=>{const r=[];for(let i=a;i<=b;i++)r.push(i);return r};
@@ -1671,6 +1719,7 @@ function viewHome(){
  let h='<div class="wrap"><div class="hero"><div class="kicker">基本情報技術者試験 科目B</div><h1>科目B、ゼロから。</h1><p>擬似言語の読み方から、1行ずつ動きを見て覚える。1レッスン5分。</p>';
  h+=SV(96,[3,1,4,1,5,9].map((v,i)=>tx(38+i*50,16,'['+(i+1)+']',{s:10,m:true,c:i===2?CV.amb:CV.mute})+cb(22+i*50,34,v,i===2?AMB:i<2?ACC:{})).join('')+tx(39+2*50+60,90,'',{})+ar('M139,90 L139,78',CV.amb)+tx(150,92,'i = 3',{s:12,w:700,m:true,a:'start',c:CV.amb})).replace('class="diag"','class="diag" style="margin:14px 0 0;max-width:340px"');
  h+='<div class="prog"><div class="bar"><i style="width:'+(done/ORDER.length*100)+'%"></i></div><b>'+done+' / '+ORDER.length+' 完了</b></div>';
+ h+=STORE_OK?'<button class="savest" onclick="go(\'kiroku\')">💾 記録はこのスマホに自動保存'+(P.updated?'(最終 '+fmtTime(P.updated)+')':'')+(streak()?'　🔥 '+streak()+'日連続':'')+' ›</button>':'<div class="savest ng">⚠ この閲覧モード(プライベートブラウズ等)では記録が保存されません</div>';
  h+='<div class="cta">'+(next?'<button class="btn" onclick="go(\''+next+'\')">'+(done?'続きから：':'はじめる：')+esc(LESSONS[next].title)+' →</button>':'<button class="btn amb" onclick="go(\'drill\')">全部クリア！ ドリルで仕上げ →</button>')+'</div></div>';
  if(!P.seen&&!done){
   h+='<div class="welcome"><b>ようこそ！ どこから始めますか？</b><p>レベルに合わせて選んでください。あとから自由に移動できます。</p><div class="wopts">'+
@@ -1692,23 +1741,24 @@ function viewHome(){
  h+='<button class="tool" onclick="go(\'drill\')"><b>🎯 実戦ドリル</b><small>全問からランダム10問</small></button>';
  h+='<button class="tool" onclick="go(\'review\')"><b>🔁 復習</b><small>間違えた問題 '+nw+'問</small></button>';
  h+='<button class="tool" onclick="go(\'cheat\')"><b>📘 早見表</b><small>擬似言語の記法</small></button>';
+ h+='<button class="tool" onclick="go(\'kiroku\')"><b>📈 記録</b><small>成績・バックアップ</small></button>';
  h+='</div></div>';
  h+='<div class="unit"><h2>このアプリについて</h2><div class="card about">'+
   '<p>基本情報技術者試験 科目Bの対策用に作った、<b>非公式</b>の学習アプリです。登録やログインは不要で、だれでも無料で使えます。</p>'+
-  '<p>進み具合(完了したレッスン・間違えた問題)は、<b>この端末のブラウザの中だけ</b>に保存されます。ほかの人に見られたり、送信されたりすることはありません。</p>'+
+  '<p>記録(完了したレッスン・成績・間違えた問題)は、<b>この端末のブラウザの中だけ</b>に自動保存されます。ほかの人に見られたり、送信されたりすることはありません。機種変更などのときは「📈 記録」からバックアップできます。</p>'+
   '<p>試験の形式(20問・100分など)は2026年時点の情報です。受験前に必ず<a href="https://www.ipa.go.jp/shiken/kubun/fe.html" target="_blank" rel="noopener">IPAの公式ページ</a>で最新情報を確認してください。問題はすべてこのアプリのオリジナルです。</p>'+
   '<div class="resetrow"><button class="btn ghost" id="rst">進み具合をリセット</button></div><div id="rstc"></div></div></div>';
  h+='</div>';
  app.innerHTML=h;
  app.querySelectorAll('.wopts button').forEach(b=>b.onclick=()=>{P.seen=true;save();go(b.dataset.go)});
  document.getElementById('rst').onclick=()=>{document.getElementById('rstc').innerHTML='<div class="confirm"><p>完了マーク・最高点・復習リストをすべて消します。元に戻せません。</p><button class="btn" id="rsy" style="background:var(--ng)">消す</button> <button class="btn ghost" id="rsn">やめる</button></div>';
-  document.getElementById('rsy').onclick=()=>{P={done:{},best:{},wrong:[],seen:false};save();viewHome();window.scrollTo(0,0)};
+  document.getElementById('rsy').onclick=()=>{P=blankP();save();viewHome();window.scrollTo(0,0)};
   document.getElementById('rsn').onclick=()=>{document.getElementById('rstc').innerHTML=''}};
 }
 
 const STEPCACHE={};
 function viewLesson(id){
- if(!P.seen){P.seen=true;save()}
+ P.seen=true;markDay();save();
  const l=LESSONS[id];const n=ORDER.indexOf(id);
  if(!l.run){ // reading lesson
   app.innerHTML=topbar('LESSON '+n,esc(l.title))+'<div class="wrap"><div class="card prose">'+l.html+'</div>'+(L2Z[id]?'<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>':'')+'</div>';
@@ -1850,7 +1900,9 @@ function runQuiz(qs,{title,small,lessonId,back}){
  }
  function finish(){
   const sc=st.res.filter(Boolean).length;
-  if(lessonId){P.done[lessonId]=true;P.best[lessonId]=Math.max(P.best[lessonId]||0,sc);save()}
+  if(lessonId){P.done[lessonId]=true;P.best[lessonId]=Math.max(P.best[lessonId]||0,sc)}
+  P.hist.unshift({ts:Date.now(),t:lessonId?LESSONS[lessonId].title:title,k:lessonId?'lesson':title,s:sc,n:qs.length});if(P.hist.length>300)P.hist.length=300;
+  markDay();save();
   const nextId=lessonId?ORDER[ORDER.indexOf(lessonId)+1]:null;
   const msg=sc===qs.length?'全問正解！ この調子。':sc>=qs.length*0.6?'合格ライン。間違えた問題は「復習」に入っています。':'もう一度ステップ実行を見直すと、つかめるはず。';
   app.innerHTML=topbar(small,title,back)+'<div class="wrap"><div class="result"><div class="kicker">RESULT</div><div class="big">'+sc+' / '+qs.length+'</div><p>'+msg+'</p></div></div>';
@@ -1891,6 +1943,52 @@ function viewCheat(){
  app.innerHTML=h;
 }
 
+
+/* ---- 記録 ---- */
+function enc(o){return 'KB1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))))}
+function dec(t){t=String(t||'').trim();if(t.startsWith('{'))return JSON.parse(t);if(!t.startsWith('KB1:'))throw new Error('fmt');return JSON.parse(decodeURIComponent(escape(atob(t.slice(4).replace(/\s/g,'')))))}
+function validP(o){return o&&typeof o==='object'&&typeof o.done==='object'&&Array.isArray(o.wrong||[])}
+function viewKiroku(){
+ stopTimer();keyHandler=null;ctrl.innerHTML='';
+ const done=ORDER.filter(id=>P.done[id]).length;
+ const solved=P.hist.reduce((a,h)=>a+h.n,0),ok=P.hist.reduce((a,h)=>a+h.s,0);
+ const days=Object.keys(P.days).length;
+ let h=topbar('記録','あなたの学習記録')+'<div class="wrap">';
+ if(!STORE_OK)h+='<div class="card warnc">⚠ いまの閲覧モード(プライベートブラウズなど)では、記録をこの端末に保存できません。通常のモードで開いてください。</div>';
+ h+='<div class="kstats">'+[['完了レッスン',done+'<small>/'+ORDER.length+'</small>'],['解いた問題',solved+'<small>問</small>'],['正答率',(solved?Math.round(ok/solved*100):0)+'<small>%</small>'],['学習した日',days+'<small>日</small>'],['連続',streak()+'<small>日</small>'],['復習待ち',P.wrong.filter(id=>BANK[id]).length+'<small>問</small>']].map(k=>'<div class="ks"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>').join('')+'</div>';
+ // 14-day strip
+ let strip='';const d=new Date();d.setDate(d.getDate()-13);
+ for(let i=0;i<14;i++){const k=dkey(d);const on=P.days[k];strip+='<div class="dd'+(on?' on':'')+(i===13?' today':'')+'"><i></i><span>'+(d.getMonth()+1)+'/'+d.getDate()+'</span></div>';d.setDate(d.getDate()+1)}
+ h+='<div class="card"><div class="vlabel">この2週間</div><div class="strip">'+strip+'</div></div>';
+ // lesson scores
+ h+='<div class="card"><div class="vlabel">レッスンごとの最高点</div><div class="lsc">'+ORDER.map(id=>{const l=LESSONS[id],b=P.best[id],n=l.quiz.length;const pct=b==null?0:b/n*100;
+  return '<button onclick="go(\''+id+'\')"><span>'+esc(l.title)+'</span><i><em style="width:'+pct+'%;background:'+(b==null?'var(--line)':pct===100?'var(--ok)':'var(--amb)')+'"></em></i><b>'+(b==null?'—':b+'/'+n)+'</b></button>'}).join('')+'</div></div>';
+ // history
+ h+='<div class="card"><div class="vlabel">最近の結果</div>'+(P.hist.length?'<div class="hist">'+P.hist.slice(0,30).map(x=>'<div><span class="ht">'+fmtTime(x.ts)+'</span><span class="hn">'+esc(x.t)+'</span><b class="'+(x.s===x.n?'ok':x.s/x.n>=.6?'mid':'ng')+'">'+x.s+'/'+x.n+'</b></div>').join('')+'</div>':'<p class="muted">まだ記録がありません。レッスンの確認問題やドリルを解くと、ここに残ります。</p>')+'</div>';
+ // backup
+ h+='<div class="card bk"><div class="vlabel">バックアップと引っ越し</div>'+
+  '<p>記録は<b>このスマホのブラウザに自動で保存</b>されています(最終保存 '+fmtTime(P.updated)+')。機種変更のときや、ブラウザのデータを消す前は、下のコードを控えておくと元に戻せます。</p>'+
+  '<p class="small">※ iPhoneでは「Safariで開いたとき」と「ホーム画面に追加したアプリ」の記録が別々です。片方からコードをコピーして、もう片方で復元すると引き継げます。</p>'+
+  '<div class="bkrow"><button class="btn" id="bkcopy">📋 バックアップコードをコピー</button><button class="btn ghost" id="bkfile">💾 ファイルに保存</button></div>'+
+  '<textarea id="bkout" class="bkta" readonly hidden></textarea><div id="bkmsg" class="bkmsg"></div>'+
+  '<div class="vlabel" style="margin-top:14px">復元する</div>'+
+  '<textarea id="bkin" class="bkta" placeholder="ここにバックアップコード(KB1: から始まる文字)を貼り付け"></textarea>'+
+  '<div class="bkrow"><button class="btn amb" id="bkrestore">このコードで復元</button><label class="btn ghost filebtn">📂 ファイルから復元<input type="file" id="bkfin" accept=".json,.txt,application/json,text/plain" hidden></label></div><div id="bkmsg2" class="bkmsg"></div></div>';
+ h+='</div>';
+ app.innerHTML=h;
+ const msg=(id,t,ok)=>{const e=document.getElementById(id);e.textContent=t;e.className='bkmsg '+(ok?'ok':'ng')};
+ document.getElementById('bkcopy').onclick=async()=>{const code=enc(P);const ta=document.getElementById('bkout');ta.value=code;ta.hidden=false;
+  try{await navigator.clipboard.writeText(code);msg('bkmsg','コピーしました。メモアプリやLINEの自分宛てなどに貼って保管してください。',true)}
+  catch(e){ta.focus();ta.select();msg('bkmsg','自動コピーできませんでした。上の文字を長押しして全部コピーしてください。',false)}};
+ document.getElementById('bkfile').onclick=()=>{try{const b=new Blob([JSON.stringify(P)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kamokuB-record-'+dkey()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);msg('bkmsg','ファイルを保存しました(ダウンロード／ファイルアプリを確認)。',true)}catch(e){msg('bkmsg','この環境ではファイル保存ができません。コードのコピーを使ってください。',false)}};
+ const restore=(o,id)=>{if(!validP(o))throw new Error('bad');
+  document.getElementById(id).innerHTML='<div class="confirm"><p>今の記録を、このバックアップ(完了 '+ORDER.filter(k=>o.done&&o.done[k]).length+'レッスン・結果 '+((o.hist||[]).length)+'件)で置き換えます。よろしいですか？</p><button class="btn" id="rsy2">置き換える</button> <button class="btn ghost" id="rsn2">やめる</button></div>';
+  document.getElementById('rsy2').onclick=()=>{P=Object.assign(blankP(),o);save();viewKiroku();window.scrollTo(0,0)};
+  document.getElementById('rsn2').onclick=()=>{document.getElementById(id).innerHTML=''}};
+ document.getElementById('bkrestore').onclick=()=>{try{restore(dec(document.getElementById('bkin').value),'bkmsg2')}catch(e){msg('bkmsg2','コードが正しくありません。KB1: から最後まで、全部貼り付けてください。',false)}};
+ document.getElementById('bkfin').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{restore(dec(r.result),'bkmsg2')}catch(err){msg('bkmsg2','このファイルは読み込めませんでした。',false)}};r.readAsText(f)};
+}
+
 /* ---- router ---- */
 function go(h){if(location.hash==='#'+h)route();else location.hash=h}
 function route(){
@@ -1901,6 +1999,7 @@ function route(){
  if(h==='drill')return runQuiz(shuffle(Object.values(BANK)).slice(0,10),{title:'実戦ドリル',small:'ランダム10問'});
  if(h==='review')return runQuiz(shuffle(P.wrong.filter(id=>BANK[id]).map(id=>BANK[id])),{title:'復習',small:'間違えた問題'});
  if(h==='cheat')return viewCheat();
+ if(h==='kiroku')return viewKiroku();
  if(h==='zukan')return viewZukan();
  if(h==='yougo')return viewYougo();
  if(h.startsWith('z-'))return viewZukan(h.slice(2));
