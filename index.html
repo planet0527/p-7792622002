@@ -1162,7 +1162,7 @@ run(){const {st,S,steps}=rec();const N=4,q=[null,null,null,null];let head=1,tail
   st.calls=['メイン: enqueue('+x+')'];st.v={head,tail,count};S(3,'enqueue('+x+') を呼ぶ。末尾に追加する。');
   st.calls.push('enqueue(x='+x+')');st.v={head,tail,count,x};
   const at=tail;q[at-1]=x;stale=stale.filter(k=>k!==at);sync();st.hl.q=[at];S(4,'q['+at+'] に '+x+' を入れる。黄色の場所が今回の追加先。');
-  tail=tail%N+1;count++;st.v={head,tail,count};sync();S(5,'tail ← ('+(at)+' mod 4) + 1 = '+tail。'+(at===4?'配列の端を越えたので先頭へ戻った。':'次に入れる場所へ進んだ。'));
+  tail=tail%N+1;count++;st.v={head,tail,count};sync();S(5,'tail ← ('+at+' mod 4) + 1 = '+tail+'。'+(at===4?'配列の端を越えたので先頭へ戻った。':'次に入れる場所へ進んだ。'));
   st.v={head,tail,count};S(6,'count を1増やして '+count+'。');st.calls.pop();
  };
  const dequeue=()=>{
