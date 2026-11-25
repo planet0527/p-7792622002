@@ -640,7 +640,7 @@ const UNITS=[
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','matrix','func']},
  {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
  {name:'3. データ構造',ids:['stack','queue','list','listc','tree','heap','hash']},
- {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto','network','backup']}
+ {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto','network','backup','mailauth']}
 ];
 
 const LESSONS={};
@@ -1755,7 +1755,32 @@ quiz:[
  {q:'保存量は小さいが、復元時にフルと複数のバックアップを順に適用する方式は？',c:['増分バックアップ','差分バックアップ','フルバックアップ','ミラーリング'],e:'増分は直前からの変更だけを保存するため、復元にはフルとその後の増分すべてが必要。'}
 ]});
 
+/* ---------- mailauth: SPF・DKIM・DMARC ---------- */
+def({id:'mailauth',title:'SPF・DKIM・DMARCの判定順',sub:'1通のメールを受信側でチェックする流れ',
+pts:['SPFは送信元メールサーバのIPが、ドメインの許可リストにあるか確認','DKIMはメールの署名をDNSの公開鍵で検証し、署名ドメインと改ざんを確認','DMARCはSPFまたはDKIMの成功と、Fromドメインとの整合を確認','DMARCに失敗した場合、ドメインの方針(none・quarantine・reject)に従う'],
+trap:'SPFは表示上のFromだけを本人確認しているのではない。送信サーバのIPを確認し、DMARCがFromとの整合を判定する。',
+code:L(\`DNSにSPF・DKIM・DMARCの情報を公開
+送信サーバがメールを送信
+受信側: SPFで送信元IPを確認
+受信側: DKIM署名を公開鍵で検証
+受信側: Fromドメインとの整合を判定
+DMARC方針: none / quarantine / reject\`),
+run(){const {st,S,steps}=rec();
+ const show=step=>{st.mailauth={step}};
+ S(-1,'送信側がDNSに認証情報を用意しておき、受信側が届いたメールを順番に確認します。');
+ show(0);S(0,'DNSにSPFの許可IP、DKIMの公開鍵、DMARCの方針を登録する。');
+ show(1);S(1,'送信サーバがメールを送信。DKIM署名も付ける。');
+ show(2);S(2,'受信側が接続元IPをSPFレコードと照合する。SPFはIPの確認。');
+ show(3);S(3,'受信側がDNSのDKIM公開鍵で署名を検証。本文などの改ざんも検出する。');
+ show(4);S(4,'DMARCがSPFまたはDKIMの成功と、Fromドメインとの整合を確認する。');
+ show(5);S(5,'整合する認証がなければ、DMARC方針に従い通常受信・隔離・拒否を選ぶ。');return steps;},
+quiz:[
+ {q:'SPFが主に照合する情報は？',c:['送信サーバのIPアドレス','メール本文のハッシュ値','受信者のパスワード','添付ファイルの種類'],e:'SPFは送信元メールサーバのIPアドレスがDNSに登録された許可リストに含まれるかを確認する。'},
+ {q:'SPF・DKIMの結果とFromドメインの整合を見て、失敗時の扱いを示すものは？',c:['DMARC','DNSSEC','VPN','WAF'],e:'DMARCはSPFまたはDKIMの認証結果とFromドメインとの整合を確認し、失敗時の方針を示す。'}
+]});
+
 /* ---------- extra drill ---------- */
+
 
 
 
@@ -2482,7 +2507,7 @@ zc({id:'sec-web2',cat:'sec',t:'Webへの攻撃(CSRF など)',
  p:'Webアプリへの代表的な攻撃。どれも「利用者の入力やリクエストを、そのまま信用してしまう」ことが原因。',
  b:['CSRF(クロスサイトリクエストフォージェリ)：本人になりすまして操作させる','セッションハイジャック：セッションIDを盗んで本人になりすます','ディレクトリトラバーサル：../ でフォルダをさかのぼる','OSコマンドインジェクション：OSの命令を実行させる'],
  tip:'XSS は「閲覧者のブラウザでスクリプト実行」、CSRF は「ログイン中の本人の操作を勝手に送らせる」。違いが問われる。'});
-zc({id:'sec-mailauth',cat:'sec',t:'メールのなりすまし対策(SPF・DKIM・DMARC)',
+zc({id:'sec-mailauth',cat:'sec',t:'メールのなりすまし対策(SPF・DKIM・DMARC)',lesson:'mailauth',
  svg:SV(160,rc(116,6,108,58,CV.bg,CV.mute,8)+tx(170,22,'DNS(送信側ドメイン)',{s:9,w:700})+tx(170,38,'SPF：送信元IP',{s:9,m:true,c:CV.acc})+tx(170,50,'DKIM：公開鍵',{s:9,m:true,c:CV.acc})+tx(170,62,'DMARC：方針',{s:9,m:true,c:CV.acc})+
   bx(6,88,96,32,'送信サーバ',{})+ar('M104,104 L234,104',CV.ink)+tx(170,98,'メール＋DKIM署名',{s:9,c:CV.mute})+bx(236,88,98,32,'受信サーバ',{})+ar('M268,86 L210,62',CV.acc,true)+tx(270,74,'問い合わせて照合',{s:9,c:CV.acc,a:'start'})+
   tx(170,140,'SPF・DKIM に失敗 → DMARC の方針で 隔離／拒否',{s:10,w:700,c:CV.amb})+tx(170,156,'送信元のなりすましを受信側で見抜く',{s:9,c:CV.mute})),
@@ -2709,7 +2734,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero'],backup:['sec-backup','sec-incident']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero'],backup:['sec-backup','sec-incident'],mailauth:['sec-mailauth','sec-crypto','sec-sign']};
 [['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
 
 
@@ -2997,6 +3022,12 @@ function renderVis(s,prev,x){
   h+='</div>';
   if(s.backup.restore){const recipe=s.backup.mode==='full'?['選んだ日のフル']:s.backup.mode==='diff'?['フル','最新の差分']:['フル','増分1','増分2','増分3'];h+='<div class="backup-restore"><b>復元に使うもの:</b>'+recipe.map(x=>'<span class="backup-chip">'+x+'</span>').join(' → ')+'</div>'}
   h+='<p class="backup-caption">'+(s.backup.mode==='full'?'保存量は最大。復元は単純。':s.backup.mode==='diff'?'差分は前回フルから累積。復元はフル＋最新差分。':'増分は直前からの変更だけ。復元はフル＋増分を古い順にすべて。')+'</p></div>';
+ }
+ if(s.mailauth){
+  const items=[['DNSに登録','SPFの許可IP・DKIM公開鍵・DMARC方針'],['メール送信','DKIM署名を付けて送る'],['SPF','送信サーバのIPを照合'],['DKIM','DNSの公開鍵で署名を検証'],['DMARC','認証結果とFromの整合を確認'],['方針を適用','none / quarantine / reject']];
+  h+='<div class="crypto-flow"><b>📨 受信側で行うメール認証</b><div class="crypto-track">';
+  items.forEach((it,i)=>{const cl=i===s.mailauth.step?'active':i<s.mailauth.step?'done':'';h+='<div class="crypto-step '+cl+'"><small>STEP '+(i+1)+'</small><b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span></div>'+(i<items.length-1?'<span class="crypto-arrow" aria-hidden="true">→</span>':'')});
+  h+='</div><div class="crypto-note">DMARCはSPFまたはDKIMがFromドメインと整合して通れば合格。両方とも整合しない場合、公開された方針で扱う。</div></div>';
  }
  Object.keys(s.a).forEach(name=>{
   const arr=s.a[name],pa=prev&&prev.a[name];
