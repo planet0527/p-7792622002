@@ -319,6 +319,41 @@ details.card{padding:10px 14px}
 .filebtn{display:inline-flex;align-items:center;cursor:pointer}
 .bkta{width:100%;min-height:74px;font-family:"JetBrains Mono",monospace;font-size:11px;border:1.5px solid var(--line);border-radius:12px;padding:8px;background:var(--bg);color:var(--ink);word-break:break-all;margin:4px 0}
 .bkmsg{font-size:13px;font-weight:700;min-height:0}.bkmsg.ok{color:var(--ok)}.bkmsg.ng{color:var(--ng)}
+
+.cb.on{background:var(--ambSoft);border-color:var(--amb)}
+.popts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px}
+.popts button{border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 4px;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px}
+.popts button.ok{background:var(--okSoft);border-color:var(--ok)}.popts button.ng{background:var(--ngSoft);border-color:var(--ng)}
+.pfb{display:inline-block;font-size:12px;font-weight:900;color:var(--ng);margin-right:8px}.pfb.ok{color:var(--ok)}
+.daily{display:block;width:100%;text-align:left;margin:16px 0 0;border:2px solid var(--amb);background:var(--ambSoft);border-radius:16px;padding:12px 14px}
+.daily.done{border-color:var(--ok);background:var(--okSoft)}
+.daily .dl{font-size:12px;font-weight:900;color:var(--amb)}.daily.done .dl{color:var(--ok)}
+.daily b{display:block;font-size:15px;line-height:1.5;margin:2px 0}
+.daily small{color:var(--mute);font-size:11.5px}
+.tool.hl{border:2px solid var(--amb)}
+.mopts{display:grid;gap:10px}
+.mopt{text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:0 4px 0 var(--tileSh)}
+.mopt.big{border:2px solid var(--acc)}
+.mopt b{display:block;font-size:18px;font-weight:900}.mopt span{display:block;font-size:15px;font-weight:700;color:var(--acc)}
+.mopt small{display:block;color:var(--mute);font-size:12px}.mopt i{display:inline-block;margin-top:6px;font-style:normal;font-size:12px;font-weight:700;background:var(--okSoft);color:var(--ok);border-radius:6px;padding:0 8px}
+.mtop{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.mtop .in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:calc(8px + env(safe-area-inset-top)) 14px 6px}
+.mtop b{font-size:24px;font-weight:900}
+.mpace{flex:1;font-size:12px;font-weight:700}.mpace.ok{color:var(--ok)}.mpace.ng{color:var(--ng)}
+.msub{border:0;background:var(--amb);color:#231a08;font-weight:900;border-radius:10px;padding:6px 14px}
+.mbarw{height:4px;background:var(--line)}.mbarw i{display:block;height:100%;background:var(--acc);transition:width 1s linear}
+.ch.sel{border-color:var(--acc);background:var(--accSoft)}.ch.sel .lb{background:var(--acc);color:#fff}
+.pal{display:flex;flex-wrap:wrap;gap:5px;margin:16px 0}
+.pal button{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);font-weight:700;font-size:13px}
+.pal button.done{background:var(--accSoft);border-color:var(--acc)}.pal button.now{outline:2px solid var(--amb);outline-offset:1px}
+.mrev{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:12px;padding:8px 12px;margin:6px 0}
+.mrev.ng{border-left-color:var(--ng)}
+.mrev summary{display:flex;gap:8px;align-items:center;cursor:pointer;list-style:none;font-size:14px}
+.mrev summary::-webkit-details-marker{display:none}
+.mrev .mk{font-weight:900;width:16px}.mrev.ok .mk{color:var(--ok)}.mrev.ng .mk{color:var(--ng)}
+.mrev .mq{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrev .mt{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--mute)}
+.mrev p{font-size:14px;margin:6px 0}.mca b{color:var(--ok)}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
 </style>
@@ -401,8 +436,10 @@ html:`
 <ol>
 <li>各レッスンの<b>ステップ実行</b>で、コードが1行ずつ動く様子を見る(黄色＝今の行、オレンジ＝値が変わった変数)</li>
 <li>余裕があれば、紙とペンで同じトレースをしてみる</li>
+<li>慣れてきたら、レッスン画面の <b>🤔 ボタン</b>で「予想モード」に。値が変わる前に「次はいくつ？」と聞かれます</li>
 <li>最後の<b>確認問題</b>で、本番形式の問題を解く</li>
 <li>間違えた問題は自動で「復習」に入る</li>
+<li>仕上げは<b>⏱ 模擬試験</b>。1問5分のペースで解く練習をする</li>
 </ol>`,
 quiz:[
  {q:'科目Bの20問のうち、アルゴリズムとプログラミング(擬似言語)の問題は何問？',c:['16問','4問','10問','20問'],e:'問1〜16の16問がアルゴリズムとプログラミング、問17〜20の4問が情報セキュリティ。アルゴリズムが8割なので、ここが読めるかどうかで勝負が決まる。'},
@@ -1005,13 +1042,47 @@ endfor`,c:['18','3','30','55'],e:'i mod 3 = 0 になるのは 3, 6, 9 のとき�
     return
   endif
   f(n − 1)
-  n を出力する`,c:['1 2 3','3 2 1','0 1 2 3','3'],e:'f(3) は先に f(2) を呼び、f(2) は f(1) を、f(1) は f(0) を呼ぶ。f(0) は何もせず戻り、そこから f(1) が 1 を出力 → f(2) が 2 → f(3) が 3。出力が再帰呼び出しの「後」にあるので、戻りながら出力される。'}
+  n を出力する`,c:['1 2 3','3 2 1','0 1 2 3','3'],e:'f(3) は先に f(2) を呼び、f(2) は f(1) を、f(1) は f(0) を呼ぶ。f(0) は何もせず戻り、そこから f(1) が 1 を出力 → f(2) が 2 → f(3) が 3。出力が再帰呼び出しの「後」にあるので、戻りながら出力される。'},
+{q:'配列 a の要素を逆順に並べ替える手続き。[ ア ] に入るものは？',code:`○reverse(整数型の配列: a)
+  整数型: i, tmp
+  整数型: n ← aの要素数
+  for (i を 1 から n ÷ 2 の商 まで 1 ずつ増やす)
+    tmp ← a[i]
+    a[i] ← [ ア ]
+    a[n − i + 1] ← tmp
+  endfor`,c:['a[n − i + 1]','a[n − i]','a[i + 1]','tmp'],e:'i 番目と「後ろから i 番目」= n − i + 1 番目を交換している。tmp に a[i] を退避してから、a[i] に後ろの値を入れ、最後に後ろへ tmp を入れる。'},
+ {q:'二分探索の一部。a[mid] が target より大きいときの [ ア ] に入るものは？',code:`if (a[mid] = target)
+  return mid
+elseif (a[mid] < target)
+  low ← mid + 1
+else
+  high ← [ ア ]
+endif`,c:['mid − 1','mid','mid + 1','low − 1'],e:'a[mid] は target より大きいので、mid 自身もそれより右も候補から外せる。新しい右端は mid − 1。mid のままだと同じ所を見続けて無限ループになることがある。'},
+ {q:'要素数 5 の配列を使う環状キューで、末尾の位置を tail ← (tail mod 5) + 1 で進める。tail が 5 のとき、次の tail は？',c:['1','6','0','5'],e:'5 mod 5 = 0、0 + 1 = 1。配列の最後まで行ったら先頭に戻る、これが環状(リング)の仕組み。'},
+ {q:'ヒープを配列で表すとき(要素番号は1から)、要素番号 6 の親の要素番号は？',c:['3','2','12','5'],e:'親は「i ÷ 2 の商」。6 ÷ 2 = 3。逆に 3 の子は 2×3 = 6 と 2×3+1 = 7。'},
+ {q:'次のプログラムで「すべての命令を少なくとも1回実行する(命令網羅)」ために必要なテストケースの最小数は？',code:`if (x > 0)
+  y ← 1
+endif
+if (z > 0)
+  w ← 1
+endif`,c:['1','2','3','4'],e:'x > 0 かつ z > 0 のデータ1つで、y ← 1 と w ← 1 の両方が実行される。判定(分岐)網羅なら偽の道も通す必要があり2ケースになる。'},
+ {q:'listHead が3つの要素がつながった連結リストの先頭を指すとき、このプログラムが求めているものは？',code:`p ← listHead
+c ← 0
+while (p が未定義でない)
+  c ← c + 1
+  p ← p.next
+endwhile`,c:['リストの要素の個数','最後の要素の値','要素の値の合計','先頭の要素の値'],e:'p を先頭から next でたどりながら、1つ進むたびに c を1増やしている。最後の next が未定義になったら終わるので、c は要素数(3)。'},
+{cat:'sec',q:'会員サイトでパスワードを保存する方法として、最も適切なものは？',c:['ソルトを付けてハッシュ値に変換して保存する','共通鍵で暗号化して、鍵と同じサーバに保存する','そのまま保存し、データベースへのアクセス権を厳しくする','Base64で符号化して保存する'],e:'ハッシュ値は元に戻せないので、漏えいしてもパスワードそのものはわからない。ソルトを付けると同じパスワードでも違う値になり、一覧表(レインボーテーブル)での逆引きを防げる。Base64は誰でも元に戻せる。'},
+ {cat:'sec',q:'Webアプリケーションの SQLインジェクション対策として、最も効果的なものは？',c:['プレースホルダ(バインド機構)を使ってSQL文を組み立てる','入力欄の文字数を制限する','通信をHTTPSで暗号化する','エラーメッセージを詳しく表示する'],e:'プレースホルダを使うと、入力値は常に「ただの値」として扱われ、SQLの命令として解釈されない。HTTPSは通信路の暗号化で、SQLインジェクションは防げない。'},
+ {cat:'sec',q:'日曜にフルバックアップ、月〜水曜に毎日「増分」バックアップを取っている。木曜の朝に障害が起きた。水曜夜の状態に戻すのに必要なものは？',c:['日曜のフル＋月・火・水の増分すべて','日曜のフル＋水曜の増分だけ','水曜の増分だけ','月・火・水の増分すべて(フルは不要)'],e:'増分は「前回のバックアップ以降の変更」だけなので、フルに月→火→水の順で全部重ねる必要がある。「フル＋最新の1つ」で済むのは差分バックアップ。'},
+ {cat:'sec',q:'多要素認証になっている組合せはどれか？',c:['パスワード＋スマホに届くワンタイムコード','パスワード＋秘密の質問の答え','指紋＋顔','暗証番号＋パスワード'],e:'パスワード(知識)とスマホ(所持)は違う要素。秘密の質問・暗証番号はどちらも「知識」、指紋と顔はどちらも「生体」で、同じ要素どうしなので多要素認証ではない。'}
 ];
 
 /* ---- question bank ---- */
 const BANK={};
 Object.values(LESSONS).forEach(l=>(l.quiz||[]).forEach((q,i)=>{q.id=l.id+'-'+i;q.from=l.title;BANK[q.id]=q}));
-DRILL.forEach((q,i)=>{q.id='d-'+i;q.from='実戦ドリル';BANK[q.id]=q});
+DRILL.forEach((q,i)=>{q.id='d-'+i;q.from=q.cat==='sec'?'セキュリティ':'実戦ドリル';BANK[q.id]=q});
+Object.values(BANK).forEach(q=>{if(!q.cat)q.cat=q.id.startsWith('sec-')?'sec':q.id.startsWith('intro-')?'intro':'algo'});
 const ORDER=UNITS.flatMap(u=>u.ids);
 const TT={
 'var-1':[['行','n'],['1',10],['2',20],['3',17],['4',1]],
@@ -1728,6 +1799,8 @@ function viewHome(){
    '<button data-go="drill"><span>🎯</span><b>力試ししたい</b><small>実戦ドリル10問から</small></button>'+
    '<button data-go="zukan"><span>📚</span><b>知識を整理したい</b><small>図解ずかんから</small></button></div></div>';
  }
+ {const q=dailyQ();const doneToday=P.hist.some(x=>x.k==='今日の1問'&&dkey(new Date(x.ts))===dkey());
+  h+='<button class="daily'+(doneToday?' done':'')+'" onclick="go(\'daily\')"><span class="dl">'+(doneToday?'✓ 今日の1問 解答済み':'☀️ 今日の1問')+'</span><b>'+esc(q.q.split('\n')[0]).slice(0,46)+(q.q.length>46?'…':'')+'</b><small>'+esc(q.from)+'から ・ 1日1問ずつ変わります ›</small></button>';}
  h+='<div class="zbanner"><button onclick="go(\'zukan\')"><b>📚 図解ずかん</b><span>'+Z.length+'枚の図で、記法・データ構造・アルゴリズム・セキュリティを全部まとめ</span></button><button onclick="go(\'yougo\')"><b>🔤 用語辞典</b><span>'+GLOSSB.length+'語。タップで図解へ</span></button></div>';
  h+='<div class="facts"><div class="fact"><b>20問</b><span>全問必須</span></div><div class="fact"><b>100分</b><span>1問 約5分</span></div><div class="fact"><b>16＋4</b><span>アルゴ＋セキュリティ</span></div><div class="fact"><b>600点</b><span>／1000で合格</span></div></div>';
  UNITS.forEach(u=>{
@@ -1738,6 +1811,7 @@ function viewHome(){
  });
  const nw=P.wrong.filter(id=>BANK[id]).length;
  h+='<div class="unit"><h2>練習・まとめ</h2><div class="tools">';
+ h+='<button class="tool hl" onclick="go(\'moshi\')"><b>⏱ 模擬試験</b><small>時間を計って本番練習</small></button>';
  h+='<button class="tool" onclick="go(\'drill\')"><b>🎯 実戦ドリル</b><small>全問からランダム10問</small></button>';
  h+='<button class="tool" onclick="go(\'review\')"><b>🔁 復習</b><small>間違えた問題 '+nw+'問</small></button>';
  h+='<button class="tool" onclick="go(\'cheat\')"><b>📘 早見表</b><small>擬似言語の記法</small></button>';
@@ -1747,9 +1821,10 @@ function viewHome(){
   '<p>基本情報技術者試験 科目Bの対策用に作った、<b>非公式</b>の学習アプリです。登録やログインは不要で、だれでも無料で使えます。</p>'+
   '<p>記録(完了したレッスン・成績・間違えた問題)は、<b>この端末のブラウザの中だけ</b>に自動保存されます。ほかの人に見られたり、送信されたりすることはありません。機種変更などのときは「📈 記録」からバックアップできます。</p>'+
   '<p>試験の形式(20問・100分など)は2026年時点の情報です。受験前に必ず<a href="https://www.ipa.go.jp/shiken/kubun/fe.html" target="_blank" rel="noopener">IPAの公式ページ</a>で最新情報を確認してください。問題はすべてこのアプリのオリジナルです。</p>'+
-  '<div class="resetrow"><button class="btn ghost" id="rst">進み具合をリセット</button></div><div id="rstc"></div></div></div>';
+  '<div class="resetrow">'+(CAN_SHARE()?'<button class="btn" id="shr">📤 このアプリを友だちに共有</button> ':'')+'<button class="btn ghost" id="rst">進み具合をリセット</button></div><div id="rstc"></div></div></div>';
  h+='</div>';
  app.innerHTML=h;
+ if(document.getElementById('shr'))document.getElementById('shr').onclick=e=>shareApp(e.currentTarget);
  app.querySelectorAll('.wopts button').forEach(b=>b.onclick=()=>{P.seen=true;save();go(b.dataset.go)});
  document.getElementById('rst').onclick=()=>{document.getElementById('rstc').innerHTML='<div class="confirm"><p>完了マーク・最高点・復習リストをすべて消します。元に戻せません。</p><button class="btn" id="rsy" style="background:var(--ng)">消す</button> <button class="btn ghost" id="rsn">やめる</button></div>';
   document.getElementById('rsy').onclick=()=>{P=blankP();save();viewHome();window.scrollTo(0,0)};
@@ -1774,7 +1849,7 @@ function viewLesson(id){
  if(L2Z[id])h+='<div class="card"><div class="vlabel">関連する図解</div><div class="rel">'+L2Z[id].map(z=>'<button onclick="go(\'z-'+z+'\')">📚 '+esc(Z.find(c=>c.id===z).t)+'</button>').join('')+'</div></div>';
  h+='<div class="card" style="text-align:center"><p style="margin:0 0 10px;color:var(--mute);font-size:14px">紙に変数の表を書いて、同じように追えたら合格。</p><button class="btn amb" onclick="go(\'quiz-'+id+'\')">確認問題へ('+l.quiz.length+'問) →</button></div></div>';
  app.innerHTML=h;
- ctrl.innerHTML='<div class="ctrl"><div class="in" style="flex-direction:column;gap:6px;align-items:stretch"><div class="sliderrow"><div class="stepinfo"><span id="si"></span><span>←→キーでも操作可</span></div><input type="range" class="slider" id="sl" min="0" max="'+(steps.length-1)+'" value="0"></div><div class="msg" id="msg"></div><div style="display:flex;gap:8px"><button class="cb" id="b0" aria-label="最初へ">⟲</button><button class="cb" id="bp" aria-label="前へ">◀</button><button class="cb" id="bplay" aria-label="自動再生">▶︎▶︎</button><button class="cb main" id="bn">次の行へ ▶</button></div></div></div>';
+ ctrl.innerHTML='<div class="ctrl"><div class="in" style="flex-direction:column;gap:6px;align-items:stretch"><div class="sliderrow"><div class="stepinfo"><span id="si"></span><span>←→キーでも操作可</span></div><input type="range" class="slider" id="sl" min="0" max="'+(steps.length-1)+'" value="0"></div><div class="msg" id="msg"></div><div style="display:flex;gap:8px"><button class="cb" id="b0" aria-label="最初へ">⟲</button><button class="cb" id="bp" aria-label="前へ">◀</button><button class="cb" id="bplay" aria-label="自動再生">▶︎▶︎</button><button class="cb'+(P.predict?' on':'')+'" id="bpred" aria-label="予想モード" title="予想モード">🤔</button><button class="cb main" id="bn">次の行へ ▶</button></div></div></div>';
  const ttEl=document.getElementById('tt'),codeEl=document.getElementById('code'),visEl=document.getElementById('vis'),msgEl=document.getElementById('msg'),sl=document.getElementById('sl'),si=document.getElementById('si'),bn=document.getElementById('bn'),bplay=document.getElementById('bplay');
  function draw(){
   const st=steps[cur],prev=cur>0?steps[cur-1].s:null;
@@ -1789,7 +1864,25 @@ function viewLesson(id){
  }
  const setCur=v=>{const was=cur;cur=Math.max(0,Math.min(steps.length-1,v));draw();
   if(was===0&&cur===1){const r=codeEl.getBoundingClientRect();if(r.top>90||r.top<40)window.scrollBy({top:r.top-64-22,behavior:'smooth'})}};
- bn.onclick=()=>{if(cur===steps.length-1){go('quiz-'+id)}else setCur(cur+1)};
+ const bpred=document.getElementById('bpred');
+ bpred.onclick=()=>{P.predict=!P.predict;save();bpred.classList.toggle('on',P.predict);msgEl.innerHTML=P.predict?'<span class="sn">予想モード ON</span>変数の値が変わる行の前で「次はいくつ？」と聞きます。頭の中でトレースしてから答えてみよう。':'<span class="sn">予想モード OFF</span>ふつうに1行ずつ進みます。'};
+ function predictQ(){const a=steps[cur].s.v,b=steps[cur+1].s.v;
+  const k=Object.keys(b).find(k=>(k in a||cur>0)&&b[k]!==null&&JSON.stringify(a[k])!==JSON.stringify(b[k])&&(typeof b[k]==='number'||typeof b[k]==='string'));
+  if(!k)return null;const ans=b[k];const pool=new Set();
+  if(typeof ans==='number'){[ans+1,ans-1,ans*2,a[k],ans+2].forEach(v=>{if(typeof v==='number'&&v!==ans)pool.add(v)})}
+  Object.values(a).concat(Object.values(b)).forEach(v=>{if(v!==null&&v!==ans&&typeof v===typeof ans)pool.add(v)});
+  steps.forEach(t=>{const v=t.s.v[k];if(v!=null&&v!==ans)pool.add(v)});
+  const opts=shuffle([ans].concat(shuffle([...pool]).slice(0,3)));
+  return {k,ans,opts,line:steps[cur+1].line};}
+ function askPredict(q){bn.disabled=true;
+  msgEl.innerHTML='<span class="sn">🤔 予想してみよう</span>'+(q.line>=0?(q.line+1)+'行目':'次')+'を実行すると、<b class="mono">'+esc(q.k)+'</b> はいくつになる？<div class="popts">'+q.opts.map((v,i)=>'<button data-i="'+i+'">'+esc(fmt(v))+'</button>').join('')+'</div>';
+  msgEl.querySelectorAll('.popts button').forEach(b=>b.onclick=()=>{const v=q.opts[+b.dataset.i],ok=JSON.stringify(v)===JSON.stringify(q.ans);
+   P.pred=P.pred||{ok:0,n:0};P.pred.n++;if(ok)P.pred.ok++;save();
+   msgEl.querySelectorAll('.popts button').forEach((x,j)=>{x.disabled=true;if(JSON.stringify(q.opts[j])===JSON.stringify(q.ans))x.classList.add('ok');else if(x===b)x.classList.add('ng')});
+   setTimeout(()=>{bn.disabled=false;setCur(cur+1);if(!ok)msgEl.insertAdjacentHTML('afterbegin','<span class="pfb">✕ 正解は '+esc(fmt(q.ans))+'</span>');else msgEl.insertAdjacentHTML('afterbegin','<span class="pfb ok">○ 正解！</span>')},ok?500:1100)})}
+ bn.onclick=()=>{if(cur===steps.length-1){go('quiz-'+id);return}
+  if(P.predict&&!timer){const q=predictQ();if(q){askPredict(q);return}}
+  setCur(cur+1)};
  document.getElementById('bp').onclick=()=>{stopTimer();bplay.textContent='▶︎▶︎';setCur(cur-1)};
  document.getElementById('b0').onclick=()=>{stopTimer();bplay.textContent='▶︎▶︎';setCur(0)};
  sl.oninput=()=>{stopTimer();bplay.textContent='▶︎▶︎';setCur(+sl.value)};
@@ -1955,7 +2048,7 @@ function viewKiroku(){
  const days=Object.keys(P.days).length;
  let h=topbar('記録','あなたの学習記録')+'<div class="wrap">';
  if(!STORE_OK)h+='<div class="card warnc">⚠ いまの閲覧モード(プライベートブラウズなど)では、記録をこの端末に保存できません。通常のモードで開いてください。</div>';
- h+='<div class="kstats">'+[['完了レッスン',done+'<small>/'+ORDER.length+'</small>'],['解いた問題',solved+'<small>問</small>'],['正答率',(solved?Math.round(ok/solved*100):0)+'<small>%</small>'],['学習した日',days+'<small>日</small>'],['連続',streak()+'<small>日</small>'],['復習待ち',P.wrong.filter(id=>BANK[id]).length+'<small>問</small>']].map(k=>'<div class="ks"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>').join('')+'</div>';
+ h+='<div class="kstats">'+[['完了レッスン',done+'<small>/'+ORDER.length+'</small>'],['解いた問題',solved+'<small>問</small>'],['正答率',(solved?Math.round(ok/solved*100):0)+'<small>%</small>'],['学習した日',days+'<small>日</small>'],['連続',streak()+'<small>日</small>'],['復習待ち',P.wrong.filter(id=>BANK[id]).length+'<small>問</small>'],['予想の正解率',(P.pred&&P.pred.n?Math.round(P.pred.ok/P.pred.n*100):0)+'<small>%</small>'],['ミニ模試 最高',(P.mock&&P.mock['5']!=null?P.mock['5']:'—')+'<small>/5</small>'],['本番模試 最高',(P.mock&&P.mock['20']!=null?P.mock['20']:'—')+'<small>/20</small>']].map(k=>'<div class="ks"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>').join('')+'</div>';
  // 14-day strip
  let strip='';const d=new Date();d.setDate(d.getDate()-13);
  for(let i=0;i<14;i++){const k=dkey(d);const on=P.days[k];strip+='<div class="dd'+(on?' on':'')+(i===13?' today':'')+'"><i></i><span>'+(d.getMonth()+1)+'/'+d.getDate()+'</span></div>';d.setDate(d.getDate()+1)}
@@ -1989,17 +2082,92 @@ function viewKiroku(){
  document.getElementById('bkfin').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{restore(dec(r.result),'bkmsg2')}catch(err){msg('bkmsg2','このファイルは読み込めませんでした。',false)}};r.readAsText(f)};
 }
 
+
+/* ---- 共有 ---- */
+const SHARE_URL=()=>location.origin+location.pathname;
+const CAN_SHARE=()=>window.self===window.top&&/^https?:/.test(location.protocol);
+async function shareApp(btn){const data={title:'科目B、ゼロから。',text:'基本情報 科目Bの擬似言語を、1行ずつ動く図で学べる無料アプリ',url:SHARE_URL()};
+ try{if(navigator.share){await navigator.share(data);return}}catch(e){if(e&&e.name==='AbortError')return}
+ try{await navigator.clipboard.writeText(data.url);btn.textContent='✓ リンクをコピーしました'}catch(e){btn.textContent=data.url}}
+
+/* ---- 今日の1問 ---- */
+function dailyQ(){const ids=Object.keys(BANK).filter(k=>BANK[k].cat!=='intro').sort();const k=dkey();let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))>>>0;return BANK[ids[h%ids.length]]}
+
+/* ---- 模擬試験 ---- */
+let mockTimer=null;function stopMock(){if(mockTimer){clearInterval(mockTimer);mockTimer=null}}
+function viewMoshiStart(){
+ stopTimer();keyHandler=null;ctrl.innerHTML='';
+ const best=P.mock||{};
+ let h=topbar('模擬試験','時間を計って本番の練習')+'<div class="wrap">';
+ h+='<div class="card prose"><p>本番の科目Bは<b>20問を100分</b>、つまり<b>1問5分</b>のペースです。時間を計りながら解くと、「1問に粘りすぎる」クセがわかります。</p><ul><li>答えは途中で変えられます。問題の行き来も自由</li><li>解説は最後にまとめて表示</li><li>時間切れになると自動で採点</li></ul></div>';
+ h+='<div class="mopts">'+
+  '<button class="mopt" data-n="5" data-m="25"><b>ミニ模試</b><span>5問・25分</span><small>アルゴリズム4＋セキュリティ1</small>'+(best['5']!=null?'<i>最高 '+best['5']+'/5</i>':'')+'</button>'+
+  '<button class="mopt big" data-n="20" data-m="100"><b>本番模試</b><span>20問・100分</span><small>アルゴリズム16＋セキュリティ4(本番と同じ比率)</small>'+(best['20']!=null?'<i>最高 '+best['20']+'/20</i>':'')+'</button></div></div>';
+ app.innerHTML=h;
+ app.querySelectorAll('.mopt').forEach(b=>b.onclick=()=>runMock(+b.dataset.n,+b.dataset.m));
+}
+function runMock(n,mins){
+ const algo=shuffle(Object.values(BANK).filter(q=>q.cat==='algo')),sec=shuffle(Object.values(BANK).filter(q=>q.cat==='sec'));
+ const ns=Math.round(n/5);const qs=algo.slice(0,n-ns).concat(sec.slice(0,ns));
+ const M={qs,opts:qs.map(q=>shuffle(q.c.map((t,k)=>({t,ok:k===0})))),ans:qs.map(()=>null),spent:qs.map(()=>0),i:0,end:Date.now()+mins*60000,last:Date.now(),n,mins};
+ const tick=()=>{const now=Date.now();M.spent[M.i]+=now-M.last;M.last=now;const left=Math.max(0,M.end-now);
+  const el=document.getElementById('mclock');if(el){const m=Math.floor(left/60000),s=Math.floor(left%60000/1000);el.textContent=m+':'+String(s).padStart(2,'0');
+   const ideal=mins*60000*(1-(M.ans.filter(a=>a!==null).length)/n);const pace=document.getElementById('mpace');
+   if(pace){const diff=Math.round((left-ideal)/60000);pace.textContent=diff>=0?'ペース：目安より '+diff+'分 余裕':'ペース：目安より '+(-diff)+'分 遅れ';pace.className='mpace '+(diff>=0?'ok':'ng')}
+   document.getElementById('mbar').style.width=(left/(mins*60000)*100)+'%';}
+  if(left<=0){stopMock();finishMock(M,true)}};
+ const render=()=>{const q=M.qs[M.i],o=M.opts[M.i];
+  let h='<div class="mtop"><div class="in"><b id="mclock" class="mono"></b><span id="mpace" class="mpace"></span><button class="msub" id="msub">提出</button></div><div class="mbarw"><i id="mbar"></i></div></div><div class="wrap">';
+  h+='<div class="qhead"><span>問 '+(M.i+1)+' / '+n+'　・ '+(q.cat==='sec'?'セキュリティ':'アルゴリズム')+'</span></div>';
+  h+='<div class="qtext">'+esc(q.q).replace(/\n/g,'<br>')+'</div>';
+  if(q.code)h+='<div class="qcode">'+q.code.split('\n').map(hi).join('\n')+'</div>';
+  h+='<div class="choices">'+o.map((c,k)=>'<button class="ch'+(M.ans[M.i]===k?' sel':'')+'" data-k="'+k+'"><span class="lb">'+KANA[k]+'</span><span class="tx">'+esc(c.t)+'</span></button>').join('')+'</div>';
+  h+='<div class="pal">'+M.qs.map((_,k)=>'<button class="'+(k===M.i?'now ':'')+(M.ans[k]!==null?'done':'')+'" data-j="'+k+'">'+(k+1)+'</button>').join('')+'</div></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+  ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb" id="mprev" style="flex:1">◀ 前の問題</button><button class="cb main" id="mnext">'+(M.i===n-1?'見直して提出':'次の問題 ▶')+'</button></div></div>';
+  app.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{M.ans[M.i]=+b.dataset.k;app.querySelectorAll('.ch').forEach(x=>x.classList.toggle('sel',x===b));const p=app.querySelector('.pal [data-j="'+M.i+'"]');if(p)p.classList.add('done')});
+  app.querySelectorAll('.pal button').forEach(b=>b.onclick=()=>{M.i=+b.dataset.j;render()});
+  document.getElementById('mprev').onclick=()=>{if(M.i>0){M.i--;render()}};
+  document.getElementById('mnext').onclick=()=>{if(M.i<n-1){M.i++;render()}else confirmSubmit()};
+  document.getElementById('msub').onclick=confirmSubmit;tick();};
+ const confirmSubmit=()=>{const un=M.ans.filter(a=>a===null).length;
+  ctrl.innerHTML='<div class="ctrl"><div class="in" style="flex-direction:column;align-items:stretch;gap:6px"><div class="msg" style="min-height:0">'+(un?'<b style="color:var(--ng)">未回答が '+un+'問</b> あります。':'全問回答済みです。')+'提出して採点しますか？</div><div style="display:flex;gap:8px"><button class="cb" id="mback" style="flex:1">戻る</button><button class="cb amb" id="mgo">提出する</button></div></div></div>';
+  document.getElementById('mback').onclick=render;document.getElementById('mgo').onclick=()=>{stopMock();finishMock(M,false)}};
+ stopTimer();keyHandler=null;render();mockTimer=setInterval(tick,1000);
+}
+function finishMock(M,timeup){
+ const res=M.qs.map((q,k)=>M.ans[k]!==null&&M.opts[k][M.ans[k]].ok);
+ const sc=res.filter(Boolean).length;const used=Math.round(M.spent.reduce((a,b)=>a+b,0)/60000);
+ const byCat=c=>{const ix=M.qs.map((q,k)=>k).filter(k=>M.qs[k].cat===c);return [ix.filter(k=>res[k]).length,ix.length]};
+ const [aO,aN]=byCat('algo'),[sO,sN]=byCat('sec');
+ M.qs.forEach((q,k)=>{if(res[k])P.wrong=P.wrong.filter(x=>x!==q.id);else if(!P.wrong.includes(q.id))P.wrong.push(q.id)});
+ P.mock=P.mock||{};P.mock[M.n]=Math.max(P.mock[M.n]||0,sc);
+ P.hist.unshift({ts:Date.now(),t:(M.n===20?'本番模試':'ミニ模試'),k:'mock',s:sc,n:M.n});if(P.hist.length>300)P.hist.length=300;markDay();save();
+ const pct=sc/M.n;
+ let h=topbar('模擬試験','結果')+'<div class="wrap"><div class="result">'+(timeup?'<div class="kicker" style="color:var(--ng)">TIME UP</div>':'<div class="kicker">RESULT</div>')+'<div class="big">'+sc+' / '+M.n+'</div><p>'+(pct>=.8?'すばらしい！ 本番でも十分戦えるペースです。':pct>=.6?'合格ラインの目安(6割強)に届いています。':'まずは間違えた問題のレッスンと図解を見直そう。')+'</p></div>';
+ h+='<div class="kstats"><div class="ks"><b>'+aO+'<small>/'+aN+'</small></b><span>アルゴリズム</span></div><div class="ks"><b>'+sO+'<small>/'+sN+'</small></b><span>セキュリティ</span></div><div class="ks"><b>'+used+'<small>分</small></b><span>使った時間 / '+M.mins+'分</span></div></div>';
+ h+='<div class="vlabel">1問ずつの見直し(かかった時間つき。5分を超えた問題は⏱)</div>';
+ M.qs.forEach((q,k)=>{const sec=Math.round(M.spent[k]/1000),o=M.opts[k],a=M.ans[k];
+  h+='<details class="mrev '+(res[k]?'ok':'ng')+'"><summary><span class="mk">'+(res[k]?'○':'✕')+'</span><span class="mq">問'+(k+1)+'　'+esc(q.q.split('\n')[0]).slice(0,40)+'</span><span class="mt">'+(sec>=300?'⏱':'')+Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')+'</span></summary>'+
+   (q.code?'<div class="qcode">'+q.code.split('\n').map(hi).join('\n')+'</div>':'')+
+   '<p class="mya">あなたの答え：'+(a===null?'<b style="color:var(--ng)">未回答</b>':esc(o[a].t))+'</p><p class="mca">正解：<b>'+esc(q.c[0])+'</b></p><p>'+esc(q.e)+'</p>'+(TT[q.id]?miniTable(TT[q.id]):'')+'</details>'});
+ h+='</div>';app.innerHTML=h;window.scrollTo(0,0);
+ ctrl.innerHTML='<div class="ctrl"><div class="in"><button class="cb" style="flex:1" onclick="go(\'review\')">間違えた問題を復習</button><button class="cb main" onclick="go(\'moshi\')">もう一度</button></div></div>';
+}
+
 /* ---- router ---- */
 function go(h){if(location.hash==='#'+h)route();else location.hash=h}
 function route(){
- stopTimer();keyHandler=null;window.scrollTo(0,0);
+ stopTimer();stopMock();keyHandler=null;window.scrollTo(0,0);
  const h=(location.hash||'').slice(1)||'home';
  if(LESSONS[h])return viewLesson(h);
  if(h.startsWith('quiz-')&&LESSONS[h.slice(5)]){const id=h.slice(5);const l=LESSONS[id];return runQuiz(l.quiz,{title:l.title,small:'確認問題',lessonId:id,back:id})}
- if(h==='drill')return runQuiz(shuffle(Object.values(BANK)).slice(0,10),{title:'実戦ドリル',small:'ランダム10問'});
+ if(h==='drill')return runQuiz(shuffle(Object.values(BANK).filter(q=>q.cat!=='intro')).slice(0,10),{title:'実戦ドリル',small:'ランダム10問'});
  if(h==='review')return runQuiz(shuffle(P.wrong.filter(id=>BANK[id]).map(id=>BANK[id])),{title:'復習',small:'間違えた問題'});
  if(h==='cheat')return viewCheat();
  if(h==='kiroku')return viewKiroku();
+ if(h==='moshi')return viewMoshiStart();
+ if(h==='daily'){const q=dailyQ();return runQuiz([q],{title:'今日の1問',small:dkey().replace(/-/g,'/')})}
  if(h==='zukan')return viewZukan();
  if(h==='yougo')return viewYougo();
  if(h.startsWith('z-'))return viewZukan(h.slice(2));
