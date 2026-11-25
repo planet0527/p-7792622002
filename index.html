@@ -640,7 +640,7 @@ const UNITS=[
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','matrix','func']},
  {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
  {name:'3. データ構造',ids:['stack','queue','list','listc','tree','heap','hash']},
- {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto']}
+ {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto','network']}
 ];
 
 const LESSONS={};
@@ -1698,7 +1698,33 @@ quiz:[
  {q:'Aさんから届いた署名を検証する鍵は？',c:['Aさんの公開鍵','Aさんの秘密鍵','受信者の公開鍵','受信者の秘密鍵'],e:'署名は送信者Aの秘密鍵で作り、Aの公開鍵で検証する。'}
 ]});
 
+/* ---------- network: FW・DMZ・WAF・VPN ---------- */
+def({id:'network',title:'ネットワーク防御の通信経路',sub:'FW・DMZ・WAF・VPNがどこで働くかを順に追う',
+pts:['ファイアウォール(FW)はIPアドレスやポートなど通信条件を見て通す/拒否する','DMZは外部公開サーバを置く隔離された区画','WAFはWebリクエストの内容を見てSQLインジェクションやXSSを防ぐ','VPNは認証した利用者と社内ネットワークを暗号化トンネルでつなぐ'],
+trap:'FWは通信条件、WAFはWeb要求の内容を確認。役割を混同しない。',
+code:L(\`外部利用者 → ファイアウォール
+許可されたWeb通信 → WAF
+検査後 → DMZのWebサーバ
+Webサーバ → 内部FW → アプリサーバ → DB
+在宅端末 → 認証 → VPNトンネル → 社内LAN\`),
+run(){const {st,S,steps}=rec();S(-1,'公開Webサイトへの通信と、在宅勤務のVPN接続をたどります。');
+ st.net={mode:'web',step:0};S(0,'外部の利用者からWebサイトへの要求が届く。');
+ st.net.step=1;S(0,'ファイアウォールが許可された通信だけを通す。');
+ st.net.step=2;S(1,'WAFがHTTP要求の中身を確認し、Web攻撃を遮断する。');
+ st.net.step=3;S(2,'公開Webサーバは社内LANと分けたDMZに置く。');
+ st.net.step=4;S(3,'内部FWも確認し、必要な通信だけアプリサーバへ通す。');
+ st.net.step=5;S(4,'DBには許可されたアプリサーバだけが接続。外部からの直通は拒否。');
+ st.net={mode:'vpn',step:0};S(-1,'次は在宅勤務。VPNは認証と権限確認を経て社内LANにつなぐ。');
+ st.net.step=1;S(5,'利用者が本人確認を行う。');
+ st.net.step=2;S(5,'端末とVPNゲートウェイの間に暗号化トンネルを作る。');
+ st.net.step=3;S(5,'ゲートウェイが権限を確認し、許可範囲だけ接続する。');return steps;},
+quiz:[
+ {q:'WebサイトへのSQLインジェクションを見つけて防ぐものは？',c:['WAF','VPN','DMZ','DNS'],e:'WAFはWebアプリへの要求内容を検査し、SQLインジェクションやXSSを防ぐ。'},
+ {q:'外部公開サーバを社内LANから分けて置く区画は？',c:['DMZ','VPN','WAF','DNS'],e:'DMZは公開サーバを社内LANから隔離する区画。'}
+]});
+
 /* ---------- extra drill ---------- */
+
 
 const DRILL=[
  {q:'実行後の配列 a は？',code:`整数型の配列: a ← {1, 2, 3, 4, 5}
@@ -2319,7 +2345,7 @@ zc({id:'sec-incident',cat:'sec',t:'インシデント対応の流れ',lesson:'se
  p:'セキュリティ事故が起きたら、被害拡大の防止と報告を最優先し、その後に調査・復旧・再発防止を行う。',
  b:['初動：ネットワークから切り離す(LANケーブルを抜く、Wi-Fiを切る)','報告：自分で判断せず、決められた窓口(CSIRT など)へ','証拠保全：ログやメモリを消さない(勝手に再起動・初期化しない)','再発防止：原因を分析して対策を実施'],
  tip:'選択肢に「自分で駆除して報告しない」「同僚に転送して確認してもらう」があれば×。'});
-zc({id:'sec-network',cat:'sec',t:'ファイアウォール・DMZ・WAF・VPN',
+zc({id:'sec-network',cat:'sec',t:'ファイアウォール・DMZ・WAF・VPN',lesson:'network',
  svg:SV(172,rc(6,40,58,60,CV.bg,CV.mute,20)+tx(35,74,'インター',{s:9,w:700})+tx(35,86,'ネット',{s:9,w:700})+
   rc(72,30,14,80,CV.ngSoft,CV.ng,2)+tx(79,124,'FW',{s:10,w:700,c:CV.ng,m:true})+
   rc(94,20,108,100,CV.ambS,CV.amb,10)+tx(148,36,'DMZ',{s:12,w:700,c:CV.amb,m:true})+bx(104,46,88,24,'Webサーバ',{s:10})+bx(104,80,88,24,'メールサーバ',{s:10})+rc(98,46,8,24,CV.accS,CV.acc,2)+tx(102,40,'',{})+
@@ -2650,7 +2676,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero']};
 [['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
 
 
@@ -2919,6 +2945,12 @@ function renderVis(s,prev,x){
  h+='<div class="crypto-flow"><b>'+(enc?'🔒 暗号化：内容を秘密にする':'✍️ 署名：本人と改ざんを確かめる')+'</b><div class="crypto-track">';
  items.forEach((it,i)=>{const cl=i===s.flow.step?'active':i<s.flow.step?'done':'';h+='<div class="crypto-step '+cl+'"><small>STEP '+(i+1)+'</small><b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span></div>'+(i<items.length-1?'<span class="crypto-arrow">→</span>':'')});
  h+='</div><div class="crypto-note">'+(enc?'受信者の公開鍵で暗号化 → 受信者の秘密鍵で復号。':'送信者の秘密鍵で署名 → 送信者の公開鍵で検証。署名は内容を隠さない。')+'</div></div>';
+ }
+ if(s.net){
+  const items=s.net.mode==='web'?[['利用者','Internet'],['FW','通信条件を確認'],['WAF','Web要求を検査'],['Webサーバ','DMZに隔離'],['内部FW','通信を制限'],['Appサーバ','許可された経路'],['DB','外部から直通不可']]:[['在宅端末','本人確認'],['VPNトンネル','通信を暗号化'],['VPNゲートウェイ','権限を確認'],['社内LAN','許可範囲へ接続']];
+  h+='<div class="crypto-flow"><b>'+(s.net.mode==='web'?'🌐 公開Webサイトへの通信':'🔐 在宅端末からのVPN接続')+'</b><div class="crypto-track">';
+  items.forEach((it,i)=>{const cl=i===s.net.step?'active':i<s.net.step?'done':'';h+='<div class="crypto-step '+cl+'"><small>STEP '+(i+1)+'</small><b>'+esc(it[0])+'</b><span>'+esc(it[1])+'</span></div>'+(i<items.length-1?'<span class="crypto-arrow" aria-hidden="true">→</span>':'')});
+  h+='</div><div class="crypto-note">'+(s.net.mode==='web'?'外部 → FW → WAF → DMZのWebサーバ → 内部FW → Appサーバ → DB。外部からDBへの直接接続は拒否。':'本人確認 → 暗号化トンネル → ゲートウェイで権限確認 → 許可された社内資源へ。')+'</div></div>';
  }
  Object.keys(s.a).forEach(name=>{
   const arr=s.a[name],pa=prev&&prev.a[name];
