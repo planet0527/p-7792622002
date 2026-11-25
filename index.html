@@ -591,7 +591,7 @@ const UNITS=[
  {name:'0. はじめに',ids:['intro']},
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','func']},
  {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','recur','intcalc']},
- {name:'3. データ構造',ids:['stack','list']},
+ {name:'3. データ構造',ids:['stack','queue','list']},
  {name:'4. 情報セキュリティ(問17〜20)',ids:['sec']}
 ];
 
@@ -1136,7 +1136,52 @@ quiz:[
  {q:'空のキューに enqueue(1), enqueue(2), enqueue(3), dequeue(), enqueue(4), dequeue() の順に操作した。2回目の dequeue() で取り出される値は？(キューは先に入れたものが先に出る)',c:['2','1','3','4'],e:'キューは FIFO。1回目の dequeue で 1、2回目で 2 が出る。後から入れた 4 は最後尾に並ぶだけ。'}
 ]});
 
+/* ---------- queue: 配列を回して使うFIFO ---------- */
+def({id:'queue',title:'キューと環状バッファ',sub:'先に入れたものから取り出す。配列の端で折り返す',
+pts:['enqueue は末尾に追加、dequeue は先頭から取り出す(FIFO)','head は次に取り出す位置、tail は次に入れる位置','tail が配列の最後に来たら先頭へ戻す(環状バッファ)','count を使うと「空」と「満杯」を区別できる'],
+trap:'配列の左から右へ読む順と、キューから出る順が一致するとは限らない。必ず head から配列の端を越えて折り返す。',
+code:L(`
+大域: 整数型の配列: q ← {未定義, 未定義, 未定義, 未定義}
+定数: N ← 4
+大域: 整数型: head ← 1, tail ← 1, count ← 0
+○enqueue(整数型: x)
+  q[tail] ← x
+  tail ← (tail mod N) + 1
+  count ← count + 1
+○整数型: dequeue()
+  整数型: x ← q[head]
+  head ← (head mod N) + 1
+  count ← count − 1
+  return x
+`),
+run(){const {st,S,steps}=rec();const N=4,q=[null,null,null,null];let head=1,tail=1,count=0,stale=[];
+ const sync=()=>{st.a.q=q.slice();st.p.q={head,tail};st.dim.q=stale.slice()};
+ st.v={head,tail,count};sync();S(0,'容量4の配列 q。head は次に出す位置、tail は次に入れる位置、count は中身の個数。');
+ S(2,'最初は head = tail = 1、count = 0。空なので、ここから enqueue する。');
+ const enqueue=x=>{
+  st.calls=['メイン: enqueue('+x+')'];st.v={head,tail,count};S(3,'enqueue('+x+') を呼ぶ。末尾に追加する。');
+  st.calls.push('enqueue(x='+x+')');st.v={head,tail,count,x};
+  const at=tail;q[at-1]=x;stale=stale.filter(k=>k!==at);sync();st.hl.q=[at];S(4,'q['+at+'] に '+x+' を入れる。黄色の場所が今回の追加先。');
+  tail=tail%N+1;count++;st.v={head,tail,count};sync();S(5,'tail ← ('+(at)+' mod 4) + 1 = '+tail。'+(at===4?'配列の端を越えたので先頭へ戻った。':'次に入れる場所へ進んだ。'));
+  st.v={head,tail,count};S(6,'count を1増やして '+count+'。');st.calls.pop();
+ };
+ const dequeue=()=>{
+  st.calls=['メイン: dequeue()'];st.v={head,tail,count};S(7,'dequeue() を呼ぶ。先頭から取り出す。');
+  st.calls.push('dequeue()');const at=head,x=q[at-1];st.v={head,tail,count,x};st.hl.q=[at];S(8,'head が指す q['+at+'] の '+x+' を取り出す。最後に入れた 7 ではなく、先に入れた値が出る。');
+  stale.push(at);head=head%N+1;st.v={head,tail,count,x};sync();S(9,'head ← ('+at+' mod 4) + 1 = '+head+'。読み終えた箱は薄く表示する(値は配列に残る)。');
+  count--;st.v={head,tail,count,x};S(10,'count を1減らして '+count+'。');
+  st.out=(st.out?st.out+' → ':'')+x;S(11,x+' を取り出した。');st.calls.pop();
+ };
+ enqueue(3);enqueue(7);enqueue(5);dequeue();enqueue(9);dequeue();enqueue(2);enqueue(6);
+ S(-1,'最後は head = tail = 3 でも count = 4。空ではなく満杯。取り出す順は head から 5 → 9 → 2 → 6。配列の端を越えると先頭へ回る。');
+ return steps;},
+quiz:[
+ {q:'空のキューに enqueue(4), enqueue(6), dequeue(), enqueue(8), dequeue() と操作した。2回目に取り出される値は？',c:['6','4','8','未定義'],e:'キューは FIFO。1回目の dequeue で先に入れた 4 が出る。次に出るのは 6。'},
+ {q:'容量4の環状キューで tail = 4 のとき、1つ追加した後の tail は？(tail ← (tail mod 4) + 1)',c:['1','4','0','5'],e:'(4 mod 4) + 1 = 1。配列の最後の次は先頭へ戻る。'}}
+]});
+
 /* ---------- 15 list ---------- */
+
 def({id:'list',title:'連結リスト',sub:'「次はどこ？」をたどって進む',
 pts:['各要素が「次の要素の番号(next)」を持っている','先頭から next をたどると、順番に読める','0(や「未定義」)が来たら終わり','並べ替えずに、next の書き換えだけで挿入・削除ができる'],
 trap:'配列の並び順(1,2,3,4番目)と、リストとしての順番は別物。必ず next をたどる。',
@@ -1381,6 +1426,13 @@ const DIAG={
   ar('M128,46 L170,30',CV.amb)+ar('M128,62 L170,80',CV.acc)+
   tx(176,28,'mod 10 → ',{s:12,m:true,a:'start'})+tx(254,29,'8',{s:20,w:900,m:true,a:'start',c:CV.amb})+tx(272,28,'(一の位)',{s:10,a:'start',c:CV.mute})+
   tx(176,86,'÷ 10 の商 → ',{s:12,m:true,a:'start'})+tx(266,87,'472',{s:18,w:900,m:true,a:'start',c:CV.acc}))},
+ queue:{cap:'キューは先頭から取り出し、末尾へ追加。環状キューでは末尾が配列の端に着くと先頭へ戻る',svg:SV(142,
+  tx(170,14,'配列の箱と、論理的な順番は別',{s:11,w:700})+
+  rc(58,32,224,48,CV.bg,CV.mute,10)+[3,7,5,'空'].map((v,i)=>cb(68+i*51,42,String(v),i===0?AMB:ACC)).join('')+
+  [1,2,3,4].map((n,i)=>tx(88+i*51,94,'['+n+']',{s:9,m:true,c:CV.mute})).join('')+
+  ar('M87,112 L87,96',CV.amb)+tx(87,128,'head',{s:10,w:700,m:true,c:CV.amb})+
+  ar('M240,96 L240,112',CV.acc)+tx(240,128,'tail',{s:10,w:700,m:true,c:CV.acc})+
+  tx(170,140,'取り出す順: 3 → 7 → 5',{s:11,w:700}))},
  stack:{cap:'後から入れたものが先に出る(LIFO)。積み上げた皿と同じ',svg:SV(140,
   '<path d="M126,30 L126,128 L200,128 L200,30" style="fill:none;stroke:var(--mute);stroke-width:3"/>'+
   cb(144,88,'3')+cb(144,52,'7',AMB)+
@@ -1509,7 +1561,7 @@ zc({id:'ds-stack',cat:'ds',t:'スタック(LIFO)',lesson:'stack',svg:DIAG.stack.
  p:'後から入れたものが先に出る(Last In First Out)。push で積み、pop で取り出す。',an:'積み重ねたお皿。最後に置いた皿から使う。',
  b:['配列 + top(一番上の番号) で実装できる','pop しても値は消えず、top が下がるだけ','用途：関数呼び出しの管理、元に戻す(Undo)、かっこの対応チェック'],
  tip:'操作列から「最後に取り出される値」を問う問題は、スタックの中身を横に書きながら追う。'});
-zc({id:'ds-queue',cat:'ds',t:'キュー(FIFO)',
+zc({id:'ds-queue',cat:'ds',t:'キュー(FIFO)',lesson:'queue',
  svg:SV(116,rc(60,36,220,48,CV.bg,CV.mute,10)+cb(80,46,'3',ACC)+cb(130,46,'7')+cb(180,46,'5')+
   ar('M70,60 L18,60',CV.amb)+tx(36,30,'dequeue',{s:11,w:700,m:true,c:CV.amb})+tx(36,100,'先頭から出す',{s:10,c:CV.amb})+
   ar('M332,60 L262,60',CV.acc)+tx(300,30,'enqueue',{s:11,w:700,m:true,c:CV.acc})+tx(300,100,'末尾に入れる',{s:10,c:CV.acc})+
@@ -2127,7 +2179,7 @@ const GLOSSB=[
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2']};
 
 
 /* ---- ずかん view ---- */
