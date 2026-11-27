@@ -590,9 +590,16 @@ details.card{border-radius:14px}
 .lcend{font-size:11px;color:var(--mute);border:1.5px dashed var(--line);border-radius:8px;padding:4px 6px}
 .cells.cmp .col{width:38px}
 .cells.cmp .cell{width:32px;height:32px;margin-right:7px;font-size:13.5px}
+.crypto-flow{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--tile)}.crypto-track{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:5px}.crypto-step{flex:0 0 105px;min-height:76px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);opacity:.55;transition:.2s}.crypto-step.done{opacity:.85;border-color:var(--ok)}.crypto-step.active{opacity:1;transform:translateY(-3px);border:2px solid var(--amb);background:var(--ambSoft)}.crypto-step small,.crypto-step b,.crypto-step span{display:block}.crypto-step small,.crypto-step span{font-size:10px;color:var(--mute)}.crypto-step b{font-size:12px;margin:5px 0}.crypto-arrow{font-weight:800;color:var(--mute)}.crypto-note{margin:6px 0 0;padding:8px;border-radius:8px;background:var(--accSoft);font-size:12px;font-weight:700;line-height:1.5}.backup-visual{margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--tile);overflow-x:auto}.backup-table{min-width:430px}.backup-head,.backup-row{display:grid;grid-template-columns:82px repeat(4,minmax(78px,1fr));gap:5px;margin:5px 0}.backup-head span,.backup-cell,.backup-label{padding:7px 5px;border-radius:8px;text-align:center;font-size:11px}.backup-head span{color:var(--mute);font-weight:700}.backup-label{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink)}.backup-cell{background:var(--bg);border:1px solid var(--line);color:var(--mute);min-height:38px}.backup-cell.saved{color:var(--ink);border-color:var(--line);opacity:.8}.backup-row.selected .backup-label{background:var(--accSoft);color:var(--acc)}.backup-row.selected .backup-cell.saved{border-color:var(--acc);background:var(--accSoft);opacity:1}.backup-cell.current{outline:2px solid var(--amb);outline-offset:1px}.backup-restore{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;align-items:center;font-size:12px}.backup-chip{padding:5px 8px;border-radius:999px;background:var(--okSoft);color:var(--ok);font-weight:800}.backup-caption{font-size:12px;line-height:1.5;color:var(--mute);margin:8px 0 0}.logic-vis{margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--tile);overflow-x:auto}.logic-title{font-size:13px;font-weight:800;margin-bottom:8px}.logic-grid{min-width:320px}.logic-row{display:grid;grid-template-columns:repeat(var(--cols),minmax(42px,1fr));gap:4px;margin:4px 0}.logic-cell{padding:7px 3px;border:1px solid var(--line);border-radius:7px;background:var(--bg);text-align:center;font-size:11px;line-height:1.35}.logic-row.head .logic-cell{font-size:10px;font-weight:800;color:var(--mute);background:transparent}.logic-row.active .logic-cell{border-color:var(--amb);background:var(--ambSoft);font-weight:800}.logic-caption{font-size:12px;line-height:1.5;margin:8px 0 0;color:var(--mute)}
+.ab-svg{display:block;width:100%;max-width:400px;height:auto;margin:0 auto 10px}
+.ab-cut{display:block;width:100%;max-width:400px;height:auto;margin:0 auto 10px}
+.cells.cmp{gap:4px}.cells.cmp .col{width:32px}.cells.cmp .cell{width:26px;height:30px;margin-right:6px;font-size:12.5px}
+.cells.ucmp{gap:0}.cells.ucmp .col{width:20px}.cells.ucmp .cell{width:18px;height:30px;margin:4px 0 0;font-size:9.5px;border-radius:3px}
+.cells.ucmp .cell::before,.cells.ucmp .cell::after{display:none}
+.cells.ucmp .idx{font-size:8.5px}.cells.ucmp .ptr{font-size:9px}
 .top .in{padding-top:calc(10px + env(safe-area-inset-top))}
 .wrap{padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
-.crypto-flow{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--tile)}.crypto-track{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:5px}.crypto-step{flex:0 0 105px;min-height:76px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);opacity:.55;transition:.2s}.crypto-step.done{opacity:.85;border-color:var(--ok)}.crypto-step.active{opacity:1;transform:translateY(-3px);border:2px solid var(--amb);background:var(--ambSoft)}.crypto-step small,.crypto-step b,.crypto-step span{display:block}.crypto-step small,.crypto-step span{font-size:10px;color:var(--mute)}.crypto-step b{font-size:12px;margin:5px 0}.crypto-arrow{font-weight:800;color:var(--mute)}.crypto-note{margin:6px 0 0;padding:8px;border-radius:8px;background:var(--accSoft);font-size:12px;font-weight:700;line-height:1.5}.backup-visual{margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--tile);overflow-x:auto}.backup-table{min-width:430px}.backup-head,.backup-row{display:grid;grid-template-columns:82px repeat(4,minmax(78px,1fr));gap:5px;margin:5px 0}.backup-head span,.backup-cell,.backup-label{padding:7px 5px;border-radius:8px;text-align:center;font-size:11px}.backup-head span{color:var(--mute);font-weight:700}.backup-label{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink)}.backup-cell{background:var(--bg);border:1px solid var(--line);color:var(--mute);min-height:38px}.backup-cell.saved{color:var(--ink);border-color:var(--line);opacity:.8}.backup-row.selected .backup-label{background:var(--accSoft);color:var(--acc)}.backup-row.selected .backup-cell.saved{border-color:var(--acc);background:var(--accSoft);opacity:1}.backup-cell.current{outline:2px solid var(--amb);outline-offset:1px}.backup-restore{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;align-items:center;font-size:12px}.backup-chip{padding:5px 8px;border-radius:999px;background:var(--okSoft);color:var(--ok);font-weight:800}.backup-caption{font-size:12px;line-height:1.5;color:var(--mute);margin:8px 0 0}.logic-vis{margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--tile);overflow-x:auto}.logic-title{font-size:13px;font-weight:800;margin-bottom:8px}.logic-grid{min-width:320px}.logic-row{display:grid;grid-template-columns:repeat(var(--cols),minmax(42px,1fr));gap:4px;margin:4px 0}.logic-cell{padding:7px 3px;border:1px solid var(--line);border-radius:7px;background:var(--bg);text-align:center;font-size:11px;line-height:1.35}.logic-row.head .logic-cell{font-size:10px;font-weight:800;color:var(--mute);background:transparent}.logic-row.active .logic-cell{border-color:var(--amb);background:var(--ambSoft);font-weight:800}.logic-caption{font-size:12px;line-height:1.5;margin:8px 0 0;color:var(--mute)}</style>
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -638,7 +645,7 @@ function rec(){
 const UNITS=[
  {name:'0. はじめに',ids:['intro']},
  {name:'1. 擬似言語を読めるようになる',ids:['var','if','while','for','array','matrix','func','bitlogic']},
- {name:'2. 定番アルゴリズム',ids:['max','linear','binary','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
+ {name:'2. 定番アルゴリズム',ids:['max','linear','binary','ansbin','bounds','pairs','bubble','select','insort','merge','recur','intcalc','strsearch','bfsdfs']},
  {name:'3. データ構造',ids:['stack','queue','list','listc','tree','heap','hash']},
  {name:'4. 情報セキュリティ(問17〜20)',ids:['sec','crypto','network','backup','mailauth']}
 ];
@@ -1612,6 +1619,147 @@ quiz:[
  {q:'ハッシュ表で「衝突(シノニム)」とは何か？',c:['異なるキーから同じ格納位置が計算されること','同じキーを2回格納しようとすること','表がいっぱいになること','キーが負の数になること'],e:'ハッシュ関数の値(格納位置)が同じになることを衝突という。15 と 22 は どちらも (mod 7) + 1 = 2 になる。'}
 ]});
 
+/* ---------- 答えで二分探索 ---------- */
+def({id:'ansbin',title:'答えで二分探索',sub:'「この長さでOK？」を二分探索で絞り込む',
+pts:['配列ではなく「答えの候補(長さ)」を二分探索する','check(l)：長さ l で切ったら m 本以上取れるか(OK か NG か)を返す関数','長さを大きくするほど本数は減る＝OK と NG の境目は1か所だけ(単調性)','lo は必ず OK、hi は必ず NG の値に保ったまま、間を半分ずつ縮める','hi − lo = 1 になったら終わり。lo が「OK になる最大の長さ」'],
+trap:'答えは mid ではなく lo。ループを抜けた時点で lo が OK の最大、hi が NG の最小になっている。',
+code:L(`
+大域: 整数型の配列: h ← {7, 4, 10}  // 丸太の長さ
+大域: 整数型: m ← 5                 // ほしい本数
+○論理型: check(整数型: l)
+  整数型: cnt ← 0
+  整数型: i
+  for (i を 1 から hの要素数 まで 1 ずつ増やす)
+    cnt ← cnt + (h[i] ÷ l の商)
+  endfor
+  return cnt ≥ m
+
+整数型: lo ← 0   // 必ず OK な値
+整数型: hi ← 11  // 必ず NG な値
+while (hi − lo > 1)
+  整数型: mid ← (lo + hi) ÷ 2 の商
+  if (check(mid))
+    lo ← mid
+  else
+    hi ← mid
+  endif
+endwhile
+// lo が答え(OK になる最大の長さ)
+`),
+run(){const {st,S,steps}=rec();const H=[7,4,10],M=5;const cntOf=l=>H.reduce((a,x)=>a+Math.floor(x/l),0);
+ const known={};let lo=0,hi=11,mid=null;
+ const sync=(cut)=>{st.ab={lo,hi,mid,known:Object.assign({},known),m:M,counts:range(1,10).map(cntOf),cut:cut||null,H}};
+ st.a.h=H.slice();sync();S(0,'長さ 7・4・10 の丸太が3本ある。これを同じ長さ l で切り分ける。');
+ st.v={m:M};S(1,'5本以上ほしい。そのとき l をできるだけ長くしたい。答えは何？');
+ st.v={lo:0};sync();S(10,'lo ← 0。長さ0は「必ずOK」とみなす約束の値(実際に check(0) は呼ばない)。');
+ st.v.hi=11;sync();S(11,'hi ← 11。いちばん長い丸太(10)より長いと1本も取れないので「必ずNG」。答えは lo と hi の間にある。');
+ while(true){
+  if(hi-lo<=1){st.v={lo,hi};mid=null;sync();S(12,'hi − lo = '+(hi-lo)+'。lo と hi が隣り合ったので終了。',{cond:['hi − lo > 1',false]});break}
+  st.v={lo,hi,mid:null};mid=null;sync();S(12,'hi − lo = '+(hi-lo)+' > 1。まだ間に候補がある。',{cond:['hi − lo > 1',true]});
+  mid=Math.floor((lo+hi)/2);st.v.mid=mid;sync();S(13,'mid ← ('+lo+' + '+hi+') ÷ 2 の商 = '+mid+'。真ん中の長さで試す。');
+  st.calls=['メイン','check('+mid+')'];const outer=Object.assign({},st.v);st.v={l:mid,cnt:0};sync({l:mid,upto:0});S(3,'check('+mid+') の中へ。cnt(取れた本数)を 0 にする。');
+  let cnt=0;for(let i=1;i<=3;i++){st.v.i=i;sync({l:mid,upto:i-1});S(5,'i = '+i+'。'+i+'本目の丸太(長さ '+H[i-1]+')を見る。');
+   const q=Math.floor(H[i-1]/mid);cnt+=q;st.v.cnt=cnt;sync({l:mid,upto:i});S(6,H[i-1]+' ÷ '+mid+' の商 = '+q+' 本。cnt = '+cnt+'。')}
+  const ok=cnt>=M;known[mid]=ok?'ok':'ng';sync({l:mid,upto:3});S(8,'cnt = '+cnt+(ok?' ≥ ':' < ')+M+' → '+(ok?'true(OK：長さ '+mid+' なら足りる)':'false(NG：長さ '+mid+' だと足りない)')+' を返す。',{cond:[cnt+' ≥ '+M,ok]});
+  st.calls=[];st.v=outer;sync();S(14,'check('+mid+') は '+(ok?'OK':'NG')+'。',{cond:['check('+mid+')',ok]});
+  if(ok){lo=mid;st.v.lo=lo;sync();S(15,'lo ← '+mid+'。'+mid+' 以下はすべてOK確定(長さを短くすれば本数は増えるから)。')}
+  else{S(16,'else へ。');hi=mid;st.v.hi=hi;sync();S(17,'hi ← '+mid+'。'+mid+' 以上はすべてNG確定(長くすれば本数は減るから)。')}
+ }
+ mid=null;sync();S(20,'答えは lo = '+lo+'。長さ '+lo+' なら '+cntOf(lo)+' 本取れてOK、'+hi+' だと '+cntOf(hi)+' 本でNG。check を呼んだのはたった4回。');
+ return steps;},
+quiz:[
+ {q:'「答えで二分探索」が使える条件として、最も大事なものは？',c:['答えの候補を大きくすると、OK から NG へ一度だけ切り替わる(単調性)','データが配列に整列して入っている','答えの候補が10個以下である','check 関数が整数を返す'],e:'長さを長くするほど本数は減る(増えない)ので、OK と NG の境目は1か所しかない。だから真ん中で試して、半分を捨てられる。'},
+ {q:'while (hi − lo > 1) を抜けたとき、正しいものは？',c:['hi = lo + 1 で、lo が OK の最大、hi が NG の最小','lo = hi で、そこが答え','mid が答え','lo と hi はどちらも NG'],e:'lo は常に OK、hi は常に NG のまま近づける。隣り合った時点で、境目は lo と hi の間にある。答えは lo。'},
+ {q:'丸太 h = {9, 6}、ほしい本数 m = 4 のとき、同じ長さで切って4本以上取れる最大の長さは？',c:['3','4','2','5'],e:'長さ3：9÷3=3、6÷3=2 で5本 → OK。長さ4：9÷4=2、6÷4=1 で3本 → NG。だから答えは 3。'}
+]});
+
+/* ---------- lowerBound / upperBound ---------- */
+def({id:'bounds',title:'lowerBound と upperBound',sub:'同じ値が並んでいるとき、その「始まり」と「終わりの次」を探す',
+pts:['lowerBound(a, x)：x 以上の値が最初に現れる位置','upperBound(a, x)：x より大きい値が最初に現れる位置','違いは条件の「≥」と「>」だけ。どちらも lo / hi の二分探索','x の個数 = upperBound − lowerBound','C++ の lower_bound・upper_bound、Python の bisect_left・bisect_right と同じ働き'],
+trap:'C++ や Python は0番から数えるので、結果がこのアプリ(1番から)より1小さくなる。75 の例なら 8 と 11 → 7 と 10。',
+code:L(`
+○整数型: lowerBound(整数型の配列: a, 整数型: x)
+  整数型: lo ← 0                // 左端の外(条件を満たさない側)
+  整数型: hi ← aの要素数 + 1    // 右端の外(条件を満たす側)
+  while (hi − lo > 1)
+    整数型: mid ← (lo + hi) ÷ 2 の商
+    if (a[mid] ≥ x)            // upperBound では a[mid] > x
+      hi ← mid
+    else
+      lo ← mid
+    endif
+  endwhile
+  return hi                    // 条件を満たす最初の位置
+
+// a = {12, 18, 25, 30, 46, 50, 62, 75, 75, 75, 78, 82, 88, 91}、x = 75
+`),
+run(){const {st,S,steps}=rec();const A=[12,18,25,30,46,50,62,75,75,75,78,82,88,91],n=14,x=75;
+ const pad=[null].concat(A,[null]);
+ const sync=(lo,hi,mid)=>{st.a.a=pad.slice();st.ghost={a:true};st.off={a:1};const P={};if(lo!=null)P.lo=lo+1;if(hi!=null)P.hi=hi+1;if(mid!=null)P.mid=mid+1;st.p.a=P;
+  st.dim.a=lo!=null&&lo>0?range(2,lo+1):[];st.done.a=hi!=null&&hi<=n?range(hi+1,n+1):[]};
+ sync();S(13,'75 が3つ続けて並んでいる配列。75 が「どこから始まり、どこで終わるか」を二分探索で求める。');
+ const bound=(strict,name)=>{let lo=0,hi=n+1;st.calls=[name+'(a, 75)'];st.v={x,lo};sync(lo,null,null);
+  S(1,'lo ← 0。0番目は存在しないが「条件を満たさない側の端」とみなす(答えで二分探索の lo と同じ考え方)。');
+  st.v.hi=hi;sync(lo,hi,null);S(2,'hi ← '+hi+'(要素数 + 1)。「条件を満たす側の端」とみなす。境目はこの間にある。');
+  while(true){
+   if(hi-lo<=1){S(3,'hi − lo = 1。境目が決まった。',{cond:['hi − lo > 1',false]});break}
+   S(3,'hi − lo = '+(hi-lo)+' > 1 → 続ける。',{cond:['hi − lo > 1',true]});
+   const mid=Math.floor((lo+hi)/2);st.v.mid=mid;sync(lo,hi,mid);st.hl.a=[mid+1];S(4,'mid ← ('+lo+' + '+hi+') ÷ 2 の商 = '+mid+'。');
+   const ok=strict?A[mid-1]>x:A[mid-1]>=x;const op=strict?' > ':' ≥ ';st.hl.a=[mid+1];
+   S(5,'a['+mid+'] = '+A[mid-1]+op+x+' は'+(ok?'真 → 境目は mid 以下にある。':'偽 → 境目は mid より右にある。'),{cond:[A[mid-1]+op+x,ok]});
+   if(ok){hi=mid;st.v.hi=hi;st.v.mid=null;sync(lo,hi,null);S(6,'hi ← '+mid+'。'+mid+' 番目から右は条件を満たす(緑)。')}
+   else{S(7,'else へ。');lo=mid;st.v.lo=lo;st.v.mid=null;sync(lo,hi,null);S(8,'lo ← '+mid+'。'+mid+' 番目から左は条件を満たさない(薄い)。')}
+  }
+  sync(lo,hi,null);st.hl.a=[hi+1];return hi};
+ const L=bound(false,'lowerBound');S(11,'return '+L+'。75 以上が最初に現れるのは '+L+' 番目＝最初の 75 の位置。');
+ st.calls=[];st.v={lowerBound:L};sync();S(5,'次は upperBound。この行の「≥」を「>」に変えるだけ。75 より大きい値が最初に現れる位置を探す。');
+ const U=bound(true,'upperBound');S(11,'return '+U+'。75 より大きい値(78)が最初に現れるのは '+U+' 番目＝最後の 75 の次。');
+ st.calls=[];st.v={lowerBound:L,upperBound:U,'75の個数':U-L};sync();st.hl.a=range(L+1,U);
+ S(-1,'75 の個数 = '+U+' − '+L+' = '+(U-L)+'。C++ の lower_bound・upper_bound や Python の bisect は0番から数えるので、結果は '+(L-1)+' と '+(U-1)+'(スライドの値)になる。');
+ return steps;},
+quiz:[
+ {q:'a = {1, 3, 3, 3, 5, 7}(1番から数える)のとき、lowerBound(a, 3) と upperBound(a, 3) の組は？',c:['2 と 5','1 と 4','2 と 4','3 と 5'],e:'3 以上が最初に現れるのは2番目、3 より大きい値(5)が最初に現れるのは5番目。3 の個数は 5 − 2 = 3 個。'},
+ {q:'a = {10, 20, 30} のとき、lowerBound(a, 25) の値は？(配列に 25 は無い)',c:['3','2','−1','4'],e:'「25 以上が最初に現れる位置」なので 30 の位置の 3。値が無くても「入れるならここ」という位置を返す。−1 は返さない。'},
+ {q:'Python の bisect_left で 7 と表示された位置は、このアプリ(要素番号は1から)では何番目にあたる？',c:['8番目','7番目','6番目','14番目'],e:'Python や C++ は先頭を0番と数えるので、1番から数えると1つ大きくなる。0番目＝1番目、7番目＝8番目。'}
+]});
+
+/* ---------- ペアを数える ---------- */
+def({id:'pairs',title:'条件を満たすペアを数える',sub:'並べ替え ＋ lowerBound・upperBound で、相手の人数をまとめて数える',
+pts:['まず体重を小さい順に並べ替える(二分探索の前提)','1人目 A[i] を決めると、相手に必要な体重は「110 − A[i] 以上、130 − A[i] 以下」','その範囲に入る人数 = upperBound(上限) − lowerBound(下限)','相手は i + 1 番目以降から選ぶ：同じペアを2回数えない・自分と組まない','全ペアを調べると約 n² 回、この方法は n log n 程度で済む'],
+trap:'範囲の下限には lowerBound(以上)、上限には upperBound(より大きい)を使う。逆にすると、ちょうど 110 や 130 の人を数え落とす。',
+code:L(`
+// A は小さい順に並べ替え済み(要素数 n = 8)
+整数型: cnt ← 0
+for (i を 1 から n − 1 まで 1 ずつ増やす)
+  整数型: lowV ← 110 − A[i]
+  整数型: highV ← 130 − A[i]
+  整数型: L ← lowerBound(A の i + 1 番目以降, lowV)
+  整数型: R ← upperBound(A の i + 1 番目以降, highV)
+  cnt ← cnt + (R − L)
+endfor
+// cnt が答え(条件を満たすペアの数)
+`),
+run(){const {st,S,steps}=rec();const A=[25,40,62,71,75,90,93,98],n=8;let cnt=0;
+ const lb=(from,v)=>{for(let k=from;k<=n;k++)if(A[k-1]>=v)return k;return n+1};
+ const ub=(from,v)=>{for(let k=from;k<=n;k++)if(A[k-1]>v)return k;return n+1};
+ const sync=(i,L,R)=>{st.a.A=A.concat([null]);st.ghost={A:true};const P={};if(i)P.i=i;if(L)P.L=L;if(R)P.R=R;st.p.A=P;st.dim.A=i?range(1,i):[];st.done.A=(L&&R&&R>L)?range(L,R-1):[]};
+ sync();S(0,'体重を小さい順に並べた A = {25, 40, 62, 71, 75, 90, 93, 98}。2人の合計が 110〜130 kg になるペアを数える。');
+ st.v={cnt:0};S(1,'cnt ← 0。');
+ for(let i=1;i<=n-1;i++){st.v={cnt,i,lowV:null,highV:null,L:null,R:null};sync(i);
+  S(2,'i = '+i+'。1人目は A['+i+'] = '+A[i-1]+' kg。相手は '+(i+1)+' 番目以降から選ぶ(薄い所は使わない)。');
+  const lo=110-A[i-1],hi=130-A[i-1];st.v.lowV=lo;S(3,'相手は '+lo+' kg 以上が必要(110 − '+A[i-1]+')。');
+  st.v.highV=hi;S(4,'相手は '+hi+' kg 以下が必要(130 − '+A[i-1]+')。');
+  const L=lb(i+1,lo);st.v.L=L;sync(i,L);S(5,'lowerBound：'+lo+' 以上が最初に現れる位置は '+L+(L>n?'(該当なし＝末尾の外)':'(A['+L+'] = '+A[L-1]+')')+'。');
+  const R=ub(i+1,hi);st.v.R=R;sync(i,L,R);S(6,'upperBound：'+hi+' より大きい値が最初に現れる位置は '+R+(R>n?'(該当なし＝末尾の外)':'(A['+R+'] = '+A[R-1]+')')+'。');
+  const add=Math.max(0,R-L);cnt+=add;st.v.cnt=cnt;
+  S(7,'R − L = '+R+' − '+L+' = '+add+' 人。'+(add?'緑の範囲('+A.slice(L-1,R-1).join('・')+')が相手になれる。':'相手になれる人はいない。')+' cnt = '+cnt+'。')}
+ sync();S(9,'答えは '+cnt+' 通り(25+90, 25+93, 25+98, 40+71, 40+75, 40+90)。');return steps;},
+quiz:[
+ {q:'並べ替えた A = {25, 40, 62, 71, 75, 90, 93, 98} で、A[i] = 40 のとき、相手として条件(合計 110〜130)を満たす人は何人？',c:['3人','2人','4人','0人'],e:'相手は 70 kg 以上 90 kg 以下。62 以降のうち 71・75・90 の3人。90 はちょうど上限なので含む(upperBound を使うから数え落とさない)。'},
+ {q:'相手を「i + 1 番目以降」に限定している理由は？',c:['同じペアを2回数えたり、自分自身と組んだりしないため','二分探索が速くなるため','配列の後ろ半分しか整列していないため','i より前の人は条件を満たさないため'],e:'(25, 90) と (90, 25) は同じペア。1人目より後ろだけを相手にすれば、どのペアもちょうど1回ずつ数えられる。'},
+ {q:'この方法(並べ替え＋二分探索)を使う一番の理由は？',c:['n が大きくても速く数えられるから(全ペアを調べると約 n² 回)','並べ替えないと答えが変わるから','ペアの合計を計算しなくてよいから','メモリを使わないから'],e:'全ペアを調べると n(n − 1)/2 回の確認が必要。並べ替えて二分探索なら n log n 程度。n = 10万人なら差は数千倍以上。'}
+]});
+
 /* ---------- 16 list ---------- */
 
 
@@ -1675,12 +1823,12 @@ quiz:[
 def({id:'crypto',title:'暗号化とディジタル署名',sub:'公開鍵・秘密鍵の持ち主と役割を動きで確認',
 pts:['暗号化は受信者の公開鍵で行い、受信者の秘密鍵で復号','署名は送信者の秘密鍵で作り、送信者の公開鍵で検証','暗号化は内容を隠す。署名は送信者と改ざんの有無を確認','TLSでは公開鍵暗号で鍵を決め、その後は共通鍵暗号で通信する'],
 trap:'暗号化は受信者、署名は送信者の鍵が基準。鍵の持ち主を問題文で確認する。',
-code:L(\`暗号化: 受信者の公開鍵で暗号化
+code:L(`暗号化: 受信者の公開鍵で暗号化
 暗号化: 受信者の秘密鍵で復号
 署名: 文書のハッシュ値を計算
 署名: 送信者の秘密鍵で署名を作成
 検証: 送信者の公開鍵で署名を確認
-検証: 文書のハッシュ値と照合\`),
+検証: 文書のハッシュ値と照合`),
 run(){const {st,S,steps}=rec();S(-1,'鍵の持ち主と目的を、暗号化と署名で比べます。');
  st.flow={mode:'encrypt',step:0};S(0,'送信者が平文を用意。');
  st.flow.step=1;S(0,'受信者の公開鍵で暗号化する。');
@@ -1702,22 +1850,22 @@ quiz:[
 def({id:'network',title:'ネットワーク防御の通信経路',sub:'FW・DMZ・WAF・VPNがどこで働くかを順に追う',
 pts:['ファイアウォール(FW)はIPアドレスやポートなど通信条件を見て通す/拒否する','DMZは外部公開サーバを置く隔離された区画','WAFはWebリクエストの内容を見てSQLインジェクションやXSSを防ぐ','VPNは認証した利用者と社内ネットワークを暗号化トンネルでつなぐ'],
 trap:'FWは通信条件、WAFはWeb要求の内容を確認。役割を混同しない。',
-code:L(\`外部利用者 → ファイアウォール
+code:L(`外部利用者 → ファイアウォール
 許可されたWeb通信 → WAF
 検査後 → DMZのWebサーバ
 Webサーバ → 内部FW → アプリサーバ → DB
-在宅端末 → 認証 → VPNトンネル → 社内LAN\`),
+在宅端末 → 認証 → VPNトンネル → 社内LAN`),
 run(){const {st,S,steps}=rec();S(-1,'公開Webサイトへの通信と、在宅勤務のVPN接続をたどります。');
  st.net={mode:'web',step:0};S(0,'外部の利用者からWebサイトへの要求が届く。');
  st.net.step=1;S(0,'ファイアウォールが許可された通信だけを通す。');
  st.net.step=2;S(1,'WAFがHTTP要求の中身を確認し、Web攻撃を遮断する。');
  st.net.step=3;S(2,'公開Webサーバは社内LANと分けたDMZに置く。');
  st.net.step=4;S(3,'内部FWも確認し、必要な通信だけアプリサーバへ通す。');
- st.net.step=5;S(4,'DBには許可されたアプリサーバだけが接続。外部からの直通は拒否。');
+ st.net.step=5;S(3,'DBには許可されたアプリサーバだけが接続。外部からの直通は拒否。');
  st.net={mode:'vpn',step:0};S(-1,'次は在宅勤務。VPNは認証と権限確認を経て社内LANにつなぐ。');
- st.net.step=1;S(5,'利用者が本人確認を行う。');
- st.net.step=2;S(5,'端末とVPNゲートウェイの間に暗号化トンネルを作る。');
- st.net.step=3;S(5,'ゲートウェイが権限を確認し、許可範囲だけ接続する。');return steps;},
+ st.net.step=1;S(4,'利用者が本人確認を行う。');
+ st.net.step=2;S(4,'端末とVPNゲートウェイの間に暗号化トンネルを作る。');
+ st.net.step=3;S(4,'ゲートウェイが権限を確認し、許可範囲だけ接続する。');return steps;},
 quiz:[
  {q:'WebサイトへのSQLインジェクションを見つけて防ぐものは？',c:['WAF','VPN','DMZ','DNS'],e:'WAFはWebアプリへの要求内容を検査し、SQLインジェクションやXSSを防ぐ。'},
  {q:'外部公開サーバを社内LANから分けて置く区画は？',c:['DMZ','VPN','WAF','DNS'],e:'DMZは公開サーバを社内LANから隔離する区画。'}
@@ -1727,11 +1875,11 @@ quiz:[
 def({id:'backup',title:'バックアップ方式と復元手順',sub:'日ごとの保存内容を並べて違いを確認',
 pts:['フルは毎回すべてを保存。復元は簡単だが保存量が大きい','差分は前回のフル以降の変更をまとめて保存。日が進むほど大きくなる','増分は直前のバックアップ以降の変更だけを保存。保存量は小さいが復元に全段階が必要','差分の復元はフル＋最新差分。増分の復元はフル＋各増分'],
 trap:'「何を基準に変更を比べるか」が違う。差分＝最後のフル、増分＝直前のバックアップ。',
-code:L(\`フル: 毎回すべてのデータを保存
+code:L(`フル: 毎回すべてのデータを保存
 差分: 前回のフルからの変更を保存
 増分: 前回のバックアップからの変更を保存
 差分を復元: フル + 最新の差分
-増分を復元: フル + すべての増分\`),
+増分を復元: フル + すべての増分`),
 run(){const {st,S,steps}=rec();
  const show=(mode,day,restore=false)=>{st.backup={mode,day,restore}};
  S(-1,'A・B・Cのデータがあり、1日ごとにB、C、Aが更新される例で比較します。');
@@ -1759,12 +1907,12 @@ quiz:[
 def({id:'mailauth',title:'SPF・DKIM・DMARCの判定順',sub:'1通のメールを受信側でチェックする流れ',
 pts:['SPFは送信元メールサーバのIPが、ドメインの許可リストにあるか確認','DKIMはメールの署名をDNSの公開鍵で検証し、署名ドメインと改ざんを確認','DMARCはSPFまたはDKIMの成功と、Fromドメインとの整合を確認','DMARCに失敗した場合、ドメインの方針(none・quarantine・reject)に従う'],
 trap:'SPFは表示上のFromだけを本人確認しているのではない。送信サーバのIPを確認し、DMARCがFromとの整合を判定する。',
-code:L(\`DNSにSPF・DKIM・DMARCの情報を公開
+code:L(`DNSにSPF・DKIM・DMARCの情報を公開
 送信サーバがメールを送信
 受信側: SPFで送信元IPを確認
 受信側: DKIM署名を公開鍵で検証
 受信側: Fromドメインとの整合を判定
-DMARC方針: none / quarantine / reject\`),
+DMARC方針: none / quarantine / reject`),
 run(){const {st,S,steps}=rec();
  const show=step=>{st.mailauth={step}};
  S(-1,'送信側がDNSに認証情報を用意しておき、受信側が届いたメールを順番に確認します。');
@@ -1783,11 +1931,11 @@ quiz:[
 def({id:'bitlogic',title:'論理演算とド・モルガンの法則',sub:'真偽値の組合せを行ごとに確認',
 pts:['A and B は両方が真のときだけ真','A or B はどちらかが真なら真','not は真偽を反転する','ド・モルガンの法則で not を条件の中へ移せる'],
 trap:'真偽値の論理演算の例です。整数の各ビットを計算するビット演算とは区別する。',
-code:L(\`A and B: 両方が真なら真
+code:L(`A and B: 両方が真なら真
 A or B: どちらかが真なら真
 not A: Aの真偽を反転
 not (A and B) = (not A) or (not B)
-not (A or B) = (not A) and (not B)\`),
+not (A or B) = (not A) and (not B)`),
 run(){const {st,S,steps}=rec();const pairs=[[true,true],[true,false],[false,true],[false,false]];
  S(-1,'条件式で使う真偽値を、4通りすべて表で確かめます。');
  for(let i=0;i<pairs.length;i++){st.logic={mode:'andor',row:i};S(0,'A='+ (pairs[i][0]?'真':'偽')+'、B='+ (pairs[i][1]?'真':'偽')+' のとき、AND/ORの結果を見る。');}
@@ -2225,6 +2373,23 @@ zc({id:'al-binary',cat:'al',t:'二分探索',lesson:'binary',svg:DIAG.binary.svg
  p:'整列済みの配列で、真ん中と比べて半分ずつ範囲を狭める。',an:'辞書を真ん中で開いて「もっと前」「もっと後ろ」と絞る。',
  b:['前提：データが整列済み','計算量 O(log n)。1024個でも約10回','mid ← (low + high) ÷ 2 の商','low ← mid + 1 / high ← mid − 1 の ±1 を忘れると無限ループ'],
  tip:'比較回数の問題：要素数 n のとき最大 約 log₂n 回。2¹⁰ = 1024 を覚えておく。'});
+zc({id:'al-ansbin',cat:'al',t:'答えで二分探索',lesson:'ansbin',
+ svg:SV(160,'<rect x="30" y="10" width="136" height="104" style="fill:var(--accSoft)"/><rect x="196" y="10" width="136" height="104" style="fill:var(--ngSoft)"/>'+
+  [21,10,6,4,3,2,1,1,1,1].map((c,k)=>{const x=40+k*29,hh=Math.min(c,20)*4.5;return '<rect x="'+(x-8)+'" y="'+(114-hh)+'" width="16" height="'+hh+'" rx="2" style="fill:'+(k<3?'var(--acc)':'var(--ng)')+'"/>'}).join('')+
+  ln('M24,91.5 L336,91.5',CV.ink,1.5,true)+tx(334,86,'ほしい本数',{s:9,w:700,a:'end'})+ln('M24,114 L336,114',CV.ink,1.5)+
+  tx(98,28,'OK(足りる)',{s:12,w:900,c:CV.acc})+tx(264,28,'NG(足りない)',{s:12,w:900,c:CV.ng})+
+  '<path d="M98,120 l-5,9 h10 z" style="fill:var(--acc)"/>'+tx(98,142,'lo(必ずOK)',{s:10,w:700,c:CV.acc})+'<path d="M127,120 l-5,9 h10 z" style="fill:var(--ng)"/>'+tx(160,142,'hi(必ずNG)',{s:10,w:700,c:CV.ng})+
+  tx(180,158,'横：答えの候補(切る長さ)　縦：check の中身(取れる本数)',{s:9,c:CV.mute})),
+ p:'答えの候補(長さなど)に対して「OK か NG か」を返す関数を作り、OK と NG の境目を二分探索で見つける方法。',an:'「何cmなら足りる？」を、10cm→5cm→7cm…と真ん中を試しながら絞る。全部試すより圧倒的に速い。',
+ b:['check(x)：候補 x で条件を満たすか(OK/NG)を返す判定関数','候補を大きくすると OK → NG と一度だけ切り替わる(単調性)ことが前提','lo は必ず OK、hi は必ず NG に保ち、hi − lo = 1 になるまで縮める','「〜できる最大の値」「〜となる最小の値」を求める問題で使う'],
+ tip:'ループ後の答えが lo か hi かは、「最大の OK」を求めるなら lo、「最小の OK(NG と OK が逆向き)」なら hi。どちら向きかを最初に確認。'});
+zc({id:'al-bounds',cat:'al',t:'lowerBound と upperBound',lesson:'bounds',
+ svg:SV(140,tx(170,14,'x = 75 を探す',{s:12,w:700})+cells(20,40,[50,62,75,75,75,78,82],{w:38,h:34,g:6,s:14,st:['','','a','a','a','','']})+[6,7,8,9,10,11,12].map((k,i)=>tx(39+i*44,34,'['+k+']',{s:9,m:true,c:CV.mute})).join('')+
+  ar('M107,104 L107,78',CV.acc)+tx(107,118,'lowerBound = 8',{s:11,w:700,m:true,c:CV.acc})+tx(107,132,'75 以上の最初',{s:9,c:CV.mute})+
+  ar('M239,104 L239,78',CV.ng)+tx(239,118,'upperBound = 11',{s:11,w:700,m:true,c:CV.ng})+tx(239,132,'75 より大きい最初',{s:9,c:CV.mute})),
+ p:'lowerBound は「x 以上」、upperBound は「x より大きい」値が最初に現れる位置。2つの差が x の個数になる。',an:'行列の「75番の札を持つ人たちの先頭」と「その次の人」を探すイメージ。',
+ b:['どちらも整列済みの配列で二分探索して求める','x が配列に無くても「入れるならここ」の位置を返す','範囲 [下限, 上限] に入る個数 = upperBound(上限) − lowerBound(下限)','C++：lower_bound / upper_bound、Python：bisect_left / bisect_right(どちらも0番から数える)'],
+ tip:'「以上・以下」の範囲を数えるとき、下限は lowerBound、上限は upperBound。0番からか1番からかで答えが1ずれる。'});
 zc({id:'al-bubble',cat:'al',t:'バブルソート',lesson:'bubble',svg:DIAG.bubble.svg,
  p:'隣どうしを比べて逆なら交換。1周ごとに最大値が右端に確定する。',
  b:['計算量 O(n²)','比較回数 = n(n−1)/2 回(n=5 なら 10 回)','交換がなかったら終了、という改良版もある'],
@@ -2749,14 +2914,22 @@ const GLOSSB=[
  ['ショルダーハッキング','','肩越しに画面や入力をのぞき見る','sec-social'],
  ['トラッシング','','ゴミ箱をあさって情報を得る','sec-social'],
  ['脆弱性','ぜいじゃくせい','ソフトウェアやシステムの弱点','sec-vuln'],
+ ['答えで二分探索','二分探索の応用','答えの候補を二分探索して OK と NG の境目を探す','al-ansbin'],
+ ['判定関数','check 関数','候補が条件を満たすか true/false を返す関数','al-ansbin'],
+ ['単調性','','値を大きくすると結果が一方向にしか変わらない性質','al-ansbin'],
+ ['lowerBound','lower_bound・bisect_left','x 以上の値が最初に現れる位置','al-bounds'],
+ ['upperBound','upper_bound・bisect_right','x より大きい値が最初に現れる位置','al-bounds'],
+ ['インデックス','0始まり・1始まり','配列の位置の番号。C++やPythonは0から、科目Bの擬似言語は1から','syn-array'],
  ['ゼロデイ攻撃','','修正プログラム公開前の脆弱性を狙う攻撃','sec-vuln'],
  ['パッチ','修正プログラム','脆弱性や不具合を直すプログラム','sec-vuln'],
  ['ペネトレーションテスト','侵入テスト','実際に攻撃を試みて弱点を調べる','sec-vuln'],
  ['OTP','One-Time Password','1回だけ使えるパスワード','sec-auth'],
  ['SSO','Single Sign-On','1回の認証で複数のサービスを使える仕組み','sec-auth']
 ];
-const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero'],backup:['sec-backup','sec-incident'],mailauth:['sec-mailauth','sec-crypto','sec-sign'],bitlogic:['syn-logic','syn-prec','syn-if']};
-[['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
+const L2Z={var:['syn-var','syn-trace'],if:['syn-if','syn-logic'],while:['syn-loop','syn-trace'],for:['syn-for'],array:['syn-array','syn-2d','syn-arrarr'],func:['syn-func','syn-scope'],max:['al-linear','al-order'],linear:['al-linear','al-sentinel'],binary:['al-binary','al-order'],bubble:['al-bubble','al-order'],select:['al-select','al-insert'],recur:['al-recur','al-treewalk'],intcalc:['syn-arith','al-gcd','al-radix'],ansbin:['al-ansbin','al-binary','al-order'],bounds:['al-bounds','al-binary','syn-array'],pairs:['al-bounds','al-binary','al-order'],bfsdfs:['al-bfsdfs','ds-graph','ds-queue','ds-stack'],insort:['al-insert','al-bubble','al-order'],merge:['al-merge','al-quick'],matrix:['syn-2d','syn-arrarr','syn-for'],strsearch:['al-strsearch','al-string'],listc:['ds-listop','syn-class','ds-list'],heap:['ds-heap','ds-pqueue','ds-tree'],hash:['ds-hash','syn-arith'],stack:['ds-stack','ds-queue'],queue:['ds-queue','ds-stack'],tree:['ds-bintree','al-treewalk','ds-list'],list:['ds-list','ds-listop','syn-class','syn-method','ds-bintree'],sec:['sec-cia','sec-incident','sec-access','sec-risk','sec-web2'],crypto:['sec-crypto','sec-sign','sec-tls','sec-hash'],network:['sec-network','sec-access','sec-zero'],backup:['sec-backup','sec-incident'],mailauth:['sec-mailauth','sec-crypto','sec-sign'],bitlogic:['syn-logic','syn-prec','syn-if']};
+[['ansbin','al-ansbin'],['bounds','al-bounds'],['bitlogic','syn-logic'],['crypto','sec-crypto'],['network','sec-network'],['backup','sec-backup'],['mailauth','sec-mailauth'],['insort','al-insert'],['merge','al-merge'],['matrix','syn-2d'],['strsearch','al-strsearch'],['listc','ds-listop'],['heap','ds-heap'],['hash','ds-hash']].forEach(([l,z])=>{const c=Z.find(x=>x.id===z);if(!DIAG[l])DIAG[l]={svg:c.svg,cap:c.p};c.lesson=l});
+DIAG.pairs={cap:'1人目を決めると、相手に必要な体重の範囲が決まる。その範囲の人数を2つの二分探索で数える',svg:SV(126,tx(170,14,'1人目 40 kg → 相手は 70〜90 kg',{s:12,w:700})+cells(14,34,[25,40,62,71,75,90,93,98],{w:36,h:32,g:4,s:13,st:['d','a','','g','g','g','','']})+
+ ar('M138,96 L138,70',CV.acc)+tx(138,110,'lowerBound(70)',{s:10,w:700,m:true,c:CV.acc})+ar('M258,96 L258,70',CV.ng)+tx(258,110,'upperBound(90)',{s:10,w:700,m:true,c:CV.ng})+tx(198,124,'差 = 3人',{s:11,w:900,c:CV.ok}))};
 
 
 /* ---- ずかん view ---- */
@@ -2809,7 +2982,7 @@ function termList(){if(TERM_LIST)return TERM_LIST;const L=[];
  TERM_EXTRA.forEach(t=>L.push([t[0],t[1],.8]));
  [['戻り値','syn-func'],['return','syn-func'],['引数','syn-func'],['手続き','syn-func']].forEach(t=>L.push([t[0],t[1],.45]));
  return TERM_LIST=L.sort((a,b)=>b[0].length-a[0].length)}
-const QFIG={'insort-0':['al-insert'],'insort-1':['al-insert','al-order'],'merge-0':['al-merge'],'merge-1':['al-merge','al-order'],'matrix-0':['syn-2d','syn-for'],'matrix-1':['syn-2d','syn-arrarr'],'strsearch-0':['al-strsearch'],'strsearch-1':['al-strsearch'],'listc-0':['ds-listop','ds-list'],'listc-1':['ds-listop','syn-class'],'heap-0':['ds-heap','ds-pqueue'],'heap-1':['ds-heap','ds-tree'],'hash-0':['ds-hash'],'hash-1':['ds-hash','syn-arith'],'d-18':['sec-risk'],'d-19':['sec-mailauth'],'d-20':['sec-web2','sec-xss'],'d-21':['sec-detect','sec-network'],'d-22':['syn-arrarr','syn-2d'],'d-23':['al-strsearch'],'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
+const QFIG={'bounds-0':['al-bounds'],'bounds-1':['al-bounds','al-binary'],'bounds-2':['al-bounds','syn-array'],'pairs-0':['al-bounds'],'pairs-1':['al-bounds','syn-for'],'pairs-2':['al-order','al-bounds'],'ansbin-0':['al-ansbin','al-binary'],'ansbin-1':['al-ansbin'],'ansbin-2':['al-ansbin','syn-arith'],'insort-0':['al-insert'],'insort-1':['al-insert','al-order'],'merge-0':['al-merge'],'merge-1':['al-merge','al-order'],'matrix-0':['syn-2d','syn-for'],'matrix-1':['syn-2d','syn-arrarr'],'strsearch-0':['al-strsearch'],'strsearch-1':['al-strsearch'],'listc-0':['ds-listop','ds-list'],'listc-1':['ds-listop','syn-class'],'heap-0':['ds-heap','ds-pqueue'],'heap-1':['ds-heap','ds-tree'],'hash-0':['ds-hash'],'hash-1':['ds-hash','syn-arith'],'d-18':['sec-risk'],'d-19':['sec-mailauth'],'d-20':['sec-web2','sec-xss'],'d-21':['sec-detect','sec-network'],'d-22':['syn-arrarr','syn-2d'],'d-23':['al-strsearch'],'var-0':['syn-var','al-bubble'],'binary-0':['al-binary','al-order'],'linear-1':['al-linear'],'max-1':['al-linear','syn-trace'],'list-0':['ds-listop','ds-list'],'list-1':['ds-listop','ds-list'],'intcalc-0':['al-radix','al-bit','syn-arith'],'d-1':['syn-trace','syn-if'],'d-2':['syn-trace','syn-for'],'d-8':['al-string','al-bubble'],'d-10':['ds-queue','syn-arith'],'d-11':['ds-heap','syn-array'],'d-13':['ds-list','syn-class'],'binary-2':['al-binary'],'bubble-1':['al-bubble','al-order'],'select-1':['al-select','al-bubble']};
 function termCards(q,lessonId){
  if(QFIG[q.id])return QFIG[q.id].map(id=>({id}));
  const text=[q.q,q.e].concat(q.c).join('\n');const code=q.code||'';const score={};const isSec=q.cat==='sec';
@@ -2994,6 +3167,26 @@ function renderVis(s,prev,x){
    h+='<div class="node'+(cur?' cur':'')+(seen&&!cur?' seen':'')+'"><span class="ni">['+nd[0]+']</span><b>'+nd[1]+'</b>'+(cur?'<span class="np">p</span>':'')+'</div><span class="link">→</span>';});
   h+='<div class="node end'+(s.chain.cur===null&&s.chain.seen.length?' cur':'')+'"><b>0</b><span class="ni">終わり</span></div></div>';
  }
+ if(s.ab){const A=s.ab,X=l=>22+l*27,base=118,sc=4;
+  let g='<svg class="ab-svg" viewBox="0 0 340 172" role="img" aria-label="長さごとの本数とOK・NGの範囲">';
+  g+='<rect x="'+(X(0)-12)+'" y="10" width="'+(X(A.lo)-X(0)+12+11)+'" height="'+(base-10)+'" style="fill:var(--accSoft)"/>';
+  g+='<rect x="'+(X(A.hi)-11)+'" y="10" width="'+(X(11)-X(A.hi)+23)+'" height="'+(base-10)+'" style="fill:var(--ngSoft)"/>';
+  A.counts.forEach((c,k)=>{const l=k+1,hgt=Math.min(c,24)*sc,st=A.known[l]||(l<=A.lo?'okx':l>=A.hi?'ngx':'');const f=st==='ok'?'var(--acc)':st==='ng'?'var(--ng)':st==='okx'?'color-mix(in srgb,var(--acc) 45%,transparent)':st==='ngx'?'color-mix(in srgb,var(--ng) 45%,transparent)':'var(--line)';
+   g+='<rect x="'+(X(l)-8)+'" y="'+(base-hgt)+'" width="16" height="'+hgt+'" rx="2" style="fill:'+f+'"/><text x="'+X(l)+'" y="'+(base-hgt-3)+'" text-anchor="middle" style="font-size:9px;font-weight:700;fill:var(--ink);font-family:JetBrains Mono,monospace">'+c+'</text>'});
+  g+='<line x1="'+(X(0)-12)+'" y1="'+(base-A.m*sc)+'" x2="'+(X(11)+12)+'" y2="'+(base-A.m*sc)+'" style="stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 3"/><text x="'+(X(11)+10)+'" y="'+(base-A.m*sc-4)+'" text-anchor="end" style="font-size:10px;font-weight:700;fill:var(--ink)">'+A.m+'本ライン</text>';
+  g+='<line x1="'+(X(0)-12)+'" y1="'+base+'" x2="'+(X(11)+12)+'" y2="'+base+'" style="stroke:var(--ink);stroke-width:1.5"/>';
+  range(0,11).forEach(l=>{g+='<text x="'+X(l)+'" y="'+(base+13)+'" text-anchor="middle" style="font-size:9.5px;fill:var(--mute);font-family:JetBrains Mono,monospace">'+l+'</text>'});
+  const mk=(l,lab,col,dy)=>'<path d="M'+X(l)+','+(base+18)+' l-5,9 h10 z" style="fill:'+col+'"/><text x="'+X(l)+'" y="'+(base+38+dy)+'" text-anchor="middle" style="font-size:11px;font-weight:800;fill:'+col+';font-family:JetBrains Mono,monospace">'+lab+'</text>';
+  g+=mk(A.lo,'lo','var(--acc)',0)+mk(A.hi,'hi','var(--ng)',0)+(A.mid!=null?mk(A.mid,'mid','var(--amb)',A.mid===A.lo||A.mid===A.hi?12:0):'');
+  g+='<text x="170" y="170" text-anchor="middle" style="font-size:9.5px;fill:var(--mute)">横：切る長さ l　縦：取れる本数(青＝OK、赤＝NG、薄い色は確定しただけで未確認)</text></svg>';
+  h+='<div class="vlabel">長さごとの本数(青い範囲＝OK確定、赤い範囲＝NG確定)</div>'+g;
+  if(A.cut){const C=A.cut;let c='<div class="vlabel">check('+C.l+')：丸太を長さ '+C.l+' で切る</div><svg class="ab-cut" viewBox="0 0 340 '+(A.H.length*26+6)+'">';
+   A.H.forEach((len,k)=>{const y=4+k*26,u=26,done=k<C.upto;const q=Math.floor(len/C.l);
+    c+='<text x="4" y="'+(y+15)+'" style="font-size:10px;fill:var(--mute)">'+len+'</text>';
+    for(let p=0;p<len;p++){const piece=Math.floor(p/C.l),inPiece=piece<q;c+='<rect x="'+(22+p*u)+'" y="'+y+'" width="'+u+'" height="18" style="fill:'+(!done?'var(--bg)':inPiece?(piece%2?'var(--accSoft)':'color-mix(in srgb,var(--acc) 35%,var(--card))'):'var(--line)')+';stroke:var(--card);stroke-width:1"/>'}
+    for(let p=C.l;p<=q*C.l&&done;p+=C.l)c+='<line x1="'+(22+p*u)+'" y1="'+(y-2)+'" x2="'+(22+p*u)+'" y2="'+(y+20)+'" style="stroke:var(--ink);stroke-width:2"/>';
+    c+='<text x="'+(22+len*u+6)+'" y="'+(y+14)+'" style="font-size:11px;font-weight:800;fill:'+(done?'var(--acc)':'var(--mute)')+'">'+(done?q+'本':'')+'</text>'});
+   h+=c+'</svg>'}}
  if(s.g){Object.keys(s.g).forEach(name=>{const G=s.g[name];const isH=(r,c)=>(G.hl||[]).some(p=>p[0]===r&&p[1]===c);
   h+='<div class="vlabel">二次元配列 '+esc(name)+'(黄色＝今のマス、青い行＝今の行)</div><table class="gridt"><tr><th></th>'+G.rows[0].map((_,c)=>'<th>'+(c+1)+'列</th>').join('')+'</tr>'+
    G.rows.map((row,r)=>'<tr class="'+(G.row===r+1?'cur':'')+'"><th>'+(r+1)+'行</th>'+row.map((v,c)=>'<td class="'+(isH(r+1,c+1)?'hl':'')+'">'+esc(fmt(v))+'</td>').join('')+'</tr>').join('')+'</table>'})}
@@ -3083,11 +3276,11 @@ function renderVis(s,prev,x){
   }
   let arc='';
   if(x.arc&&x.arc[0]===name){const i1=Math.min(x.arc[1],x.arc[2]),i2=Math.max(x.arc[1],x.arc[2]);
-   const cmp=arr.length>=7,PI=cmp?44:52,CO=cmp?16:20,cx=k=>(k-1)*PI+CO,x1=cx(i1),x2=cx(i2),sw=x.arc[3]==='交換',hgt=Math.min(30,10+(i2-i1)*6);
+   const tier=arr.length>=12?2:arr.length>=7?1:0,PI=[52,36,20][tier],CO=[20,13,9][tier],cx=k=>(k-1)*PI+CO,x1=cx(i1),x2=cx(i2),sw=x.arc[3]==='交換',hgt=Math.min(30,10+(i2-i1)*6);
    arc='<svg class="arc" width="'+(arr.length*PI)+'" height="34" style="overflow:visible"><path d="M'+x1+',32 C'+x1+','+(32-hgt)+' '+x2+','+(32-hgt)+' '+x2+',32" style="fill:none;stroke:'+(sw?'var(--acc)':'var(--amb)')+';stroke-width:2.5;stroke-dasharray:'+(sw?'0':'5 4')+'" marker-end="url(#ah'+(sw?'g':'a')+')"'+(sw?' marker-start="url(#ah'+(sw?'g':'a')+'s)"':'')+'/><text x="'+((x1+x2)/2)+'" y="'+(28-hgt)+'" text-anchor="middle" style="font-size:11px;font-weight:700;fill:'+(sw?'var(--acc)':'var(--amb)')+'">'+x.arc[3]+'</text></svg>';}
-  h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'</div><div class="arcwrap">'+(arc||'<div style="height:'+(window._arc?34:4)+'px"></div>')+'<div class="cells'+(arr.length>=7?' cmp':'')+'">';
+  h+='<div class="arr"><div class="nm2">配列 '+esc(name)+'</div><div class="arcwrap">'+(arc||'<div style="height:'+(window._arc?34:4)+'px"></div>')+'<div class="cells'+(arr.length>=12?' ucmp':arr.length>=7?' cmp':'')+'">';
   arr.forEach((v,i)=>{const k=i+1;
-   h+='<div class="col"><span class="idx">'+(ghost&&v===null?'':'['+k+']')+'</span>'+cell(v,k)+'<span class="ptr">'+(ptr[k]?esc(ptr[k].join(',')):'')+'</span></div>'});
+   h+='<div class="col"><span class="idx">'+(ghost&&v===null?'':(arr.length>=12?'':'[')+(k-((s.off&&s.off[name])||0))+(arr.length>=12?'':']'))+'</span>'+cell(v,k)+'<span class="ptr">'+(ptr[k]?esc(ptr[k].join(',')):'')+'</span></div>'});
   h+='</div></div></div>';
  });
  if(s.out!==null&&s.out!==undefined)h+='<div class="vlabel">出力・取り出した値</div><div class="out">'+esc(s.out)+'</div>';
